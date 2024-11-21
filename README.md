@@ -1,3 +1,10 @@
+start project backend: 
+{
+    build : npx tailwindcss -i styles.css -o ./public/output.css
+}
+
+
+
 .env ( PORT = 3001
 PORTDATABASE = 8088
 #JWT
