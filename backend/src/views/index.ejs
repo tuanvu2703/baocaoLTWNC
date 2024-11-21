@@ -11,16 +11,19 @@
     <link href="/tailwindcss.css" rel="stylesheet">
 </head>
 
-<body>
-    <header>
+<body class="flex flex-row w-full">
+    <header class="">
         <%- include('components/header') %>
     </header>
-    <main>
-        <%- include(page) %>
-    </main>
-    <footer>
-        <%- include ('components/footer') %>
-    </footer>
+    <div>
+        <main>
+            <%- include(page) %>
+        </main>
+        <footer>
+            <%- include ('components/footer') %>
+        </footer>
+    </div>
+
 </body>
 
 </html>
