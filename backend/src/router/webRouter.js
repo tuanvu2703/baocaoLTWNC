@@ -9,8 +9,7 @@ const initWebRoute = (app) => {
 
 
     //category
-    // router.post('/user/create', AuthMiddleware.checkRole("0"), UserController.createUser)
-    router.get('/staff/category/create', CategoriesController.getCreateCategoryPage);
+    router.get('/staff/category', CategoriesController.getCategoryPage);
     router.post('/staff/category/create', authenticate, CategoriesController.createCategory);
 
     return app.use('/', router)
