@@ -6,6 +6,8 @@ import cors from "cors"
 import bodyParser from "body-parser";
 import path from 'path'
 import dotenv from 'dotenv/config'
+import userRouter from './router/userRouter';
+
 
 const app = express();
 
@@ -34,6 +36,8 @@ app.use(bodyParser.json())
 
 // router 
 initWebRoute(app)
+app.use('/user',userRouter)
+
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt
