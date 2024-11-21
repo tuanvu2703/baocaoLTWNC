@@ -1,13 +1,14 @@
 import * as UserModel from "../model/userModel";
 import jwt from "jsonwebtoken";
 
-const generateToken = async (userId) => {
+const generateToken = async (userId, res) => {
     const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES,
     });
     const refreshToken = jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, {
       expiresIn: process.env.JWT_REFRESH_EXPIRES,
     });
+    await UserModel.updateRefreshToken(userId, refreshToken);
 
     res.cookie("token", accessToken, {
       httpOnly: true,
@@ -15,9 +16,7 @@ const generateToken = async (userId) => {
       sameSite: "strict",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-  
-    await UserModel.updateRefreshToken(userId, refreshToken);
-  
+
     return {
       accessToken,
       refreshToken
@@ -38,6 +37,13 @@ const generateToken = async (userId) => {
       }
       const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES,
+      });
+
+      res.cookie("token", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
       });
   
       return res.status(200).json({ accessToken });
