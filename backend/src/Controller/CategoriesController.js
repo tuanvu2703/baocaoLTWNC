@@ -10,7 +10,7 @@ const createCategory = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-const getCreateCategoryPage = (req, res) => {
+const getCategoryPage = (req, res) => {
     return res.render("index",
         {
             title: 'Danh mục',
@@ -21,5 +21,5 @@ const getCreateCategoryPage = (req, res) => {
 
 export default {
     createCategory,
-    getCreateCategoryPage
+    getCategoryPage
 }
