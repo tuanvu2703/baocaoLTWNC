@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details</title>
+  <!-- Import Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2>User Details</h2>
+    <table class="table table-bordered">
+      <tr>
+        <th>Full Name</th>
+        <td><%= user.fullname %></td>
+      </tr>
+      <tr>
+        <th>Gender</th>
+        <td><%= user.gender %></td>
+      </tr>
+      <tr>
+        <th>Date of Birth</th>
+        <td><%= user.born %></td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td><%= user.email %></td>
+      </tr>
+      <tr>
+        <th>Address</th>
+        <td><%= user.address %></td>
+      </tr>
+      <tr>
+        <th>Phone</th>
+        <td><%= user.phone %></td>
+      </tr>
+    </table>
+    <a href="/user/update-user" class="btn btn-primary">Update User</a>
+  </div>
+  <!-- Import Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
