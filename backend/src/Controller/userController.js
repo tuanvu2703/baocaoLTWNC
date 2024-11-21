@@ -1,6 +1,10 @@
 import * as userModel from '../model/userModel';
 import { generateToken, refreshAccessToken } from '../midderwere/createToken';
 
+
+
+
+// ===================================================API================================================================
 const register = async(req,res) => {
     try {
         const {username, password, fullname, gender, born, email, address} = req.body;
@@ -34,30 +38,6 @@ const login = async (req, res) => {
   }
 };
 
-
-const loginejs = async (req, res) => {
-  try {
-    const { identifier, password } = req.body;
-    const user = await userModel.login(identifier, password);
-    const tokens = await generateToken(user.id, res);
-
-    // Đặt thông tin người dùng vào session
-    req.session.username = user.username;
-    req.session.user = user;
-
-    console.log('user:', user);
-    console.log('usersession:', req.session.user);
-    console.log(user.username);
-    console.log('Cookies:', req.cookies);
-    console.log('Session:', req.session);
-    res.redirect('/');
-  } catch (error) {
-    console.log('Error:', error);
-    res.status(401).json({ message: 'Invalid email/username or password' });
-  }
-};
-
-
 const updateUser = async (req, res) => {
   try {
     const userId = req.user.id; 
@@ -69,6 +49,30 @@ const updateUser = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// =========================================EJS RENDER PAGE===================================================== 
+
+const loginejs = async (req, res) => {
+  try {
+    const { identifier, password } = req.body;
+    const user = await userModel.login(identifier, password);
+    const tokens = await generateToken(user.id, res);
+
+    // Đặt thông tin người dùng vào session
+    req.session.username = user.username;
+    req.session.user = user;
+    console.log('user:', user);
+    console.log('usersession:', req.session.user);
+    console.log(user.username);
+    console.log('Cookies:', req.cookies);
+    console.log('Session:', req.session);
+    res.redirect('user/listUser');
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(401).json({ message: 'Invalid email/username or password' });
+  }
+};
+
 
   const updatePassword = async (req, res) => {
     try {
@@ -90,7 +94,6 @@ const updateUser = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
-
 
   const renderUpdateUserPage = async (req, res) => {
     try {
@@ -122,8 +125,8 @@ const updateUser = async (req, res) => {
 
   const renderListUsersPage = async (req, res) => {
     try {
-      const users = await userModel.findAllUsers();
-      res.render('listUsers', { users });
+      const users = await userModel.getListUser();
+      res.render('listUser', { users });
     } catch (error) {
       console.log('Error:', error);
       res.status(500).json({ message: 'Internal server error' });
@@ -133,6 +136,7 @@ const updateUser = async (req, res) => {
   const renderLoginPage = (req, res) => {
     res.render('login');
   };
+
 
 
 export {

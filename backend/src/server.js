@@ -1,7 +1,7 @@
 import express from "express";
 import initWebRoute from "./router/webRouter";
 import session from "express-session";
-import viewEngine from "./viewEngine";
+import viewEngine from "./views/viewEngine";
 import cors from "cors"
 import bodyParser from "body-parser";
 import path from 'path'
@@ -11,8 +11,14 @@ import cookieParser from 'cookie-parser'
 const app = express();
 
 // cors 
-app.use(cors());
 
+app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    credentials: true,
+  };
 //session
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -40,7 +46,6 @@ app.use(bodyParser.json())
 // router 
 initWebRoute(app)
 app.use('/user',userRouter)
-
 
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.

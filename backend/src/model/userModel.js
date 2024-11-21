@@ -101,9 +101,19 @@ const findUserByIdentifier = async (identifier) => {
     }
   };
 
+  const getListUser = async() => {
+    try {
+      const [rows] =  await connection.execute(
+        'SELECT * FROM users'
+      )
+      return rows;
+    } catch (error) {
+      console.log('this bug userModel check its:',error);
+    }
+  }
+
 export {
   //user and admin
-  
     register,
     findUserByIdentifier,
     findById,
@@ -112,6 +122,7 @@ export {
     updateUser,
     updatePassword,
   //only admin
+    getListUser,
 
 }
 
