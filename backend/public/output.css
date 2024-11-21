@@ -1,3 +1,5 @@
+/* styles.css */
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -106,9 +108,7 @@
   --tw-contain-style:  ;
 }
 
-/*
-! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com
-*/
+/* ! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com */
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -588,14 +588,22 @@ video {
   }
 }
 
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1));
+.h-16 {
+  height: 4rem;
 }
 
-.bg-blue-700 {
+.w-full {
+  width: 100%;
+}
+
+.bg-black {
   --tw-bg-opacity: 1;
-  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
 }
 
 .text-3xl {
@@ -615,5 +623,3 @@ video {
 .underline {
   text-decoration-line: underline;
 }
-
-
