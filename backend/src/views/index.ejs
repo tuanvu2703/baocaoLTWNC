@@ -8,13 +8,14 @@
     <title>
         <%= title %>
     </title>
-
+    <link href="/tailwindcss.css" rel="stylesheet">
 </head>
 
 <body>
     <header>
         <%- include('components/header') %>
     </header>
+    <div class="bg-red-500">a</div>
     <main>
         <%- include(page) %>
     </main>

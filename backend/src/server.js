@@ -41,7 +41,8 @@ app.use('/user',userRouter)
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'src')))
+app.use(express.static('public'));
 
 // port 8000
 const port = process.env.PORT;
