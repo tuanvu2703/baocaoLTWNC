@@ -1,25 +1,37 @@
 <div class="w-44 h-full bg-violet-50 shadow-lg flex flex-col">
-    <div class="">
-        <%- include('avatar') %>
+    <div>
+        <div class="">
+            <%- include('avatar') %>
+        </div>
+        <a href="/">
+            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
+                Home
+            </button>
+        </a>
+        <a href="/users">
+            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
+                List User
+            </button>
+        </a>
+        <a href="/products">
+            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
+                List Product
+            </button>
+        </a>
+        <a href="/#">
+            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
+                ?
+            </button>
+        </a>
     </div>
-    <a href="/" >
-        <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-            Home
-        </button>
-    </a>
-    <a href="/users">
-        <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-            List User
-        </button>
-    </a>
-    <a href="/products">
-        <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-            List Product
-        </button>
-    </a>
-    <a href="/#" >
-        <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-            ?
-        </button>
-    </a>
+    <div class="float-end h-full flex flex-col justify-between">
+        <div></div> <!-- This empty div helps push the button down -->
+        <div>
+            <button class="w-full h-12 hover:bg-violet-200">
+                Logout
+            </button>
+        </div>
+
+    </div>
+
 </div>

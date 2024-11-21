@@ -592,6 +592,10 @@ video {
   position: static;
 }
 
+.float-end {
+  float: inline-end;
+}
+
 .mt-5 {
   margin-top: 1.25rem;
 }
@@ -698,6 +702,10 @@ video {
 
 .justify-center {
   justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
 }
 
 .justify-items-center {
