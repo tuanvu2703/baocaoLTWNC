@@ -9,7 +9,7 @@ const generateToken = async (userId) => {
       expiresIn: process.env.JWT_REFRESH_EXPIRES,
     });
 
-    res.cookie("token", token, {
+    res.cookie("token", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       sameSite: "strict",
@@ -24,22 +24,29 @@ const generateToken = async (userId) => {
     };
   };
 
-  const refreshAccessToken = async (userId, receivedRefreshToken) => {
-    const user = await UserModel.findById(userId);
-    if (!user || user.refreshToken !== receivedRefreshToken) {
-      throw new Error('Invalid refresh token');
-    }
+  const refreshAccessToken = async (req, res) => {
+    const { userId, receivedRefreshToken } = req.body;
     try {
-      jwt.verify(receivedRefreshToken, process.env.JWT_REFRESH_SECRET);
-    } catch (error) {
-      throw new Error('Refresh token expired');
-    }
-    const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIREIN,
-    });
+      const user = await UserModel.findById(userId);
+      if (!user || user.refreshToken !== receivedRefreshToken) {
+        return res.status(401).json({ message: 'Invalid refresh token' });
+      }
+      try {
+        jwt.verify(receivedRefreshToken, process.env.JWT_REFRESH_SECRET);
+      } catch (error) {
+        return res.status(401).json({ message: 'Refresh token expired' });
+      }
+      const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES,
+      });
   
-    return { accessToken };
+      return res.status(200).json({ accessToken });
+    } catch (error) {
+      console.error('Error refreshing access token:', error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
   };
+  
 
 export {
     generateToken,

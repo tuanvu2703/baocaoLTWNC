@@ -37,7 +37,6 @@ const findUserByIdentifier = async (identifier) => {
       [userId]
       
     );
-    console.log(rows[0]);
     return rows[0]; // Trả về người dùng đầu tiên tìm thấy
   };
   
