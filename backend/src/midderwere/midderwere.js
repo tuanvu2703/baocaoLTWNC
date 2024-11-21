@@ -41,14 +41,14 @@ const authorizeAdmin = (req, res, next) => {
 
 //use with ejs (cookie: token, session)
 const authenticateEJS = async (req, res, next) => {
-  const token = req.cookies.jwt; 
+  const token = req.cookies.token; 
   if (!token) {
     return res.status(401).json({ message: "Không có token. Vui lòng đăng nhập." });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await UserModel.getUserById(decoded.userId);
+    req.user = await UserModel.findById(decoded.userId);
     console.log(req.user);
     if (!req.user) {
       return res.status(401).json({ message: "Không tìm thấy người dùng." });
@@ -61,6 +61,7 @@ const authenticateEJS = async (req, res, next) => {
 };
 
 export { 
+
   authenticate,
   authorizeAdmin,
   authenticateEJS,

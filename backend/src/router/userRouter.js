@@ -8,6 +8,7 @@ import {
     renderListUsersPage,
     renderUserDetailsPage,
     renderLoginPage,
+    loginejs,
     
 
 } from '../Controller/userController';
@@ -23,7 +24,9 @@ router.put('/updateuser', authenticate, updateUser);
 router.post('/updatepassword', authenticate, updatePassword);
 router.post('/refreshToken',refreshAccessToken);
 
+
 //Router EJS(render EJS)
+router.post('/loginejs',loginejs);
 router.get('/loginpage', renderLoginPage );
 router.get('/updateuser', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
 router.get('/userdetails', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
