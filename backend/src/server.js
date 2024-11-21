@@ -7,8 +7,7 @@ import bodyParser from "body-parser";
 import path from 'path'
 import dotenv from 'dotenv/config'
 import userRouter from './router/userRouter';
-
-
+import cookieParser from 'cookie-parser'
 const app = express();
 
 // cors 
@@ -16,11 +15,15 @@ app.use(cors());
 
 //session
 app.use(session({
-    secret: 'keyboard Cat',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+
+//cookie
+app.use(cookieParser());
+
 // gọi session vào các trang ejs
 app.use((req, res, next) => {
     res.locals.session = req.session;
@@ -39,11 +42,12 @@ initWebRoute(app)
 app.use('/user',userRouter)
 
 
+
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt
 app.use(express.static(path.join(__dirname, 'public')))
 
-// port 8000
+// port 3001
 const port = process.env.PORT;
 
 app.listen(port, () => {
