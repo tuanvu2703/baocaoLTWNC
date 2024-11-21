@@ -1,5 +1,5 @@
 const getHomePage = (req, res) => {
-    return res.render("index",
+    return res.render("main",
         {
             title: 'Home website',
             page: 'home',
