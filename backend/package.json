@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec babel-node src/server.js",
-    "build:css": "npx tailwindcss -i ./views/index.css -o ./views/style.css --watch"
+    "build:css": "npx tailwindcss build -i ./styles.css -o ./public/tailwindcss.css --watch"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,9 @@
     "@babel/preset-react": "^7.25.9",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "cookies": "^0.9.1",
+    "cookies-parser": "^1.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",

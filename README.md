@@ -1,4 +1,11 @@
-PORT = 3001
+start project backend: 
+{
+    build : npx tailwindcss -i styles.css -o ./public/output.css
+}
+
+
+
+.env ( PORT = 3001
 PORTDATABASE = 8088
 #JWT
 JWT_SECRET = nemOlamPaocaoWebHuhukhetkhet
@@ -8,7 +15,4 @@ JWT_REFRESH_SECRET = NEmoREfreshTokenhuhuKhecKhec
 JWT_REFRESH_EXPIRES = 1y
 
 #COOKIE
-NODE_ENV = NemoShophuhukheckhec 
-
-#SESSION
-SESSION_SECRET = NemoShopsessIONhuhukhecKhec
+NODE_ENV = NemoShophuhukheckhec )
