@@ -70,6 +70,33 @@ const updateUser = async (req, res) => {
   }
 };
 
+<<<<<<< Updated upstream
+=======
+// =========================================EJS RENDER PAGE===================================================== 
+
+const loginejs = async (req, res) => {
+  try {
+    const { identifier, password } = req.body;
+    const user = await userModel.login(identifier, password);
+    const tokens = await generateToken(user.id, res);
+
+    // Đặt thông tin người dùng vào session
+    req.session.username = user.username;
+    req.session.user = user;
+    console.log('user:', user);
+    console.log('usersession:', req.session.user);
+    console.log(user.username);
+    console.log('Cookies:', req.cookies);
+    console.log('Session:', req.session);
+    res.redirect('/user/listusers');
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(401).json({ message: 'Invalid email/username or password' });
+  }
+};
+
+
+>>>>>>> Stashed changes
   const updatePassword = async (req, res) => {
     try {
       const userId = req.user.id; 
