@@ -128,6 +128,18 @@ const findUserByIdentifier = async (identifier) => {
       console.log('Error:', error);
     }
   }
+  const uploadAvatar = async (userId, avatar) => {
+    try {
+      const [result] = await connection.execute(
+        'UPDATE users SET avatar = ? WHERE id = ?',
+        [avatar, userId]
+      );
+      return result;
+    } catch (error) {
+      console.log('Error:', error);
+      throw error;
+    }
+  };
 
 export {
   //user and admin
@@ -138,10 +150,11 @@ export {
     login,
     updateUser,
     updatePassword,
+    uploadAvatar,
   //only admin
     getListUser,
     activeUser,
-    
+
 }
 
 

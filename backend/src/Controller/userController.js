@@ -48,6 +48,18 @@ const updateUser = async (req, res) => {
   }
 };
 
+const uploadAvatar = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const avatar = req.file ? `uploads/avatar/${req.file.filename}` : null;
+    await userModel.uploadAvatar(userId, avatar);
+    res.status(200).json({ message: 'Avatar uploaded successfully', avatar });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 
 // =========================================EJS RENDER PAGE===================================================== 
@@ -153,6 +165,7 @@ export {
     register,
     login,
     updatePassword,
+    uploadAvatar,
 
     //ejs
     updateUser,
