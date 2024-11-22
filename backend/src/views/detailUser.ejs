@@ -4,49 +4,100 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Details</title>
+
   <!-- Import Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .form-group small {
+      font-style: italic;
+      color: #6c757d;
+    }
+    .form-group strong {
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <div class="container mt-5">
-    <h2>User Details</h2>
-    <table class="table table-bordered">
-      <tr>
-        <th>Full Name</th>
-        <td><%= user.fullname %></td>
-      </tr>
-      <tr>
-        <th>Gender</th>
-        <td><%= user.gender %></td>
-      </tr>
-      <tr>
-        <th>Date of Birth</th>
-        <td>
-          <%
-          const d = new Date(user.born);
-          const day = (`0${d.getDate()}`).slice(-2);
-          const month = (`0${d.getMonth() + 1}`).slice(-2);
-          const year = d.getFullYear();
-          const formattedDate = `${day}/${month}/${year}`;
+    <!-- User details section -->
+    <div class="user-details mb-4 d-flex align-items-center">
+      <!-- Avatar section with Bootstrap classes to make it rounded and adjust size -->
+      <img src="<%= '/' + user.avatar.replace(/^\/+/, '') %>" class="user-avatar img-fluid rounded-circle" style="max-width: 75px; height: auto;">
+      <div class="user-info ml-3">
+        <h3 class="text-xl font-semibold"><%= user.fullname || 'User has not updated yet' %></h3>
+      </div>
+    </div>
+
+    <!-- User info form -->
+    <form action="/user/update-user" method="POST" class="space-y-4">
+      <!-- Full Name -->
+      <div class="form-group">
+        <strong>Full Name:</strong>
+        <input type="text" id="fullname" name="fullname" value="<%= user.fullname || '' %>" class="form-control">
+        <% if (!user.fullname) { %>
+          <small>User has not updated yet</small>
+        <% } %>
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group">
+        <strong>Gender:</strong>
+        <select id="gender" name="gender" class="form-control">
+          <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+          <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+        </select>
+        <% if (!user.gender) { %>
+          <small>User has not updated yet</small>
+        <% } %>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="form-group">
+        <strong>Date of Birth:</strong>
+        <%
+        const d = new Date(user.born);
+        const day = (`0${d.getDate()}`).slice(-2);
+        const month = (`0${d.getMonth() + 1}`).slice(-2);
+        const year = d.getFullYear();
+        const formattedDate = `${year}-${month}-${day}`; // Định dạng cho input type="date"
         %>
-        <%= formattedDate %>
-        </td>
-      </tr>
-      <tr>
-        <th>Email</th>
-        <td><%= user.email %></td>
-      </tr>
-      <tr>
-        <th>Address</th>
-        <td><%= user.address %></td>
-      </tr>
-      <tr>
-        <th>Phone</th>
-        <td><%= user.phone %></td>
-      </tr>
-    </table>
-    <a href="/user/update-user" class="btn btn-primary">Update User</a>
+        <input type="date" id="born" name="born" value="<%= user.born ? formattedDate : '' %>" class="form-control">
+        <% if (!user.born) { %>
+          <small>User has not updated yet</small>
+        <% } %>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <strong>Email:</strong>
+        <input type="email" id="email" name="email" value="<%= user.email || '' %>" class="form-control">
+        <% if (!user.email) { %>
+          <small>User has not updated yet</small>
+        <% } %>
+      </div>
+
+      <!-- Address -->
+      <div class="form-group">
+        <strong>Address:</strong>
+        <input type="text" id="address" name="address" value="<%= user.address || '' %>" class="form-control">
+        <% if (!user.address) { %>
+          <small>User has not updated yet</small>
+        <% } %>
+      </div>
+
+      <!-- Phone -->
+      <div class="form-group">
+        <strong>Phone:</strong>
+        <input type="text" id="phone" name="phone" value="<%= user.phone || '' %>" class="form-control">
+        <% if (!user.phone) { %>
+          <small>User has not updated yet</small>
+        <% } %>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Update User</button>
+    </form>
   </div>
+
   <!-- Import Bootstrap JS and dependencies -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

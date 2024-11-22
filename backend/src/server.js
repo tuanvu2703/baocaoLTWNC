@@ -36,6 +36,14 @@ app.use((req, res, next) => {
     next();
 });
 
+//config path uploads img
+// Cấu hình đường dẫn tĩnh cho 'uploads'
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 //viewEngine
 viewEngine(app);
 
@@ -50,12 +58,12 @@ app.use('/user',userRouter)
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt
-app.use(express.static(path.join(__dirname, 'src')))
-app.use(express.static('public'));
+// app.use(express.static(path.join(__dirname, 'src')))
+// app.use(express.static('public'));
 
 // port 3001
 const port = process.env.PORT;
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`NemoShop listening  ${port}`)
 })
