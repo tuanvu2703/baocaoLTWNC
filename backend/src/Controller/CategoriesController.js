@@ -1,4 +1,4 @@
-import * as categoryModel from '../model/categoryModel';
+import categoryModel from '../model/categoryModel';
 
 const createCategory = async (req, res) => {
     try {
@@ -10,11 +10,13 @@ const createCategory = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-const getCategoryPage = (req, res) => {
+const getCategoryPage = async (req, res) => {
+    const listCategories = await categoryModel.getAllCategory();
     return res.render("index",
         {
             title: 'Danh mục',
             page: 'categories',
+            data: listCategories
         }
     )
 }

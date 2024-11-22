@@ -10,6 +10,11 @@ const createCategory = async (category_name, description) => {
         throw error;
     }
 }
-export {
-    createCategory
+const getAllCategory = async () => {
+    const [data, fields] = await connection.execute("SELECT * FROM `categories`")
+    return data
+}
+export default {
+    createCategory,
+    getAllCategory
 }
