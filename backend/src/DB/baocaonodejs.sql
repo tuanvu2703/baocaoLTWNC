@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 22, 2024 lúc 06:13 AM
+-- Thời gian đã tạo: Th10 22, 2024 lúc 09:09 AM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.0.25
 
@@ -94,7 +94,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `fullname`, `gender`, `born`, `email`, `address`, `phone`, `avatar`, `role`, `isActive`, `refreshToken`, `Create_at`, `Update_at`) VALUES
-(1, 'uchihanemo', '$2b$10$o3FAYj/2Butm5Ce74e59XeD13d/tXK3Myt.zCZ9qYpAzLjKh724Gi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2200@gmail.com', '242 tây xuyên ang giangz', '', '', 0, 1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMjI0OTY3MCwiZXhwIjoxNzYzODA3MjcwfQ.rw8rHSr2enP6ZY82m16m6UL1Hh7rSAExpdZlT5TUt-g', '2024-11-21 08:41:36', '2024-11-22 04:27:50'),
+(1, 'uchihanemo', '$2b$10$o3FAYj/2Butm5Ce74e59XeD13d/tXK3Myt.zCZ9qYpAzLjKh724Gi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2200@gmail.com', '242 tây xuyên ang giangz', '', 'uploads/avatar/1732258963266-herta.jpg', 0, 1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMjI0OTY3MCwiZXhwIjoxNzYzODA3MjcwfQ.rw8rHSr2enP6ZY82m16m6UL1Hh7rSAExpdZlT5TUt-g', '2024-11-21 08:41:36', '2024-11-22 07:02:43'),
 (2, 'nemoadmin', '$2b$10$TD3QSSHramw9E5x4zNmpmemQMTd3hrBwebN3PXtb4jrcOP1MHoxoi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2600@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '2024-11-21 08:41:36', '2024-11-21 08:41:36'),
 (3, 'nemouser1', '$2b$10$.GTr8G2nZXdonTtgmnQOleQ054v9UwrfN66nT9D2Cd2kNCm.HDLKi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2600@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '2024-11-21 08:41:36', '2024-11-21 08:41:36');
 
