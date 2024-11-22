@@ -28,7 +28,7 @@ const findUserByIdentifier = async (identifier) => {
     'SELECT * FROM users WHERE email = ? OR username = ?',
     [identifier, identifier]
   );
-  return rows[0]; // Trả về người dùng đầu tiên tìm thấy
+  return rows[0]; 
 };
   
   const findById = async (userId) => {
@@ -37,7 +37,7 @@ const findUserByIdentifier = async (identifier) => {
       [userId]
       
     );
-    return rows[0]; // Trả về người dùng đầu tiên tìm thấy
+    return rows[0]; 
   };
   
   const updateRefreshToken = async (userId, refreshToken) => {
@@ -53,7 +53,7 @@ const findUserByIdentifier = async (identifier) => {
         'SELECT * FROM users WHERE email = ? OR username = ?',
         [identifier, identifier]
       );
-      console.log(rows[0]);
+      // console.log(rows[0]);
       return rows[0];
     } catch (error) {
       console.log('i do not know what error',error);
@@ -112,6 +112,23 @@ const findUserByIdentifier = async (identifier) => {
     }
   }
 
+  const activeUser = async(id)=>{
+    try{
+
+      const user = await findById(id);
+      if(!user){
+        throw new Error('User not found');
+      }
+      const newIsActive = user.isActive === 1 ? 0 : 1;
+      await connection.execute(
+        'UPDATE users SET isActive = ? WHERE id = ?',
+        [newIsActive, id]
+      );
+    }catch (error){
+      console.log('Error:', error);
+    }
+  }
+
 export {
   //user and admin
     register,
@@ -123,7 +140,8 @@ export {
     updatePassword,
   //only admin
     getListUser,
-
+    activeUser,
+    
 }
 
 
