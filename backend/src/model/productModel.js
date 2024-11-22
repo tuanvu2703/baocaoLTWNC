@@ -12,7 +12,7 @@ const createProduct = async (product_name, description, price, discount, stock, 
 }
 
 const getAllProduct = async () => {
-    const [data, fields] = await connection.execute("SELECT * FROM `products`")
+    const [data, fields] = await connection.execute("SELECT p.product_name,p.price,p.description,p.discount,p.stock,p.image_url,p.status,c.category_name FROM products p, categories c WHERE p.category_id = c.id")
     return data
 }
 
