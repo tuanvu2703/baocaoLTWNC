@@ -29,7 +29,7 @@ router.post('/refreshToken',refreshAccessToken);
 router.post('/loginejs',loginejs);
 router.get('/loginpage', renderLoginPage );
 router.get('/updateuser', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
-router.get('/userdetails', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
+router.get('/userdetails/:id', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
 router.get('/listusers', authenticateEJS, authorizeAdmin, renderListUsersPage);
 
 

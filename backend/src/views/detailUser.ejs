@@ -21,7 +21,16 @@
       </tr>
       <tr>
         <th>Date of Birth</th>
-        <td><%= user.born %></td>
+        <td>
+          <%
+          const d = new Date(user.born);
+          const day = (`0${d.getDate()}`).slice(-2);
+          const month = (`0${d.getMonth() + 1}`).slice(-2);
+          const year = d.getFullYear();
+          const formattedDate = `${day}/${month}/${year}`;
+        %>
+        <%= formattedDate %>
+        </td>
       </tr>
       <tr>
         <th>Email</th>
