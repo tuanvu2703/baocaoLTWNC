@@ -11,6 +11,9 @@ const initWebRoute = (app) => {
     //category
     router.get('/category', CategoriesController.getCategoryPage);
     router.post('/category/create', authenticate, CategoriesController.createCategory);
+
+    router.post('/category/update/:id', authenticate, CategoriesController.updateCategory);
+
     //product
     router.get('/product', ProductController.getProductPage);
     router.post('/product/create', authenticate, ProductController.createProduct);

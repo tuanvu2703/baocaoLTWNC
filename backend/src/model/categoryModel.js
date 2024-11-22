@@ -11,10 +11,16 @@ const createCategory = async (category_name, description) => {
     }
 }
 const getAllCategory = async () => {
-    const [data, fields] = await connection.execute("SELECT c.*, COUNT(p.product_id) AS total_products FROM categories c LEFT JOIN products p ON c.id = p.category_id GROUP BY c.category_name")
+    const [data] = await connection.execute(`SELECT c.*, COUNT(p.product_id) AS total_products FROM categories c LEFT JOIN products p ON c.id = p.category_id GROUP BY c.category_name`)
     return data
+}
+
+const updateCategory = async (category_name, description, id) => {
+    const [result] = await connection.execute(`UPDATE categories SET category_name = ?, description = ? WHERE id = ?`, [category_name, description, id]);
+    return result
 }
 export default {
     createCategory,
-    getAllCategory
+    getAllCategory,
+    updateCategory
 }
