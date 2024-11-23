@@ -34,12 +34,11 @@ app.use((req, res, next) => {
 viewEngine(app);
 
 //body - parser
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // router 
 initWebRoute(app)
-app.use('/user',userRouter)
+app.use('/user', userRouter)
 
 
 

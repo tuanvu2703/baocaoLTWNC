@@ -45,4 +45,10 @@ const searchProductbyname = async (req, res) => {
     }
 }
 
-export default { createProduct, getProductPage, updateProduct, searchProductbyname }
+const deleteProduct = async (req, res) => {
+    const { product_id } = req.body;
+    const result = await productModel.deleteProduct(product_id);
+    res.status(200).json({ message: 'delete seccesfully' })
+}
+
+export default { createProduct, getProductPage, updateProduct, searchProductbyname, deleteProduct }

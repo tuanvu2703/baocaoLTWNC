@@ -12,7 +12,7 @@ const createProduct = async (product_name, description, price, discount, stock, 
 }
 
 const getAllProduct = async () => {
-    const [data] = await connection.execute("SELECT p.product_name,p.price,p.description,p.discount,p.stock,p.image_url,p.status,c.category_name FROM products p, categories c WHERE p.category_id = c.id")
+    const [data] = await connection.execute("SELECT p.product_name,p.price,p.description,p.discount,p.stock,p.image_url,p.status,c.category_name FROM products p, categories c WHERE p.category_id = c.id ORDER BY p.product_id ASC")
     return data
 }
 
@@ -32,4 +32,8 @@ const searchProductbyname = async (product_name) => {
     return result
 }
 
-export default { createProduct, getAllProduct, updateProduct, searchProductbyname }
+const deleteProduct = async (product_id) => {
+    return await connection.execute("DELETE FROM products WHERE product_id = ?", [product_id])
+}
+
+export default { createProduct, getAllProduct, updateProduct, searchProductbyname, deleteProduct }
