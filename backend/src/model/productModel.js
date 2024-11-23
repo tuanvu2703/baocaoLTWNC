@@ -16,8 +16,20 @@ const getAllProduct = async () => {
     return data
 }
 
-const updateProduct = async () => {
-
+const updateProduct = async (product_name, description, price, discount, stock, image_url, category_id, product_id) => {
+    try {
+        const [result] = await connection.execute(`UPDATE products SET product_name = ?, description = ?, price = ?, discount = ?, stock = ?, image_url = ?, category_id = ? WHERE product_id = ?`, [product_name, description, price, discount, stock, image_url, category_id, product_id]);
+        return result
+    }
+    catch (error) {
+        console.log('lỗi gì đó không biết: ', error);
+        throw error;
+    }
 }
 
-export default { createProduct, getAllProduct }
+const searchProductbyname = async (product_name) => {
+    const [result] = await connection.execute(`SELECT * FROM products WHERE LOWER(product_name) LIKE LOWER(?)`, [`%${product_name}%`])
+    return result
+}
+
+export default { createProduct, getAllProduct, updateProduct, searchProductbyname }
