@@ -4,8 +4,8 @@ const createCategory = async (req, res) => {
     try {
         const { category_name, description } = req.body;
         await categoryModel.createCategory(category_name, description)
+        res.redirect("/category");
         res.status(200).json({ message: 'create seccesfully', data: req.body })
-        // res.redirect("/category");
     } catch (error) {
         console.error('Error creating category:', error);
         res.status(500).json({ message: 'Internal server error' });
@@ -36,6 +36,12 @@ const updateCategory = async (req, res) => {
     }
 }
 
+const deleteCategory = async (req, res) => {
+    const { id } = req.body;
+    const result = await categoryModel.deleteCategory(id);
+    res.status(200).json({ message: 'delete seccesfully' })
+}
+
 const searchCategorybyname = async (req, res) => {
     try {
         const { category_name } = req.body;
@@ -52,5 +58,6 @@ export default {
     createCategory,
     getCategoryPage,
     updateCategory,
-    searchCategorybyname
+    searchCategorybyname,
+    deleteCategory
 }
