@@ -36,8 +36,21 @@ const updateCategory = async (req, res) => {
     }
 }
 
+const searchCategorybyname = async (req, res) => {
+    try {
+        const { category_name } = req.body;
+        const result = await categoryModel.searchCategorybyname(category_name);
+        res.status(200).json({ message: 'search seccesfully', result })
+    }
+    catch (error) {
+        console.error('Error creating category:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 export default {
     createCategory,
     getCategoryPage,
-    updateCategory
+    updateCategory,
+    searchCategorybyname
 }

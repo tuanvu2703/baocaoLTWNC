@@ -19,8 +19,14 @@ const updateCategory = async (category_name, description, id) => {
     const [result] = await connection.execute(`UPDATE categories SET category_name = ?, description = ? WHERE id = ?`, [category_name, description, id]);
     return result
 }
+
+const searchCategorybyname = async (category_name) => {
+    const [result] = await connection.execute(`SELECT * FROM categories WHERE LOWER(category_name) LIKE LOWER(?)`, [`%${category_name}%`])
+    return result
+}
 export default {
     createCategory,
     getAllCategory,
-    updateCategory
+    updateCategory,
+    searchCategorybyname
 }
