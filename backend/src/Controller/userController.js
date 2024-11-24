@@ -1,7 +1,8 @@
 import * as userModel from '../model/userModel';
 import { generateToken, refreshAccessToken } from '../midderwere/createToken';
-
-
+import bcrypt from 'bcrypt';
+import { sendMail } from '../config/sendmail';
+import crypto from 'crypto';
 
 
 // ===================================================API================================================================
@@ -60,7 +61,77 @@ const uploadAvatar = async (req, res) => {
   }
 };
 
+const getUserbyid = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await userModel.findById(userId);
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log('idont know what error:', error);
+  }
+}
 
+const requestResetPassword = async (req, res) => {
+  const { email } = req.body;
+  const otpExpiration = parseInt(process.env.OTP_EXPIRATION)
+  const otp = Math.floor(100000 + Math.random() * 900000).toString(); 
+  const hashOtp = await crypto.createHash('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
+  const otpExpires = Date.now() + otpExpiration;
+  const html = `<h1>Reset your password</h1>
+    <p>This is the code to reset your password, please do not share it with anyone.</p>
+    <p>If you do not require this function, please quickly change the password for your account.</p>
+    <p>OTP: <strong>${otp}</strong></p>`;
+                
+  try {
+      await userModel.updateOTP(email, hashOtp, otpExpires);
+      await sendMail(email, html);
+      res.status(200).json({ message: 'OTP has been sent to your email.' });
+  } catch (error) {
+      console.error(`Error sending email to ${email}: ${error}`);
+      res.status(500).json({ message: 'Failed to send OTP email.' });
+  }
+};
+
+  const sendMailAPI = async (req, res) => {
+    const { email, html } = req.body;
+    await sendMail(email, html);
+    res.status(200).json({ message: 'Email sent successfully' });
+  }
+  const verifyOtpResetPassword = async (req, res) => {
+    try {
+      const { email, otp, password } = req.body;
+
+      const user = await userModel.findUserByIdentifier(email);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found.' });
+      }
+      
+      if (user.OTPEXPRIES < Date.now()) {
+
+        
+        return res.status(400).json({ message: 'OTP has expired.' });
+      }
+
+      const hashedOtp = crypto.createHash('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
+      if (hashedOtp !== user.OTP) {
+        console.log('database:',user.OTP, 'otp:', hashedOtp);
+        return res.status(400).json({ message: 'Invalid OTP.' });
+      }
+  
+      const result = await userModel.resetPassword(email, password);
+      if (result) {
+        return res.status(200).json({ message: 'Password reset successfully.' });
+      } else {
+        return res.status(500).json({ message: 'Failed to reset password.' });
+      }
+      
+    } catch (error) {
+      console.log('Error during OTP verification:', error);
+      return res.status(500).json({ message: 'An error occurred while processing your request.' });
+    }
+  };
+  
+  
 
 // =========================================EJS RENDER PAGE===================================================== 
 
@@ -166,6 +237,10 @@ export {
     login,
     updatePassword,
     uploadAvatar,
+    getUserbyid,
+    requestResetPassword,
+    sendMailAPI,
+    verifyOtpResetPassword,
 
     //ejs
     updateUser,

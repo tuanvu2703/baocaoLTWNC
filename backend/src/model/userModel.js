@@ -1,7 +1,7 @@
 
 import connection from "../DB/connectDB";
 import bcrypt from "bcrypt";
-import moment from "moment";
+import moment from "moment-timezone";
 //(id, username, password, fullname, gender, born, email, address, phone, avatar, role)
 
 
@@ -20,7 +20,6 @@ const register = async(username, password, fullname, gender, born, email, addres
         console.log('lỗi gì đó không biết: ', error);
         throw error;
     }
-
 }
 
 const findUserByIdentifier = async (identifier) => {
@@ -141,8 +140,37 @@ const findUserByIdentifier = async (identifier) => {
     }
   };
 
+  const updateOTP = async(email, otp, expries) => {
+    try {
+      const expiresDateTime = moment(expries).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss');
+      const [result] = await connection.execute(
+        'UPDATE users SET OTP = ?, OTPEXPRIES =? WHERE email = ?',
+        [ otp, expiresDateTime, email ]
+      );
+      return result;
+    } catch (error) {
+      console.log('Error:', error);
+      throw error;
+    }
+  }
+  const resetPassword = async (email,newPassword) => {
+    try {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const [result] = await connection.execute(
+        'UPDATE users SET password = ?, OTP = NULL, OTPEXPRIES = NULL  WHERE email = ?',
+        [hashedPassword, email]
+      );
+      return result;
+    } catch (error) {
+      console.log('Error:', error);
+      throw error
+      
+    }
+  };
+
 export {
   //user and admin
+
     register,
     findUserByIdentifier,
     findById,
@@ -151,7 +179,10 @@ export {
     updateUser,
     updatePassword,
     uploadAvatar,
+    updateOTP,
+    resetPassword,
   //only admin
+
     getListUser,
     activeUser,
 
