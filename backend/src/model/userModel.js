@@ -1,7 +1,7 @@
 
 import connection from "../DB/connectDB";
 import bcrypt from "bcrypt";
-import moment from "moment";
+import moment from "moment-timezone";
 //(id, username, password, fullname, gender, born, email, address, phone, avatar, role)
 
 
@@ -20,7 +20,6 @@ const register = async(username, password, fullname, gender, born, email, addres
         console.log('lỗi gì đó không biết: ', error);
         throw error;
     }
-
 }
 
 const findUserByIdentifier = async (identifier) => {
@@ -28,7 +27,7 @@ const findUserByIdentifier = async (identifier) => {
     'SELECT * FROM users WHERE email = ? OR username = ?',
     [identifier, identifier]
   );
-  return rows[0]; // Trả về người dùng đầu tiên tìm thấy
+  return rows[0]; 
 };
   
   const findById = async (userId) => {
@@ -37,7 +36,7 @@ const findUserByIdentifier = async (identifier) => {
       [userId]
       
     );
-    return rows[0]; // Trả về người dùng đầu tiên tìm thấy
+    return rows[0]; 
   };
   
   const updateRefreshToken = async (userId, refreshToken) => {
@@ -53,7 +52,7 @@ const findUserByIdentifier = async (identifier) => {
         'SELECT * FROM users WHERE email = ? OR username = ?',
         [identifier, identifier]
       );
-      console.log(rows[0]);
+      // console.log(rows[0]);
       return rows[0];
     } catch (error) {
       console.log('i do not know what error',error);
@@ -101,9 +100,77 @@ const findUserByIdentifier = async (identifier) => {
     }
   };
 
+  const getListUser = async() => {
+    try {
+      const [rows] =  await connection.execute(
+        'SELECT * FROM users'
+      )
+      return rows;
+    } catch (error) {
+      console.log('this bug userModel check its:',error);
+    }
+  }
+
+  const activeUser = async(id)=>{
+    try{
+
+      const user = await findById(id);
+      if(!user){
+        throw new Error('User not found');
+      }
+      const newIsActive = user.isActive === 1 ? 0 : 1;
+      await connection.execute(
+        'UPDATE users SET isActive = ? WHERE id = ?',
+        [newIsActive, id]
+      );
+    }catch (error){
+      console.log('Error:', error);
+    }
+  }
+  const uploadAvatar = async (userId, avatar) => {
+    try {
+      const [result] = await connection.execute(
+        'UPDATE users SET avatar = ? WHERE id = ?',
+        [avatar, userId]
+      );
+      return result;
+    } catch (error) {
+      console.log('Error:', error);
+      throw error;
+    }
+  };
+
+  const updateOTP = async(email, otp, expries) => {
+    try {
+      const expiresDateTime = moment(expries).tz('Asia/Ho_Chi_Minh').format('YYYY-MM-DD HH:mm:ss');
+      const [result] = await connection.execute(
+        'UPDATE users SET OTP = ?, OTPEXPRIES =? WHERE email = ?',
+        [ otp, expiresDateTime, email ]
+      );
+      return result;
+    } catch (error) {
+      console.log('Error:', error);
+      throw error;
+    }
+  }
+  const resetPassword = async (email,newPassword) => {
+    try {
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      const [result] = await connection.execute(
+        'UPDATE users SET password = ?, OTP = NULL, OTPEXPRIES = NULL  WHERE email = ?',
+        [hashedPassword, email]
+      );
+      return result;
+    } catch (error) {
+      console.log('Error:', error);
+      throw error
+      
+    }
+  };
+
 export {
   //user and admin
-  
+
     register,
     findUserByIdentifier,
     findById,
@@ -111,7 +178,13 @@ export {
     login,
     updateUser,
     updatePassword,
+    uploadAvatar,
+    updateOTP,
+    resetPassword,
   //only admin
+
+    getListUser,
+    activeUser,
 
 }
 

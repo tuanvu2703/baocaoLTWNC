@@ -1,7 +1,7 @@
 import express from "express";
 import initWebRoute from "./router/webRouter";
 import session from "express-session";
-import viewEngine from "./viewEngine";
+import viewEngine from "./views/viewEngine";
 import cors from "cors"
 import bodyParser from "body-parser";
 import path from 'path'
@@ -11,8 +11,14 @@ import cookieParser from 'cookie-parser'
 const app = express();
 
 // cors 
-app.use(cors());
 
+app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    credentials: true,
+  };
 //session
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -24,11 +30,23 @@ app.use(session({
 //cookie
 app.use(cookieParser());
 
+
 // gọi session vào các trang ejs
 app.use((req, res, next) => {
     res.locals.session = req.session;
     next();
 });
+
+//config path uploads img
+// Cấu hình đường dẫn tĩnh cho 'uploads'
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+//không có cái này không sài css trong file public được
+app.use(express.static('public'));
+
 
 //viewEngine
 viewEngine(app);
@@ -41,15 +59,14 @@ initWebRoute(app)
 app.use('/user', userRouter)
 
 
-
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt
-app.use(express.static(path.join(__dirname, 'src')))
-app.use(express.static('public'));
+// app.use(express.static(path.join(__dirname, 'src')))
+// app.use(express.static('public'));
 
 // port 3001
 const port = process.env.PORT;
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`NemoShop listening  ${port}`)
 })
