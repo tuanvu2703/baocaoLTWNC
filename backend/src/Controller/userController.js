@@ -39,7 +39,7 @@ const login = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const userId = req.user.id; 
+    const userId = req.user.id;
     const { fullname, gender, born, email, address, phone } = req.body;
     await userModel.updateUser(userId, fullname, gender, born, email, address, phone);
     res.status(200).json({ message: 'User updated successfully', data: req.body });
@@ -177,19 +177,21 @@ const loginejs = async (req, res) => {
     }
   };
 
-  const renderUpdateUserPage = async (req, res) => {
-    try {
-      const userId = req.user.id; // Lấy ID người dùng từ req.user
-      const user = await userModel.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      res.render('updateUser', { user });
-    } catch (error) {
-      console.log('Error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+
+
+const renderUpdateUserPage = async (req, res) => {
+  try {
+    const userId = req.user.id; // Lấy ID người dùng từ req.user
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  };
+    res.render('updateUser', { user });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
   const renderUserDetailsPage = async (req, res) => {
     try {
@@ -223,9 +225,11 @@ const loginejs = async (req, res) => {
     }
   };
 
-  const renderLoginPage = (req, res) => {
-    res.render('login');
-  };
+
+
+const renderLoginPage = (req, res) => {
+  res.render('login');
+};
 
 
 
@@ -242,12 +246,12 @@ export {
     sendMailAPI,
     verifyOtpResetPassword,
 
-    //ejs
-    updateUser,
-    renderUpdateUserPage,
-    renderUserDetailsPage,
-    renderListUsersPage,
-    renderLoginPage,
-    loginejs,
+  //ejs
+  updateUser,
+  renderUpdateUserPage,
+  renderUserDetailsPage,
+  renderListUsersPage,
+  renderLoginPage,
+  loginejs,
 
 }

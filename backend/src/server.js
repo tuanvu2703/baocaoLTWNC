@@ -48,12 +48,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 viewEngine(app);
 
 //body - parser
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // router 
 initWebRoute(app)
-app.use('/user',userRouter)
+app.use('/user', userRouter)
 
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
