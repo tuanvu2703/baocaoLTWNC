@@ -3,6 +3,7 @@ import getHomePage from '../Controller/HomeController'
 import { authorizeAdmin, authenticate } from '../midderwere/midderwere'
 import CategoriesController from '../Controller/CategoriesController'
 import ProductController from '../Controller/ProductController'
+import orderController from '../Controller/orderController'
 const router = express.Router()
 const initWebRoute = (app) => {
     router.get('/', getHomePage)
@@ -20,6 +21,11 @@ const initWebRoute = (app) => {
     router.post('/product/update/:product_id', authenticate, ProductController.updateProduct);
     router.get('/product/search/:product_name', ProductController.searchProductbyname);
     router.delete('/product/delete/:product_id', authenticate, ProductController.deleteProduct);
+
+    //order
+    router.get('/order', orderController.listOrder)
+
+
     return app.use('/', router)
 }
 export default initWebRoute

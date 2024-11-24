@@ -1,35 +1,43 @@
 <div class="w-44 h-full bg-violet-50 shadow-lg flex flex-col">
-    <div>
+    <div class="text-xl ">
         <div class="">
             <%- include('avatar') %>
         </div>
         <a href="/">
             <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-                Home
+                <div class="uppercase">
+                    Home
+                </div>
             </button>
         </a>
-        <a href="/users">
+        <a href="/order">
             <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-                List User
+                <div class="uppercase">
+                    Order
+                </div>
             </button>
         </a>
 
         <a href="/category">
-            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-                List Category
+            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200"> 
+                <div class="uppercase">
+                    Category
+                </div>
             </button>
         </a>
 
         <a href="/product">
             <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-                List Product
+                <div class="uppercase">
+                    Product
+                </div>
             </button>
         </a>
     </div>
     <div class="float-end h-full flex flex-col justify-between">
         <div></div> <!-- This empty div helps push the button down -->
-        <div>
-            <button class="w-full h-12 hover:bg-violet-200">
+        <div class="flex items-center justify-center mb-3">
+            <button class=" w-4/5 h-12 bg-red-100 hover:bg-red-400 uppercase text-xl rounded-2xl">
                 Logout
             </button>
         </div>
