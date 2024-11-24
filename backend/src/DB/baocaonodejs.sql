@@ -17,6 +17,12 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+
+
+
+
+
+
 --
 -- Cơ sở dữ liệu: `baocaonodejs`
 --
@@ -98,6 +104,8 @@ INSERT INTO `users` (`id`, `username`, `password`, `fullname`, `gender`, `born`,
 (2, 'nemoadmin', '$2b$10$TD3QSSHramw9E5x4zNmpmemQMTd3hrBwebN3PXtb4jrcOP1MHoxoi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2600@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '2024-11-21 08:41:36', '2024-11-21 08:41:36'),
 (3, 'nemouser1', '$2b$10$.GTr8G2nZXdonTtgmnQOleQ054v9UwrfN66nT9D2Cd2kNCm.HDLKi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2600@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '2024-11-21 08:41:36', '2024-11-21 08:41:36');
 
+
+
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -122,3 +130,25 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/* cấu trúc dữ liệu của orders*/
+
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `description` varchar(500) NOT NULL,
+  `dateCreate` date NOT NULL,
+  `timeCreate` time NOT NULL,
+  `payment` varchar(100) NOT NULL,
+  `idUserCreate` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+INSERT INTO `orders` (`id`, `status`, `description`, `dateCreate`, `timeCreate`, `payment`, `idUserCreate`) VALUES
+(18, 'pending', 'new desc', '2024-11-24', '00:32:03', 'backpayment', 123),
+(19, 'cancelled', 'khongmota', '2024-11-24', '00:32:57', 'thanhtoan', 123),
+(20, 'pending', 'new desc', '2024-11-24', '00:32:03', 'backpayment', 122),
+(21, 'cancelled', 'khongmota', '2024-11-24', '00:32:57', 'thanhtoan', 111);
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+COMMIT;
