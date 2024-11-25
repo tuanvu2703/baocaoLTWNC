@@ -1,106 +1,74 @@
 <header class="bg-primary py-4 px-6 flex items-center justify-between">
 	<h1 class="text-2xl font-bold">Category Management</h1>
-	<button id="addCategoryBtn"
+
+	<form action="/category/search" method="GET" class="flex items-center">
+		<input type="text" name="category_name" placeholder="Search categories"
+			class="px-4 py-2 rounded-md border-2 border-gray-300">
+		<button type="submit"
+			class="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-md ml-2">Search</button>
+	</form>
+
+	<a href="/category/create"
 		class="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-md bg-sky-300">Add
 		Category
-	</button>
+	</a>
+
 </header>
-
-<div class="bg-background text-primary-foreground flex flex-col">
-	<div class="flex-1 p-6">
-		<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-			<% for(let i=0; i < data.length; i++) {%>
-				<li class="bg-card rounded-lg overflow-hidden shadow-lg max-w-[350px]">
-					<img src="https://placehold.co/300?text=Category+Image" alt="Category Image"
-						class="w-full h-40 object-cover">
-					<div class="p-4">
-						<h2 class="text-lg font-semibold mb-2">
-							<%= data[i].category_name %>
-						</h2>
-						<h3 class="mb-2">"
-							<%= data[i].description %>
-								"
-						</h3>
-						<p class="text-sm text-muted-foreground">Total Products: <%= data[i].total_products %>
-						</p>
-						<div class="mt-4 flex justify-between">
-							<button class=" underline text-gray-900">View Products
-							</button>
-							<button class=" underline text-blue-600">Edit
-							</button>
-							<button onclick="confirmDelete('<%= data[i].id %>','<%= data[i].category_name %>')"
-								class=" underline text-red-600">Delete
-							</button>
-						</div>
-					</div>
-				</li>
-				<% } %>
-		</ul>
-	</div>
-</div>
-<!-- MODAL ADD -->
-<div id="modal" class="fixed inset-0 items-center justify-center bg-white hidden">
-	<div class="bg-card p-6 rounded-lg shadow-lg">
-		<h2 class="text-xl font-semibold mb-4">Add New Category</h2>
-		<form id="categoryForm" method="POST" action="category/create">
-			<label class="block mb-2">
-				<span class="text-muted-foreground">Category Name</span>
-				<input type="text" id="category_name" name="category_name"
-					class="mt-1 block w-full border border-border rounded-md p-2" required>
-			</label>
-			<label class="block mb-2">
-				<span class="text-muted-foreground">Description</span>
-				<input type="text" id="description" name="description"
-					class="mt-1 block w-full border border-border rounded-md p-2" required>
-			</label>
-			<div class="flex justify-end">
-				<button type="button" id="closeModal"
-					class="bg-red-600 text-white hover:bg-red-500 px-4 py-2 rounded-md mr-2 ">Cancel</button>
-				<button type="submit" class="bg-sky-600 text-white hover:bg-sky-500 px-4 py-2 rounded-md">
-					Add Category
-				</button>
+<% if (!data || data.length===0) { %>
+	<p class="mx-6">không có dữ liệu</p>
+	<% } else { %>
+		<div class="bg-background text-primary-foreground flex flex-col">
+			<div class="flex-1 p-6">
+				<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+					<% for(let i=0; i < data.length; i++) {%>
+						<li class="bg-card rounded-lg overflow-hidden shadow-lg max-w-[350px] border-2">
+							<div class="p-4">
+								<h2 class="text-lg font-semibold mb-2">
+									<%= data[i].category_name %>
+								</h2>
+								<h3 class="mb-2">"
+									<%= data[i].description %>
+										"
+								</h3>
+								<p class="text-sm text-muted-foreground">Total Products: <%= data[i].total_products %>
+								</p>
+								<div class="mt-4 flex justify-between justify-items-center">
+									<div>
+										<button class=" underline text-gray-900">View Products
+										</button>
+									</div>
+									<div>
+										<a href="category/update/<%= data[i].id %>"
+											class=" underline text-blue-600">Edit
+										</a>
+									</div>
+									<form id="delete-form-<%= data[i].id %>" action="/category/delete/<%= data[i].id %>"
+										method="post">
+										<button type="button" class="underline text-red-600"
+											onclick="confirmDelete('<%= data[i].id %>','<%= data[i].category_name %>')">Delete</button>
+									</form>
+								</div>
+							</div>
+						</li>
+						<% } %>
+				</ul>
 			</div>
-		</form>
-	</div>
-</div>
-<!-- SCRIPT OPEN MODAL ADD -->
-<script>
-	const addCategoryBtn = document.getElementById('addCategoryBtn');
-	const modal = document.getElementById('modal');
-	const closeModal = document.getElementById('closeModal');
-	const categoryForm = document.getElementById('categoryForm');
-	addCategoryBtn.addEventListener('click', () => {
-		modal.classList.remove('hidden');
-	});
-	closeModal.addEventListener('click', () => {
-		modal.classList.add('hidden');
-	});
-	categoryForm.addEventListener('submit', (e) => {
-		// Handle form submission logic here 
-		alert('Category added!'); // Placeholder for actual functionality
+		</div>
+		<% } %>
+			<!-- MODAL ADD -->
 
-	});
 
-	function confirmDelete(categoryId, categoryName) {
-		if (confirm(`Are you sure you want to delete this category ${categoryName} ?`)) {
-			fetch(`/category/delete/${categoryId}`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			})
-				.then(response => {
-					if (response.ok) {
-						alert('Category deleted successfully');
-						window.location.reload();
-					} else {
-						alert('Failed to delete category');
+			<!-- SCRIPT MODAL DELETE -->
+			<script>
+				function confirmDelete(categoryId, categoryName) {
+					if (confirm(`Are you sure you want to delete ${categoryName} category?`)) {
+						document.getElementById('delete-form-' + categoryId).submit();
 					}
-				})
-				.catch(error => {
-					console.error('Error:', error);
-					alert('An error occurred while deleting the category');
-				});
-		}
-	}
-</script>
+				}
+			</script>
+			<!-- ALERT MESSEGE SESSION -->
+			<% if (message) { %>
+				<script>
+					alert("<%= message %>");
+				</script>
+				<% } %>

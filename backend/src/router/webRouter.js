@@ -9,12 +9,18 @@ const initWebRoute = (app) => {
     router.get('/', getHomePage)
 
 
-    //category
+    //CATEGORY
     router.get('/category', CategoriesController.getCategoryPage);
+    //create
+    router.get('/category/create', CategoriesController.createCategory);
     router.post('/category/create', CategoriesController.createCategory);
-    router.get('/category/search/:category_name', CategoriesController.searchCategorybyname);
-    router.post('/category/update/:id', authenticate, CategoriesController.updateCategory);
-    router.delete('/category/delete/:id', CategoriesController.deleteCategory);
+    //delete
+    router.post('/category/delete/:id', CategoriesController.deleteCategory);
+    //update
+    router.get('/category/update/:id', CategoriesController.updateCategory);
+    router.post('/category/update/:id', CategoriesController.updateCategory);
+    //search
+    router.get('/category/search', CategoriesController.searchCategoryByName);
     //product
     router.get('/product', ProductController.getProductPage);
     router.post('/product/create', authenticate, ProductController.createProduct);

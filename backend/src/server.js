@@ -9,18 +9,19 @@ import dotenv from 'dotenv/config'
 import userRouter from './router/userRouter';
 import apiRouter from "./router/apiRouter";
 import cookieParser from 'cookie-parser'
+import initAPIRoute from "./router/apiRouter";
 // import methodOverride from 'method-override';
 const app = express();
 
 // cors 
 
 app.use(cors());
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-    credentials: true,
-  };
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+//     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+//     credentials: true,
+// };
 //session
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -28,7 +29,11 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
-
+app.use((req, res, next) => {
+    res.locals.message = req.session.message || null;
+    delete req.session.message; // Xóa message sau khi hiển thị
+    next();
+});
 //cookie
 app.use(cookieParser());
 
@@ -58,8 +63,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // router 
 initWebRoute(app)
+// initAPIRoute(app)
 app.use('/user', userRouter)
-app.use('/api', apiRouter)
+
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt
 // app.use(express.static(path.join(__dirname, 'src')))

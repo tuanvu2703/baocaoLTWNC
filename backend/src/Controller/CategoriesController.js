@@ -1,63 +1,82 @@
 import categoryModel from '../model/categoryModel';
 
 const createCategory = async (req, res) => {
-    try {
-        const { category_name, description } = req.body;
-        await categoryModel.createCategory(category_name, description)
+    if (req.method === "GET") {
+        res.render('index',
+            {
+                title: "Create Category",
+                page: "createCategory"
+            }
+        )
+    }
+    if (req.method === "POST") {
+        const { category_name, description } = req.body
+        const result = await categoryModel.createCategory(category_name, description)
+        //alert
+        req.session.message = "Category created successfully!";
         res.redirect("/category");
-        res.status(200).json({ message: 'create seccesfully', data: req.body })
-    } catch (error) {
-        console.error('Error creating category:', error);
-        res.status(500).json({ message: 'Internal server error' });
     }
 }
 const getCategoryPage = async (req, res) => {
     const listCategories = await categoryModel.getAllCategory();
-    return res.render("index",
+    res.render("index",
         {
             title: 'Danh mục',
             page: 'categories',
-            data: listCategories
+            data: listCategories,
+
         }
     )
 }
 
 const updateCategory = async (req, res) => {
-    try {
-        const { category_name, description, id } = req.body;
-        const result = await categoryModel.updateCategory(category_name, description, id);
-        res.status(200).json({ message: 'update seccesfully', data: req.body })
-        console.log(result);
-        // res.redirect("/category");
+    if (req.method === "GET") {
+        const id = req.params.id;
+        const oneIdCategory = await categoryModel.findCategoryByID(id);
+        res.render('index',
+            {
+                title: "Update Category",
+                page: "updateCategory",
+                data: oneIdCategory
+            }
+        )
     }
-    catch (error) {
-        console.error('Error creating category:', error);
-        res.status(500).json({ message: 'Internal server error' });
+    if (req.method === "POST") {
+        const id = req.params.id
+        const { category_name, description } = req.body
+        console.log(req.body)
+        const result = await categoryModel.updateCategory(category_name, description, id)
+        //alert
+        req.session.message = "Category updated successfully!";
+        res.redirect("/category");
     }
 }
 
 const deleteCategory = async (req, res) => {
-    const { id } = req.body;
-    const result = await categoryModel.deleteCategory(id);
-    res.status(200).json({ message: 'delete seccesfully' })
+    // if (req.method === "POST") {
+    const id = req.params.id;
+    await categoryModel.deleteCategory(id)
+        .then(() => { req.session.message = `Category deleted successfully!` })
+        .catch(() => { req.session.message = `This category cannot be deleted` }
+        )
+    res.redirect("/category");
+    // }
 }
 
-const searchCategorybyname = async (req, res) => {
-    try {
-        const { category_name } = req.body;
-        const result = await categoryModel.searchCategorybyname(category_name);
-        res.status(200).json({ message: 'search seccesfully', result })
-    }
-    catch (error) {
-        console.error('Error creating category:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
+const searchCategoryByName = async (req, res) => {
+    const { category_name } = req.query;
+    const result = await categoryModel.searchCategorybyname(category_name);
+    res.render("index", {
+        title: 'Search Results',
+        page: 'categories',
+        data: result,
+    });
+};
 
 export default {
     createCategory,
     getCategoryPage,
     updateCategory,
-    searchCategorybyname,
+    searchCategoryByName,
     deleteCategory
 }
