@@ -39,10 +39,10 @@ app.use(cookieParser());
 
 
 // gọi session vào các trang ejs
-app.use((req, res, next) => {
-    res.locals.session = req.session;
-    next();
-});
+// app.use((req, res, next) => {
+//     res.locals.user = req.user;
+//     next();
+// });
 
 //config path uploads img
 // Cấu hình đường dẫn tĩnh cho 'uploads'

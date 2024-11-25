@@ -1,23 +1,19 @@
 <div class="w-52 h-full bg-violet-50 shadow-lg flex flex-col">
-    <div class="text-xl ">
-        <div class="">
+    <div class="text-xl">
+        <div>
             <%- include('avatar') %>
         </div>
         <a href="/">
             <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-                <div class="uppercase">
-                    Home
-                </div>
-            </button>
-        </a>
-        <a href="/order">
-            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-                <div class="uppercase">
-                    Order
-                </div>
+                <div class="uppercase">Home</div>
             </button>
         </a>
 
+        <a href="/order">
+            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
+                <div class="uppercase">Order</div>
+            </button>
+        </a>
         <a href="/category">
             <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
                 <div class="uppercase">
@@ -25,23 +21,43 @@
                 </div>
             </button>
         </a>
-
         <a href="/product">
             <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
-                <div class="uppercase">
-                    Product
-                </div>
+                <div class="uppercase">Product</div>
             </button>
         </a>
-    </div>
-    <div class="float-end h-full flex flex-col justify-between">
-        <div></div> <!-- This empty div helps push the button down -->
-        <div class="flex items-center justify-center mb-3">
-            <button class=" w-4/5 h-12 bg-red-100 hover:bg-red-400 uppercase text-xl rounded-2xl">
-                Logout
+
+        <a href="/user">
+            <button class="w-full h-12 flex items-center pl-7 hover:bg-violet-200">
+                <div class="uppercase">user</div>
             </button>
-        </div>
+        </a>
+
 
     </div>
 
+    <!-- Kiểm tra trạng thái đăng nhập -->
+    <div class="float-end h-full flex flex-col justify-between">
+        <div></div> <!-- Đẩy nút Logout xuống dưới -->
+        <% if (user) { %>
+            <!-- Đã đăng nhập -->
+            <div class="flex items-center justify-center mb-3">
+                <span class="text-gray-600 text-xl uppercase mr-3"><%= user.username %></span>
+                <form action="/logout" method="POST">
+                    <button class="w-4/5 h-12 bg-red-100 hover:bg-red-400 uppercase text-xl rounded-2xl">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        <% } else { %>
+            <!-- Chưa đăng nhập -->
+            <div class="flex items-center justify-center mb-3">
+                <a href="/user/loginpage">
+                    <button class="w-4/5 h-12 bg-green-100 hover:bg-green-400 uppercase text-xl rounded-2xl">
+                        Login
+                    </button>
+                </a>
+            </div>
+        <% } %>
+    </div>
 </div>

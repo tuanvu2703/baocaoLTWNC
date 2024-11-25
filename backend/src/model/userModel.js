@@ -71,9 +71,12 @@ const findUserByIdentifier = async (identifier) => {
         throw new Error('User not found');
       }
   
-      // Chuyển đổi định dạng ngày từ dd-mm-yyyy sang yyyy-mm-dd để lưu trữ
-      const formattedBorn = moment(born, 'DD-MM-YYYY').format('YYYY-MM-DD');
+      // Chuyển đổi born từ 'DD-MM-YYYY' sang 'YYYY-MM-DD'
+      const formattedBorn = moment(born, 'DD/MM/YYYY', true).isValid()
+        ? moment(born, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        : born; // Giữ nguyên nếu không hợp lệ
   
+      // Thực hiện cập nhật
       const [result] = await connection.execute(
         'UPDATE users SET fullname = ?, gender = ?, born = ?, email = ?, address = ?, phone = ? WHERE id = ?',
         [fullname, gender, formattedBorn, email, address, phone, id]
@@ -81,11 +84,11 @@ const findUserByIdentifier = async (identifier) => {
   
       return result;
     } catch (error) {
-      console.log('Lỗi gì đó không biết: ', error);
+      console.error('Lỗi khi cập nhật user: ', error.message);
       throw error;
     }
   };
-
+  
   const updatePassword = async (userId, newPassword) => {
     try {
       const hashedPassword = await bcrypt.hash(newPassword, 10);

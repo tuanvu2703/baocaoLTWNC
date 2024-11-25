@@ -21,22 +21,15 @@ const login = async (req, res) => {
   try {
     const { identifier, password } = req.body;
     const user = await userModel.login(identifier, password);
-// <<<<<<< Phúc comment >>>>>>>>>>
-//     const tokens = await generateToken(user.id, res);
-
-//     // Đặt thông tin người dùng vào session
-//     req.session.username = user.username;
-//     req.session.user = user;
-
-//     console.log('user:', user);
-//     console.log('usersession:', req.session.user);
-//     console.log(user.username);
-//     console.log('Cookies:', req.cookies);
-//     console.log('Session:', req.session);
-// =======
-
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     if(user.isActive !== 1){
       return res.status(403).json({message: 'Your account is not active. Please contact support.'})
+    }
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+        return res.render('login', { error: 'Password is correct.' });
     }
     const tokens = await generateToken(user.id,res);
     // Đặt thông tin người dùng vào session
@@ -52,7 +45,7 @@ const login = async (req, res) => {
 };
 
 
-
+//update user current()
 const updateUser = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -155,33 +148,31 @@ const loginejs = async (req, res) => {
   try {
     const { identifier, password } = req.body;
     const user = await userModel.login(identifier, password);
-    //----- phúc comment------
-    // const tokens = await generateToken(user.id, res);
 
-    // // Đặt thông tin người dùng vào session
-    // req.session.username = user.username;
-    // req.session.user = user;
-    // console.log('user:', user);
-    // console.log('usersession:', req.session.user);
-    // console.log(user.username);
-    // console.log('Cookies:', req.cookies);
-    // console.log('Session:', req.session);
-
-    // Kiểm tra nếu tài khoản không hoạt động
+    // Kiểm tra tài khoản không kích hoạt
     if (user.isActive !== 1) {
-      return res.status(403).json({ message: 'Your account is not active. Please contact support.' });
+      return res.render('login', { error: 'Your account is not active. Please contact support.', username: identifier });
     }
+
+    // Kiểm tra mật khẩu
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.render('login', { error: 'Invalid password. Please try again.', username: identifier });
+    }
+
+    // Nếu mật khẩu đúng, tạo token và lưu thông tin người dùng vào session
     const tokens = await generateToken(user.id, res);
-    // Đặt thông tin người dùng vào session
     req.session.username = user.username;
     req.session.user = user;
+
     console.log(user.username);
-    res.redirect('/user/listusers');
+    res.redirect('/');  // Chuyển hướng sau khi đăng nhập thành công
   } catch (error) {
     console.log('Error:', error);
-    res.status(401).json({ message: 'Invalid email/username or password' });
+    res.status(500).json({ message: 'An error occurred during login' });
   }
 };
+
 
   const updatePassword = async (req, res) => {
     try{
@@ -218,12 +209,13 @@ const loginejs = async (req, res) => {
 
 const renderUpdateUserPage = async (req, res) => {
   try {
-    const userId = req.user.id; // Lấy ID người dùng từ req.user
-    const user = await userModel.findById(userId);
+    const id = req.params.id;
+    const { fullname, gender, born, email, address, phone } = req.body;
+    const user = await userModel.updateUser(id, fullname, gender, born, email, address, phone);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.render('updateUser', { user });
+    res.redirect(`/user/userdetails/${id}`);
   } catch (error) {
     console.log('Error:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -237,15 +229,12 @@ const renderUpdateUserPage = async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      // const formatDate = (date) => {
-      //   const d = new Date(date);
-      //   const day = (`0${d.getDate()}`).slice(-2);
-      //   const month = (`0${d.getMonth() + 1}`).slice(-2);
-      //   const year = d.getFullYear();
-      //   return `${day}/${month}/${year}`;
-      // };
-      // user.born = formatDate(user.born);
-      res.render('detailUser', { user });
+      res.render('index', 
+        { 
+          title: "Detail User",
+           page: "detailUser",
+           user
+        });
     } catch (error) {
       console.log('Error:', error);
       res.status(500).json({ message: 'Internal server error' });
@@ -255,17 +244,27 @@ const renderUpdateUserPage = async (req, res) => {
   const renderListUsersPage = async (req, res) => {
     try {
       const users = await userModel.getListUser();
-      res.render('listUser', { users });
+      // console.log('users:', users);
+      res.render('index', { 
+        title: "User",
+         page: "listUser",
+         users
+      });
     } catch (error) {
       console.log('Error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+      // res.status(500).json({ message: 'Internal server error' });
     }
   };
 
 
 
 const renderLoginPage = (req, res) => {
-  res.render('login');
+  try {
+    res.render('login');
+  } catch (error) {
+    console.log('error in rederlogin page controllerUSer:', error);
+  }
+
 };
 
 

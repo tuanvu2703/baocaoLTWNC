@@ -76,12 +76,12 @@ const authorizeAdmin = (req, res, next) => {
 const authenticateEJS = async (req, res, next) => {
   const token = req.cookies.token; 
   if (!token) {
-    return res.status(401).json({ message: "Không có token. Vui lòng đăng nhập." });
+    return res.redirect('/user/loginpage'); // Sửa thành res.redirect
   }
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await UserModel.findById(decoded.userId);
+    res.locals.user = req.user;
     console.log(req.user);
     if (!req.user) {
       return res.status(401).json({ message: "Không tìm thấy người dùng." });

@@ -29,7 +29,7 @@
     </div>
 
     <!-- User info form -->
-    <form action="/user/update-user" method="POST" class="space-y-4">
+    <form action="/user/updateuser/<%= user.id %>" method="POST" class="space-y-4">
       <!-- Full Name -->
       <div class="form-group">
         <strong>Full Name:</strong>
@@ -51,7 +51,7 @@
         <% } %>
       </div>
 
-      <!-- Date of Birth -->
+
       <div class="form-group">
         <strong>Date of Birth:</strong>
         <%
@@ -67,7 +67,6 @@
         <% } %>
       </div>
 
-      <!-- Email -->
       <div class="form-group">
         <strong>Email:</strong>
         <input type="email" id="email" name="email" value="<%= user.email || '' %>" class="form-control">
@@ -76,7 +75,6 @@
         <% } %>
       </div>
 
-      <!-- Address -->
       <div class="form-group">
         <strong>Address:</strong>
         <input type="text" id="address" name="address" value="<%= user.address || '' %>" class="form-control">

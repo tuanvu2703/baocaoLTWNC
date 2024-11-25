@@ -29,20 +29,14 @@
             <td><%= user.gender %></td>
             
             <td>
-              <!-- Thêm các nút chức năng -->
+              
               <a href="/user/userdetails/<%= user.id %>" class="btn btn-info btn-sm btn-custom">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                   <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/>
                   <path fill-rule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                 </svg>
               </a>
-            
-              <a href="/<%= user.id %>/updateUser" class="btn btn-warning btn-sm btn-custom">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                  <path d="M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z"/>
-                </svg>
-              </a>
-            
+          
               <form action="/<%= user.id %>/delete" method="POST" style="display:inline;">
                 <button type="submit" class="btn btn-danger btn-sm btn-custom">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
