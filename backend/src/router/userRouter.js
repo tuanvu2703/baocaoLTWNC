@@ -13,13 +13,12 @@ import {
     getUserbyid,
     requestResetPassword,
     sendMailAPI,
-    verifyOtpResetPassword
-
+    verifyOtpResetPassword,
 
 } from '../Controller/userController';
 import { refreshAccessToken } from '../midderwere/createToken';
 import { authenticate, authenticateEJS, authorizeAdmin } from '../midderwere/midderwere';
-import upload from '../config/uploadsConfig';
+import { uploadAvatarImg } from '../config/uploadsConfig';
 import { validate, validateRegister } from '../dto/register.dto';
 
 
@@ -33,7 +32,7 @@ router.post('/login',login);
 router.put('/updateuser', authenticate, updateUser);
 router.post('/updatepassword', authenticate, updatePassword);
 router.post('/refreshToken',refreshAccessToken);
-router.post('/uploadavatar', authenticate, upload.single('avatar'), uploadAvatar);
+router.post('/uploadavatar', authenticate, uploadAvatarImg.single('avatar'), uploadAvatar);
 router.get('/getUserbyId', authenticate, getUserbyid);
 router.post('/sendmail', sendMailAPI);
 router.post('/requestOTP', requestResetPassword);
