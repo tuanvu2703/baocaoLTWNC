@@ -157,7 +157,6 @@ const loginejs = async (req, res) => {
     // Kiểm tra mật khẩu
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      // Giữ lại username và xóa mật khẩu
       return res.render('login', { error: 'Invalid password. Please try again.', username: identifier });
     }
 
@@ -173,8 +172,6 @@ const loginejs = async (req, res) => {
     res.status(500).json({ message: 'An error occurred during login' });
   }
 };
-
-
 
 
   const updatePassword = async (req, res) => {
@@ -213,16 +210,12 @@ const loginejs = async (req, res) => {
 const renderUpdateUserPage = async (req, res) => {
   try {
     const id = req.params.id;
+    const { fullname, gender, born, email, address, phone } = req.body;
     const user = await userModel.updateUser(id, fullname, gender, born, email, address, phone);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.render('index', 
-      { 
-        title: "Detail User",
-         page: "detailUser",
-         user
-      });
+    res.redirect(`/user/userdetails/${id}`);
   } catch (error) {
     console.log('Error:', error);
     res.status(500).json({ message: 'Internal server error' });

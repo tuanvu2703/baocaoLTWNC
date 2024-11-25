@@ -37,10 +37,10 @@
     <!-- Kiểm tra trạng thái đăng nhập -->
     <div class="float-end h-full flex flex-col justify-between">
         <div></div> <!-- Đẩy nút Logout xuống dưới -->
-        <% if (session && session.username) { %>
+        <% if (user) { %>
             <!-- Đã đăng nhập -->
             <div class="flex items-center justify-center mb-3">
-                <span class="text-gray-600 text-xl uppercase mr-3"><%= session.username %></span>
+                <span class="text-gray-600 text-xl uppercase mr-3"><%= user.username %></span>
                 <form action="/logout" method="POST">
                     <button class="w-4/5 h-12 bg-red-100 hover:bg-red-400 uppercase text-xl rounded-2xl">
                         Logout
@@ -50,7 +50,7 @@
         <% } else { %>
             <!-- Chưa đăng nhập -->
             <div class="flex items-center justify-center mb-3">
-                <a href="login">
+                <a href="/user/loginpage">
                     <button class="w-4/5 h-12 bg-green-100 hover:bg-green-400 uppercase text-xl rounded-2xl">
                         Login
                     </button>

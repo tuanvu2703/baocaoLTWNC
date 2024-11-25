@@ -63,24 +63,32 @@ const findUserByIdentifier = async (identifier) => {
     try {
       // Kiểm tra xem người dùng có tồn tại không
       const [user] = await connection.execute(
-        'SELECT * FROM users WHERE id = ?', 
+        'SELECT * FROM users WHERE id = ?',
         [id]
       );
+  
       if (user.length === 0) {
         throw new Error('User not found');
       }
-      const formattedBorn = moment(born, 'DD-MM-YYYY').format('YYYY-MM-DD');
+  
+      // Chuyển đổi born từ 'DD-MM-YYYY' sang 'YYYY-MM-DD'
+      const formattedBorn = moment(born, 'DD/MM/YYYY', true).isValid()
+        ? moment(born, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        : born; // Giữ nguyên nếu không hợp lệ
+  
+      // Thực hiện cập nhật
       const [result] = await connection.execute(
         'UPDATE users SET fullname = ?, gender = ?, born = ?, email = ?, address = ?, phone = ? WHERE id = ?',
         [fullname, gender, formattedBorn, email, address, phone, id]
       );
+  
       return result;
     } catch (error) {
-      console.log('Lỗi gì đó không biết: ', error);
+      console.error('Lỗi khi cập nhật user: ', error.message);
       throw error;
     }
   };
-
+  
   const updatePassword = async (userId, newPassword) => {
     try {
       const hashedPassword = await bcrypt.hash(newPassword, 10);

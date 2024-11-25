@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 22, 2024 lúc 09:09 AM
+-- Thời gian đã tạo: Th10 25, 2024 lúc 01:28 PM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 8.0.25
 
@@ -16,12 +16,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
-
-
-
-
-
 
 --
 -- Cơ sở dữ liệu: `baocaonodejs`
@@ -91,6 +85,8 @@ CREATE TABLE `users` (
   `role` int(1) NOT NULL DEFAULT 1,
   `isActive` tinyint(1) NOT NULL DEFAULT 1,
   `refreshToken` varchar(300) DEFAULT NULL,
+  `OTP` varchar(500) DEFAULT NULL,
+  `OTPEXPRIES` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `Create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `Update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -99,12 +95,10 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `fullname`, `gender`, `born`, `email`, `address`, `phone`, `avatar`, `role`, `isActive`, `refreshToken`, `Create_at`, `Update_at`) VALUES
-(1, 'uchihanemo', '$2b$10$o3FAYj/2Butm5Ce74e59XeD13d/tXK3Myt.zCZ9qYpAzLjKh724Gi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2200@gmail.com', '242 tây xuyên ang giangz', '', 'uploads/avatar/1732258963266-herta.jpg', 0, 1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMjI0OTY3MCwiZXhwIjoxNzYzODA3MjcwfQ.rw8rHSr2enP6ZY82m16m6UL1Hh7rSAExpdZlT5TUt-g', '2024-11-21 08:41:36', '2024-11-22 07:02:43'),
-(2, 'nemoadmin', '$2b$10$TD3QSSHramw9E5x4zNmpmemQMTd3hrBwebN3PXtb4jrcOP1MHoxoi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2600@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '2024-11-21 08:41:36', '2024-11-21 08:41:36'),
-(3, 'nemouser1', '$2b$10$.GTr8G2nZXdonTtgmnQOleQ054v9UwrfN66nT9D2Cd2kNCm.HDLKi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2600@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '2024-11-21 08:41:36', '2024-11-21 08:41:36');
-
-
+INSERT INTO `users` (`id`, `username`, `password`, `fullname`, `gender`, `born`, `email`, `address`, `phone`, `avatar`, `role`, `isActive`, `refreshToken`, `OTP`, `OTPEXPRIES`, `Create_at`, `Update_at`) VALUES
+(1, 'uchihanemo', '$2b$10$Dl32ilymiS2d4Vgz2PkBeeSwJ6JKXnfJ5hvsvaMGcVlWvyUzZd7lK', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2200@gmail.com', 'an giang', '0836887911', 'uploads/avatar/1732258963266-herta.jpg', 0, 1, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMjUyNjg5NywiZXhwIjoxNzY0MDg0NDk3fQ.fwB4P10mqUgGv25jNIKkFSRJa493Y4lbromqInsGVw0', NULL, '2024-11-25 12:20:31', '2024-11-21 08:41:36', '2024-11-25 12:20:31'),
+(2, 'nemoadmin', '$2b$10$TD3QSSHramw9E5x4zNmpmemQMTd3hrBwebN3PXtb4jrcOP1MHoxoi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2600@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '680407', '2024-11-23 23:13:39', '2024-11-21 08:41:36', '2024-11-24 06:11:39'),
+(3, 'nemouser1', '$2b$10$.GTr8G2nZXdonTtgmnQOleQ054v9UwrfN66nT9D2Cd2kNCm.HDLKi', 'Nemo hô hô', 'male', '2003-06-16', 'tienyeuai2500@gmail.com', '242 tây xuyên ang giangz', '', '', 1, 1, NULL, '530405', '0000-00-00 00:00:00', '2024-11-21 08:41:36', '2024-11-24 05:54:10');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -130,25 +124,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/* cấu trúc dữ liệu của orders*/
-
-
-CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
-  `status` varchar(50) NOT NULL,
-  `description` varchar(500) NOT NULL,
-  `dateCreate` date NOT NULL,
-  `timeCreate` time NOT NULL,
-  `payment` varchar(100) NOT NULL,
-  `idUserCreate` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-INSERT INTO `orders` (`id`, `status`, `description`, `dateCreate`, `timeCreate`, `payment`, `idUserCreate`) VALUES
-(18, 'pending', 'new desc', '2024-11-24', '00:32:03', 'backpayment', 123),
-(19, 'cancelled', 'khongmota', '2024-11-24', '00:32:57', 'thanhtoan', 123),
-(20, 'pending', 'new desc', '2024-11-24', '00:32:03', 'backpayment', 122),
-(21, 'cancelled', 'khongmota', '2024-11-24', '00:32:57', 'thanhtoan', 111);
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
-ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-COMMIT;

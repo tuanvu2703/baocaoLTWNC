@@ -78,10 +78,10 @@ const authenticateEJS = async (req, res, next) => {
   if (!token) {
     return res.redirect('/user/loginpage'); // Sửa thành res.redirect
   }
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await UserModel.findById(decoded.userId);
+    res.locals.user = req.user;
     console.log(req.user);
     if (!req.user) {
       return res.status(401).json({ message: "Không tìm thấy người dùng." });
