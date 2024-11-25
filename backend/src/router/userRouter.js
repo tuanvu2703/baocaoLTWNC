@@ -22,8 +22,6 @@ import { uploadAvatarImg } from '../config/uploadsConfig';
 import { validate, validateRegister } from '../dto/register.dto';
 
 
-
-
 const router = express.Router();
 
 //Router API
@@ -38,21 +36,12 @@ router.post('/sendmail', sendMailAPI);
 router.post('/requestOTP', requestResetPassword);
 router.post('/verifyOTPResetPassword', verifyOtpResetPassword);
 
-
 //Router EJS(render EJS)
 router.post('/loginejs',loginejs);
 router.get('/loginpage', renderLoginPage );
-router.get('/updateuser', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
+router.post('/updateuser/:id', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
 router.get('/userdetails/:id', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
-router.get('/listusers', authenticateEJS, authorizeAdmin, renderListUsersPage);
-
-
-//Router EJS(render EJS)
-router.get('/loginpage', renderLoginPage );
-router.get('/updateuser', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
-router.get('/userdetails', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
-router.get('/listusers', authenticateEJS, authorizeAdmin, renderListUsersPage);
-
+router.get('/', authenticateEJS, authorizeAdmin, renderListUsersPage);
 
 
 export default router;

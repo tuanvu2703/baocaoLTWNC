@@ -63,22 +63,17 @@ const findUserByIdentifier = async (identifier) => {
     try {
       // Kiểm tra xem người dùng có tồn tại không
       const [user] = await connection.execute(
-        'SELECT * FROM users WHERE id = ?',
+        'SELECT * FROM users WHERE id = ?', 
         [id]
       );
-  
       if (user.length === 0) {
         throw new Error('User not found');
       }
-  
-      // Chuyển đổi định dạng ngày từ dd-mm-yyyy sang yyyy-mm-dd để lưu trữ
       const formattedBorn = moment(born, 'DD-MM-YYYY').format('YYYY-MM-DD');
-  
       const [result] = await connection.execute(
         'UPDATE users SET fullname = ?, gender = ?, born = ?, email = ?, address = ?, phone = ? WHERE id = ?',
         [fullname, gender, formattedBorn, email, address, phone, id]
       );
-  
       return result;
     } catch (error) {
       console.log('Lỗi gì đó không biết: ', error);

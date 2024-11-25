@@ -76,7 +76,7 @@ const authorizeAdmin = (req, res, next) => {
 const authenticateEJS = async (req, res, next) => {
   const token = req.cookies.token; 
   if (!token) {
-    return res.status(401).json({ message: "Không có token. Vui lòng đăng nhập." });
+    return res.redirect('/user/loginpage'); // Sửa thành res.redirect
   }
 
   try {
