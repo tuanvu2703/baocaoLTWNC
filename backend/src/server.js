@@ -7,7 +7,9 @@ import bodyParser from "body-parser";
 import path from 'path'
 import dotenv from 'dotenv/config'
 import userRouter from './router/userRouter';
+import apiRouter from "./router/apiRouter";
 import cookieParser from 'cookie-parser'
+// import methodOverride from 'method-override';
 const app = express();
 
 // cors 
@@ -30,6 +32,7 @@ app.use(session({
 //cookie
 app.use(cookieParser());
 
+
 // gọi session vào các trang ejs
 app.use((req, res, next) => {
     res.locals.session = req.session;
@@ -43,6 +46,9 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+//không có cái này không sài css trong file public được
+app.use(express.static('public'));
+
 
 //viewEngine
 viewEngine(app);
@@ -53,8 +59,7 @@ app.use(bodyParser.json());
 // router 
 initWebRoute(app)
 app.use('/user', userRouter)
-
-
+app.use('/api', apiRouter)
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt
 // app.use(express.static(path.join(__dirname, 'src')))

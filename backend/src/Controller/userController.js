@@ -16,10 +16,24 @@ const register = async(req,res) => {
     }
 }
 
+
 const login = async (req, res) => {
   try {
     const { identifier, password } = req.body;
     const user = await userModel.login(identifier, password);
+// <<<<<<< Phúc comment >>>>>>>>>>
+//     const tokens = await generateToken(user.id, res);
+
+//     // Đặt thông tin người dùng vào session
+//     req.session.username = user.username;
+//     req.session.user = user;
+
+//     console.log('user:', user);
+//     console.log('usersession:', req.session.user);
+//     console.log(user.username);
+//     console.log('Cookies:', req.cookies);
+//     console.log('Session:', req.session);
+// =======
 
     if(user.isActive !== 1){
       return res.status(403).json({message: 'Your account is not active. Please contact support.'})
@@ -36,6 +50,8 @@ const login = async (req, res) => {
     res.status(401).json({ message: 'Invalid email/username or password' });
   }
 };
+
+
 
 const updateUser = async (req, res) => {
   try {
@@ -139,6 +155,17 @@ const loginejs = async (req, res) => {
   try {
     const { identifier, password } = req.body;
     const user = await userModel.login(identifier, password);
+    //----- phúc comment------
+    // const tokens = await generateToken(user.id, res);
+
+    // // Đặt thông tin người dùng vào session
+    // req.session.username = user.username;
+    // req.session.user = user;
+    // console.log('user:', user);
+    // console.log('usersession:', req.session.user);
+    // console.log(user.username);
+    // console.log('Cookies:', req.cookies);
+    // console.log('Session:', req.session);
 
     // Kiểm tra nếu tài khoản không hoạt động
     if (user.isActive !== 1) {
@@ -157,6 +184,7 @@ const loginejs = async (req, res) => {
 };
 
   const updatePassword = async (req, res) => {
+    try{
     try {
       const userId = req.user.id; 
       const { oldPassword, newPassword } = req.body;
@@ -175,8 +203,17 @@ const loginejs = async (req, res) => {
       console.log('Error:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  };
-
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Old password is incorrect' });
+    }
+    await userModel.updatePassword(userId, newPassword);
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 
 const renderUpdateUserPage = async (req, res) => {
@@ -230,7 +267,6 @@ const renderUpdateUserPage = async (req, res) => {
 const renderLoginPage = (req, res) => {
   res.render('login');
 };
-
 
 
 export {

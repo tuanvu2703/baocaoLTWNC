@@ -1,0 +1,32 @@
+<div class="container mx-auto">
+    <h1 class="text-5xl font-bold mb-4 w-full text-center mt-2">Order Details - <%= order.id %>
+    </h1>
+    <div class="mb-4">
+        <a href="/order">
+            <button
+                class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                Back
+            </button>
+        </a>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold">Order Information</h2>
+        <p><strong>Status:</strong>
+            <%= order.status %>
+        </p>
+        <p><strong>Description:</strong>
+            <%= order.description %>
+        </p>
+        <p><strong>Payment:</strong>
+            <%= order.payment %>
+        </p>
+        <p><strong>Date Created:</strong>
+            <%= order.dateCreate %>
+        </p>
+        <p><strong>Time Created:</strong>
+            <%= order.timeCreate %>
+        </p>
+      
+    </div>
+
+</div>

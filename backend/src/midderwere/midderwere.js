@@ -28,6 +28,39 @@ const authenticate = async (req, res, next) => {
   }
 };
 
+// gộp nhánh bị dư ra
+// const authorizeAdmin = (req, res, next) => {
+//   if (req.user && req.user.role === 0) {
+//     next();
+//   } else {
+//     res.status(403).json({ message: "You do not have permission to use this function." });
+//   }
+// };
+
+
+
+// gộp nhánh bị dư ra
+//use with ejs (cookie: token, session)
+// const authenticateEJS = async (req, res, next) => {
+//   const token = req.cookies.jwt; 
+//   if (!token) {
+//     return res.status(401).json({ message: "Không có token. Vui lòng đăng nhập." });
+//   }
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = await UserModel.findById(decoded.userId);
+//     console.log('req user', req.user);
+//     if (!req.user) {
+//       return res.status(401).json({ message: "User not found." });
+//     }
+//     next();
+//   } catch (error) {
+//     console.error("Lỗi xác thực token:", error.message);
+//     return res.status(401).json({ message: "Token incorrect or expired." });
+//   }
+// };
+
 
 const authorizeAdmin = (req, res, next) => {
   if (req.user && req.user.role === 0) {

@@ -47,6 +47,12 @@ router.get('/userdetails/:id', authenticateEJS, authorizeAdmin, renderUserDetail
 router.get('/listusers', authenticateEJS, authorizeAdmin, renderListUsersPage);
 
 
+//Router EJS(render EJS)
+router.get('/loginpage', renderLoginPage );
+router.get('/updateuser', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
+router.get('/userdetails', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
+router.get('/listusers', authenticateEJS, authorizeAdmin, renderListUsersPage);
+
 
 
 export default router;

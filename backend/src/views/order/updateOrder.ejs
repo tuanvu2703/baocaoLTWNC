@@ -1,0 +1,84 @@
+<div class="container mx-auto">
+    <h1 class="text-5xl font-bold mb-4 w-full text-center mt-2">Edit Order - <%= order.id %>
+    </h1>
+    <!-- Button to go back to the order list -->
+    <div class="mb-4">
+        <a href="/order">
+            <button
+                class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                Back
+            </button>
+        </a>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <form action="/order/editOrder/<%= order.id %>" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            <h2 class="text-xl font-semibold">Order Information</h2>
+            <div class="space-y-4">
+                <div>
+                    <label for="id" class="block text-gray-700 font-semibold">Order ID</label>
+                    <input type="text" id="id" name="id" value="<%= order.id %>"
+                        class="w-full p-2 border border-gray-200 rounded-md" readonly />
+                </div>
+                <div>
+                    <label for="status" class="block text-gray-700 font-semibold">Status</label>
+                    <select id="status" name="status" class="w-full p-2 border border-gray-500 rounded-md">
+                        <option value="pending" <%=order.status==='pending' ? 'selected' : '' %>>Pending</option>
+                        <option value="completed" <%=order.status==='completed' ? 'selected' : '' %>>Completed</option>
+                        <option value="cancelled" <%=order.status==='cancelled' ? 'selected' : '' %>>Cancelled</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="description" class="block text-gray-700 font-semibold">Description</label>
+                    <textarea id="description" name="description" rows="4"
+                        class="w-full p-2 border border-gray-500 rounded-md"><%= order.description %></textarea>
+                </div>
+                <div>
+                    <label for="payment" class="block text-gray-700 font-semibold">Payment</label>
+                    <input type="text" id="payment" name="payment" value="<%= order.payment %>"
+                        class="w-full p-2 border border-gray-500 rounded-md" />
+                </div>
+                <div>
+                    <label for="dateCreate" class="block text-gray-700 font-semibold">Date Created</label>
+                    <input type="text" id="dateCreate" name="dateCreate" value="<%= order.dateCreate %>"
+                        class="w-full p-2 border border-gray-200 rounded-md" readonly />
+                </div>
+                <div>
+                    <label for="timeCreate" class="block text-gray-700 font-semibold">Time Created</label>
+                    <input type="text" id="timeCreate" name="timeCreate" value="<%= order.timeCreate %>"
+                        class="w-full p-2 border border-gray-200 rounded-md" readonly />
+                </div>
+            </div>
+            <div class="mt-4 ư-full flex justify-center">
+                <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600">
+                    Update Order
+                </button>
+            </div>
+        </form>
+        <div class="mt-4 w-full flex justify-end">
+            <button id="deleteOrderButton" data-order-id="<%= order.id %>"
+                class="bg-red-500 text-white font-semibold py-2 px-4 rounded hover:bg-red-600">
+                Delete Order
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('deleteOrderButton').addEventListener('click',
+            async function () {
+                const orderId = this.getAttribute('data-order-id');
+                if (confirm("Are you sure you want to delete this order    ?")) {
+                    const response = await fetch(`http://localhost:3001/order/${orderId}`, {
+                        method: 'DELETE',
+                    });
+                    if (response.ok) {
+                        alert('Order deleted successfully');
+                        window.location.href = '/order';
+                    } else {
+                        alert('Failed to delete order');
+                    }
+                }
+            });
+    </script>
+
+</div>
