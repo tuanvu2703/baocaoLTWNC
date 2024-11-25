@@ -50,7 +50,17 @@ const UserOrderById = async (req, res) => {
     } else if (req.method === "POST") {
         //commingsoom
     } else if (req.method === "PUT") {
-        //commingsoom
+        try {
+            const order = await orderModel.getOrderByIdAndIdUser(userId, orderId);
+            const data = await orderModel.updateOrder(order)
+            if (!data || data.length === 0) {
+                return res.status(404).json({ success: false, message: "Không có đơn hàng nào cho người dùng này." });
+            }
+            return res.status(200).json({ success: true, data: data });
+        } catch (error) {
+            console.error("Lỗi khi lấy đơn hàng của người dùng:", error.message);
+            return res.status(500).json({ success: false, message: "Lỗi khi lấy đơn hàng." });
+        }
     } else if (req.method === "DELETE") {
         //commingsoom
     } else {
