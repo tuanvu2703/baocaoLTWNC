@@ -14,6 +14,7 @@ import {
     requestResetPassword,
     sendMailAPI,
     verifyOtpResetPassword,
+    currentUser,
 
 } from '../Controller/userController';
 import { refreshAccessToken } from '../midderwere/createToken';
@@ -25,13 +26,19 @@ import { validate, validateRegister } from '../dto/register.dto';
 const router = express.Router();
 
 //Router API
+//authentication and authorization
 router.post('/register',validateRegister, validate, register);
 router.post('/login',login);
+router.get('/currentuser', authenticate, currentUser);
+
+//for user
 router.put('/updateuser', authenticate, updateUser);
 router.post('/updatepassword', authenticate, updatePassword);
 router.post('/refreshToken',refreshAccessToken);
 router.post('/uploadavatar', authenticate, uploadAvatarImg.single('avatar'), uploadAvatar);
 router.get('/getUserbyId', authenticate, getUserbyid);
+
+//do not check authenticate
 router.post('/sendmail', sendMailAPI);
 router.post('/requestOTP', requestResetPassword);
 router.post('/verifyOTPResetPassword', verifyOtpResetPassword);

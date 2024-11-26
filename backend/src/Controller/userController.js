@@ -5,45 +5,82 @@ import { sendMail } from '../config/sendmail';
 import crypto from 'crypto';
 
 
-// ===================================================API================================================================
-const register = async(req,res) => {
-    try {
-        const {username, password, fullname, gender, born, email, address} = req.body;
-        await userModel.register(username, password, fullname, gender, born, email, address)
-        res.status(200).json({message: 'register seccesfully', data: req.body})
-    } catch (error) {
-        console.log('lỗi gì đó không biếc:', error);
-    }
-}
+// ===================================================API=====================================================================
+const register = async (req, res) => {
+  try {
+      const { username, password, fullname, gender, born, email, address } = req.body;
+
+      if (!username && !email) {
+          return res.status(400).json({ message: 'You must provide either a username or an email.' });
+      }
+      if (username) {
+          const isUsernameExists = await userModel.checkUsernameExists(username);
+          if (isUsernameExists) {
+              return res.status(400).json({ message: 'Username already exists.' });
+          }
+      }
+      if (email) {
+          const isEmailExists = await userModel.checkEmailExists(email);
+          if (isEmailExists) {
+              return res.status(400).json({ message: 'Email already exists.' });
+          }
+      }
+
+      await userModel.register(username || null, password, fullname, gender, born, email || null, address);
+      res.status(201).json({ message: 'Register successfully' });
+  } catch (error) {
+      console.error('Error occurred in register controller:', error);
+
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 
 
 const login = async (req, res) => {
   try {
     const { identifier, password } = req.body;
     const user = await userModel.login(identifier, password);
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+
     if(user.isActive !== 1){
       return res.status(403).json({message: 'Your account is not active. Please contact support.'})
     }
+
     const isPasswordMatch = await bcrypt.compare(password, user.password);
+
     if (!isPasswordMatch) {
         return res.render('login', { error: 'Password is correct.' });
     }
     const tokens = await generateToken(user.id,res);
-    // Đặt thông tin người dùng vào session
+
     req.session.username = user.username;
     req.session.user = user;
+
     console.log(user.username);
 
     res.status(200).json({ message: 'Login successful', ...tokens });
+
   } catch (error) {
     console.log('Error:', error);
     res.status(401).json({ message: 'Invalid email/username or password' });
   }
 };
 
+
+const currentUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await userModel.findById(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
 
 //update user current()
 const updateUser = async (req, res) => {
@@ -82,10 +119,15 @@ const getUserbyid = async (req, res) => {
 
 const requestResetPassword = async (req, res) => {
   const { email } = req.body;
+  
   const otpExpiration = parseInt(process.env.OTP_EXPIRATION)
+
   const otp = Math.floor(100000 + Math.random() * 900000).toString(); 
+
   const hashOtp = await crypto.createHash('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
+
   const otpExpires = Date.now() + otpExpiration;
+
   const html = `<h1>Reset your password</h1>
     <p>This is the code to reset your password, please do not share it with anyone.</p>
     <p>If you do not require this function, please quickly change the password for your account.</p>
@@ -106,6 +148,7 @@ const requestResetPassword = async (req, res) => {
     await sendMail(email, html);
     res.status(200).json({ message: 'Email sent successfully' });
   }
+
   const verifyOtpResetPassword = async (req, res) => {
     try {
       const { email, otp, password } = req.body;
@@ -142,7 +185,7 @@ const requestResetPassword = async (req, res) => {
   
   
 
-// =========================================EJS RENDER PAGE===================================================== 
+// =========================================EJS RENDER PAGE===================================================================
 
 const loginejs = async (req, res) => {
   try {
@@ -268,6 +311,8 @@ const renderLoginPage = (req, res) => {
 };
 
 
+
+
 export {
 
   //api
@@ -280,6 +325,7 @@ export {
     requestResetPassword,
     sendMailAPI,
     verifyOtpResetPassword,
+    currentUser,
 
   //ejs
   updateUser,

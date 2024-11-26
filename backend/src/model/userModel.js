@@ -5,6 +5,24 @@ import moment from "moment-timezone";
 //(id, username, password, fullname, gender, born, email, address, phone, avatar, role)
 
 
+
+const checkUsernameExists = async (username) => {
+  const [result] = await connection.execute(
+      'SELECT * FROM `users` WHERE `username` = ?',
+      [username]
+  );
+  return result.length > 0; // Trả về true nếu tồn tại
+};
+
+const checkEmailExists = async (email) => {
+  const [result] = await connection.execute(
+      'SELECT * FROM `users` WHERE `email` = ?',
+      [email]
+  );
+  return result.length > 0; // Trả về true nếu tồn tại
+};
+
+
 const register = async(username, password, fullname, gender, born, email, address) => {
     try {
         const [userExit] = await connection.execute(
@@ -184,6 +202,8 @@ export {
     uploadAvatar,
     updateOTP,
     resetPassword,
+    checkUsernameExists,
+    checkEmailExists,
   //only admin
 
     getListUser,
