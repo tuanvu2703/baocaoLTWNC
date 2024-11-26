@@ -6,8 +6,8 @@ import ProductController from '../Controller/ProductController'
 import orderController from '../Controller/order/orderController'
 const router = express.Router()
 const initWebRoute = (app) => {
-    router.get('/', authenticateEJS, authorizeAdmin, getHomePage)
-
+    router.get('/', getHomePage)
+//authenticateEJS, authorizeAdmin, 
 
     //CATEGORY
     router.get('/category', CategoriesController.getCategoryPage);

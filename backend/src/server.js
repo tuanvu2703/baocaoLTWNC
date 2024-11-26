@@ -63,6 +63,7 @@ app.use(bodyParser.json());
 
 // router 
 initWebRoute(app)
+//router api 
 initAPIRoute(app)
 app.use('/user', userRouter)
 
