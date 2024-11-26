@@ -76,8 +76,24 @@ const UserCancelOrderById = async (req, res) => {
         return res.status(405).json({ success: false, message: "Phương thức không hợp lệ." });
     }
 };
+const productShow = async (req, res) => {
+    const{productId} = req.params;
+    if (req.method === "GET") {
+        try {
+            const product = await orderModel.geProductById(productId);
+            if (!product || product.length === 0) {
+                return res.status(404).json({ success: false, message: "Không có data nào" });
+            }
+            return res.json({data:product });
+        } catch (error) {
+            console.error("Lỗi khi lấy data:", error.message);
+            return res.status(500).json({ success: false, message: "Lỗi khi lấy data." });
+        }
+    }
+};
 export default {
     UserOrderById,
     UserOrder,
     UserCancelOrderById,
+    productShow,
 }

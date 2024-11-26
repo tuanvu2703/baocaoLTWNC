@@ -8,6 +8,7 @@ import ProductPage from "./views/ProductPage";
 import AllProduct from "./components/AllProduct";
 import ProductByCategory from "./components/ProductByCategory";
 import { Login } from "./views/Login";
+import OrderProduct from "./views/order/orderProduct";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -40,6 +41,10 @@ export const route = createBrowserRouter([
                         element: <ProductByCategory />,
                     },
                 ]
+            },
+            {
+                path: "orderOne",
+                element: <OrderProduct/>
             }
         ]
     },

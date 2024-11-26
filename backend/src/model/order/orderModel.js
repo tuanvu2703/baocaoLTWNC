@@ -59,6 +59,18 @@ const getOrderById = async (id) => {
         throw error;
     }
 };
+const geProductById = async (id) => {
+    try {
+        const [rows] = await connection.query(
+            "SELECT * FROM products WHERE product_id = ?",
+            [id]
+        );
+        return rows[0];
+    } catch (error) {
+        console.error("Failed to get product by ID:", error.message);
+        throw error;
+    }
+};
 const getOrderByIdAndIdUser = async (userId, orderId) => {
     try {
         const [rows] = await connection.query(
@@ -104,4 +116,5 @@ export default {
     getAllOrder,
     deleteOrderById,
     getOrderByIdAndIdUser,
+    geProductById
 }  
