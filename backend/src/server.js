@@ -14,7 +14,6 @@ import initAPIRoute from "./router/apiRouter";
 const app = express();
 
 // cors 
-
 app.use(cors());
 // const corsOptions = {
 //     origin: 'http://localhost:3000',
@@ -29,6 +28,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+//message khi add + update + xóa
 app.use((req, res, next) => {
     res.locals.message = req.session.message || null;
     delete req.session.message; // Xóa message sau khi hiển thị
@@ -37,12 +37,11 @@ app.use((req, res, next) => {
 //cookie
 app.use(cookieParser());
 
-
-// gọi session vào các trang ejs
-// app.use((req, res, next) => {
-//     res.locals.user = req.user;
-//     next();
-// });
+//session vào ejs
+app.use((req, res, next) => {
+    res.locals.user = req.user;
+    next();
+});
 
 //config path uploads img
 // Cấu hình đường dẫn tĩnh cho 'uploads'
@@ -61,9 +60,10 @@ viewEngine(app);
 //body - parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 // router 
 initWebRoute(app)
-// initAPIRoute(app)
+initAPIRoute(app)
 app.use('/user', userRouter)
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.

@@ -16,13 +16,16 @@ const createCategory = async (req, res) => {
 }
 const getCategoryPage = async (req, res) => {
     const listCategories = await categoryModel.getAllCategory();
-    res.render("index",
-        {
-            title: 'Danh mục',
-            page: 'categories',
-            data: listCategories
-        }
-    )
+    try {
+        const listCategories = await categoryModel.getAllCategory();
+        res.status(200).json({
+            listCategories
+        })
+    }
+    catch (error) {
+        console.error('Error creating category:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 }
 
 const updateCategory = async (req, res) => {

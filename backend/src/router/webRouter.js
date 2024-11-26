@@ -6,7 +6,7 @@ import ProductController from '../Controller/ProductController'
 import orderController from '../Controller/order/orderController'
 const router = express.Router()
 const initWebRoute = (app) => {
-    router.get('/',authenticateEJS, authorizeAdmin, getHomePage)
+    router.get('/', authenticateEJS, authorizeAdmin, getHomePage)
 
 
     //CATEGORY
@@ -21,14 +21,21 @@ const initWebRoute = (app) => {
     router.post('/category/update/:id', CategoriesController.updateCategory);
     //search
     router.get('/category/search', CategoriesController.searchCategoryByName);
-    //product
-    router.get('/product', ProductController.getProductPage);
-    router.post('/product/create', authenticate, ProductController.createProduct);
-    router.post('/product/update/:product_id', authenticate, ProductController.updateProduct);
-    router.get('/product/search/:product_name', ProductController.searchProductbyname);
-    router.delete('/product/delete/:product_id', authenticate, ProductController.deleteProduct);
 
-    //order
+    //PRODUCT
+    router.get('/product', ProductController.getProductPage);
+    //create
+    router.get('/product/create', ProductController.createProduct);
+    router.post('/product/create', ProductController.createProduct);
+    //update
+    router.get('/product/update/:product_id', ProductController.updateProduct);
+    router.post('/product/update/:product_id', ProductController.updateProduct);
+    //search
+    router.get('/product/search', ProductController.searchProductbyname);
+    //delete
+    router.post('/product/delete/:product_id', ProductController.deleteProduct);
+
+    //ORDER
     router.route('/order/:idOrder')
         .get(authenticateEJS, authorizeAdmin, orderController.detailOrder)
         .delete(authenticateEJS, authorizeAdmin, orderController.detailOrder)

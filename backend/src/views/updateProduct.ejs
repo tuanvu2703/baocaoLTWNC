@@ -1,0 +1,53 @@
+<div class="bg-card p-6 rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold mb-4">Update Product</h2>
+    <form method="POST" action="/product/update/<%= data.product_id %>">
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Product Name</span>
+            <input type="text" id="product_name" name="product_name"
+                class="mt-1 block w-full border border-border rounded-md p-2" value="<%=data.product_name %>" required>
+        </label>
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Description</span>
+            <input type="text" id="description" name="description"
+                class="mt-1 block w-full border border-border rounded-md p-2" value="<%=data.description %>" required>
+        </label>
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Category</span>
+            <select id="category_id" name="category_id" class="mt-1 block w-full border border-border rounded-md p-2"
+                required>
+                <option value="">Select a category</option>
+                <% category.forEach(category=> { %>
+                    <option value="<%= category.id %>" <%=category.id===data.category_id ? 'selected' : '' %>>
+                        <%= category.category_name %>
+                    </option>
+                    <% }) %>
+            </select>
+        </label>
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Price</span>
+            <input type="number" id="price" name="price" class="mt-1 block w-full border border-border rounded-md p-2"
+                value="<%=data.price %>" required>
+        </label>
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Stock</span>
+            <input type="number" id="stock" name="stock" class="mt-1 block w-full border border-border rounded-md p-2"
+                value="<%=data.stock %>" required>
+        </label>
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Discount</span>
+            <input type="number" id="discount" name="discount"
+                class="mt-1 block w-full border border-border rounded-md p-2" value="<%=data.discount %>" required>
+        </label>
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Image</span>
+            <input type="file" id="image_url" name="image_url"
+                class="mt-1 block w-full border border-border rounded-md p-2">
+        </label>
+        <div class="flex justify-end">
+            <a href="/product" class="bg-red-600 text-white hover:bg-red-500 px-4 py-2 rounded-md mr-2 ">Cancel</a>
+            <button type="submit" class="bg-sky-600 text-white hover:bg-sky-500 px-4 py-2 rounded-md">
+                Update Product
+            </button>
+        </div>
+    </form>
+</div>
