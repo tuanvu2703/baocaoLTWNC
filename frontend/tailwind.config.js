@@ -12,6 +12,6 @@ module.exports = {
     daisyui
   ],
   daisyui: {
-    themes: ["light", "dark", "cupcake", "retro"],
+    themes: ["light", "dark", "cupcake", "retro", "luxury", "coffee", "aqua", "cyberpunk"],
   },
 }
