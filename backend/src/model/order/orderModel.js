@@ -1,12 +1,12 @@
 import connection from "../../DB/connectDB";
 const addOrder = async (data) => {
     const { status, description, payment, idUserCreate } = data;
-    const dateCreate = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    const timeCreate = new Date().toTimeString().slice(0, 8); // HH:mm:ss
+    const dateTimeCreate = new Date().toISOString().slice(0, 19).replace('T', ' '); // YYYY-MM-DD HH:mm:ss
+    dateTimeUpdate= null;
     try {
         const [result] = await connection.query(
-            "INSERT INTO orders (status, description, dateCreate, timeCreate, payment, idUserCreate) VALUES (?, ?, ?, ?, ?, ?)",
-            [status, description, dateCreate, timeCreate, payment, idUserCreate]
+            "INSERT INTO orders (status, description, dateTimeCreate, dateTimeUpdate, payment, idUserCreate) VALUES (?, ?, ?, ?, ?, ?)",
+            [status, description, dateTimeCreate, dateTimeUpdate, payment, idUserCreate]
         );
         return result;
     } catch (error) {

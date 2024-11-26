@@ -1,13 +1,17 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 export default function NavBar() {
     return (
-        <div className="navbar bg-base-100">
+        <div className="navbar bg-base-100 border-b-[1px] border-purple-600 fixed z-50">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">NemoSHOP</a>
+                <Link to={"/"} className="btn btn-ghost text-xl">NemoSHOP</Link>
             </div>
             <div className="flex-none">
+                <div className="form-control">
+                    <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
+                </div>
                 <div className="dropdown dropdown-end">
+
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                         <div className="indicator">
                             <svg
@@ -24,7 +28,9 @@ export default function NavBar() {
                             </svg>
                             <span className="badge badge-sm indicator-item">8</span>
                         </div>
+
                     </div>
+
                     <div
                         tabIndex={0}
                         className="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
