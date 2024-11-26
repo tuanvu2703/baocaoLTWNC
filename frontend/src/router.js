@@ -7,6 +7,7 @@ import NoPage from "./views/NoPage";
 import ProductPage from "./views/ProductPage";
 import AllProduct from "./components/AllProduct";
 import ProductByCategory from "./components/ProductByCategory";
+import { Login } from "./views/Login";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -41,6 +42,10 @@ export const route = createBrowserRouter([
                 ]
             }
         ]
+    },
+    {
+        path: "/login",
+        element: <Login/>,
     },
     {
         path: "/*",
