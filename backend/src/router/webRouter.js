@@ -10,30 +10,30 @@ const initWebRoute = (app) => {
 //authenticateEJS, authorizeAdmin, 
 
     //CATEGORY
-    router.get('/category', CategoriesController.getCategoryPage);
+    router.get('/category', authenticateEJS, authorizeAdmin, CategoriesController.getCategoryPage);
     //create
-    router.get('/category/create', CategoriesController.createCategory);
-    router.post('/category/create', CategoriesController.createCategory);
+    router.get('/category/create', authenticateEJS, authorizeAdmin, CategoriesController.createCategory);
+    router.post('/category/create', authenticateEJS, authorizeAdmin, CategoriesController.createCategory);
     //delete
-    router.post('/category/delete/:id', CategoriesController.deleteCategory);
+    router.post('/category/delete/:id', authenticateEJS, authorizeAdmin, CategoriesController.deleteCategory);
     //update
-    router.get('/category/update/:id', CategoriesController.updateCategory);
-    router.post('/category/update/:id', CategoriesController.updateCategory);
+    router.get('/category/update/:id', authenticateEJS, authorizeAdmin, CategoriesController.updateCategory);
+    router.post('/category/update/:id', authenticateEJS, authorizeAdmin, CategoriesController.updateCategory);
     //search
-    router.get('/category/search', CategoriesController.searchCategoryByName);
+    router.get('/category/search', authenticateEJS, authorizeAdmin, CategoriesController.searchCategoryByName);
 
     //PRODUCT
-    router.get('/product', ProductController.getProductPage);
+    router.get('/product', authenticateEJS, authorizeAdmin, ProductController.getProductPage);
     //create
-    router.get('/product/create', ProductController.createProduct);
-    router.post('/product/create', ProductController.createProduct);
+    router.get('/product/create', authenticateEJS, authorizeAdmin, ProductController.createProduct);
+    router.post('/product/create', authenticateEJS, authorizeAdmin, ProductController.createProduct);
     //update
-    router.get('/product/update/:product_id', ProductController.updateProduct);
-    router.post('/product/update/:product_id', ProductController.updateProduct);
+    router.get('/product/update/:product_id', authenticateEJS, authorizeAdmin, ProductController.updateProduct);
+    router.post('/product/update/:product_id', authenticateEJS, authorizeAdmin, ProductController.updateProduct);
     //search
-    router.get('/product/search', ProductController.searchProductbyname);
+    router.get('/product/search', authenticateEJS, authorizeAdmin, ProductController.searchProductbyname);
     //delete
-    router.post('/product/delete/:product_id', ProductController.deleteProduct);
+    router.post('/product/delete/:product_id', authenticateEJS, authorizeAdmin, ProductController.deleteProduct);
 
     //ORDER
     router.route('/order/:idOrder')

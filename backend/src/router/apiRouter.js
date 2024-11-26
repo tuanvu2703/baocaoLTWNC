@@ -16,9 +16,9 @@ const initAPIRoute = (app) => {
     // apiRouter.delete('/category/delete/:id', apiCategoryController.deleteCategory);
     //PRODUCT
     apiRouter.get('/product', apiProductController.getProductPage);
-    apiRouter.get('/category/search/:category_name', apiProductController.searchProductbyname);
+    apiRouter.get('/product/search/:product_name', apiProductController.searchProductbyname);
 
-
+    apiRouter.get('/product/category/:category_id', apiProductController.findproductByCategory);
     // Order
     apiRouter.route('/order')
         .get(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrder)//xong chưa test

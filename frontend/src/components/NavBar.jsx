@@ -1,10 +1,10 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 export default function NavBar() {
     return (
         <div className="navbar bg-base-100 border-b-[1px] border-purple-600 fixed z-50">
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">NemoSHOP</a>
+                <Link to={"/"} className="btn btn-ghost text-xl">NemoSHOP</Link>
             </div>
             <div className="flex-none">
                 <div className="form-control">

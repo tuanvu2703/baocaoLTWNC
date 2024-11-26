@@ -1,4 +1,5 @@
 import categoryModel from "../../model/categoryModel";
+import productModel from "../../model/productModel";
 
 const createCategory = async (req, res) => {
     try {
@@ -15,7 +16,7 @@ const createCategory = async (req, res) => {
     }
 }
 const getCategoryPage = async (req, res) => {
-    const listCategories = await categoryModel.getAllCategory();
+    ;
     try {
         const listCategories = await categoryModel.getAllCategory();
         res.status(200).json({
@@ -67,6 +68,8 @@ const searchCategorybyname = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+
 
 export default {
     createCategory,

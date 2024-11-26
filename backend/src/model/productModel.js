@@ -28,5 +28,9 @@ const findproductByID = async (id) => {
     const [result] = await connection.execute("SELECT * FROM products WHERE product_id = ?", [id])
     return result[0]
 }
+const findproductByCategory = async (category_id) => {
+    const [result] = await connection.execute("SELECT * FROM products WHERE category_id = ?", [category_id])
+    return result
+}
 
-export default { createProduct, getAllProduct, updateProduct, searchProductbyname, deleteProduct, findproductByID }
+export default { createProduct, getAllProduct, updateProduct, searchProductbyname, deleteProduct, findproductByID, findproductByCategory }

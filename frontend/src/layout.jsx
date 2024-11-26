@@ -5,12 +5,16 @@ import Footer from './components/Footer'
 
 export default function Layout() {
     return (
-        <div>
-            <NavBar />
+        <div className='grid min-h-screen'>
+            <header>
+                <NavBar />
+            </header>
             <main className='py-16'>
                 <Outlet />
             </main>
-            <Footer />
+            <footer className='content-end'>
+                <Footer />
+            </footer>
         </div>
     )
 }

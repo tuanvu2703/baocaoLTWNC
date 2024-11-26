@@ -5,15 +5,16 @@ import App from "./App";
 import NoPage from "./views/NoPage";
 import ProductPage from "./views/ProductPage";
 import AllProduct from "./components/AllProduct";
+import ProductByCategory from "./components/ProductByCategory";
 export default function Router() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<App />} />
-                    <Route path="/products" element={<ProductPage />}>
+                    <Route path="/product" element={<ProductPage />}>
                         <Route index element={<AllProduct />} />
-                        <Route path="" element={<NoPage />} />
+                        <Route path="/product/category" element={<ProductByCategory />} />
                     </Route>
                     <Route path="*" element={<NoPage />} />
                 </Route>

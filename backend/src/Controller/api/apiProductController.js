@@ -55,4 +55,17 @@ const deleteProduct = async (req, res) => {
     res.status(200).json({ message: 'delete seccesfully' })
 }
 
-export default { createProduct, getProductPage, updateProduct, searchProductbyname, deleteProduct }
+const findproductByCategory = async (req, res) => {
+    try {
+        const { category_id } = req.params;
+        const data = await productModel.findproductByCategory(category_id);
+        res.status(200).json({ data })
+
+    }
+    catch (error) {
+        console.error('Error creating category:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+export default { createProduct, getProductPage, updateProduct, searchProductbyname, deleteProduct, findproductByCategory }
