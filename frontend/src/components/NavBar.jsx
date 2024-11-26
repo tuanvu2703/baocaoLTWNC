@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function NavBar() {
+import { useState } from 'react';
+export default function NavBar({ themes, currentTheme, changeTheme }) {
     return (
         <div className="navbar bg-base-100 border-b-[1px] border-purple-600 fixed z-50">
             <div className="flex-1">
@@ -61,6 +62,19 @@ export default function NavBar() {
                             </a>
                         </li>
                         <li><a>Settings</a></li>
+                        <li>
+                            <select
+                                className=""
+                                value={currentTheme}
+                                onChange={(e) => changeTheme(e.target.value)}
+                            >
+                                {themes.map((theme) => (
+                                    <option key={theme} value={theme}>
+                                        {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                                    </option>
+                                ))}
+                            </select>
+                        </li>
                         <li><a>Logout</a></li>
                     </ul>
                 </div>
