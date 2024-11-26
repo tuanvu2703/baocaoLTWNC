@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2024 at 06:32 PM
+-- Generation Time: Nov 26, 2024 at 11:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,8 +31,8 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `status` varchar(50) NOT NULL,
   `description` varchar(500) NOT NULL,
-  `dateCreate` date NOT NULL,
-  `timeCreate` time NOT NULL,
+  `dateTimeCreate` datetime NOT NULL,
+  `dateTimeUpdate` datetime NOT NULL,
   `payment` varchar(100) NOT NULL,
   `idUserCreate` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -41,11 +41,11 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `status`, `description`, `dateCreate`, `timeCreate`, `payment`, `idUserCreate`) VALUES
-(18, 'pending', 'new desc', '2024-11-24', '00:32:03', 'backpayment', 123),
-(19, 'cancelled', 'khongmota', '2024-11-24', '00:32:57', 'thanhtoan', 123),
-(20, 'pending', 'new desc', '2024-11-24', '00:32:03', 'backpayment', 122),
-(21, 'cancelled', 'khongmota', '2024-11-24', '00:32:57', 'thanhtoan', 111);
+INSERT INTO `orders` (`id`, `status`, `description`, `dateTimeCreate`, `dateTimeUpdate`, `payment`, `idUserCreate`) VALUES
+(18, 'pending', 'new desc', '2024-11-24 00:32:03', '2024-11-24 00:32:03', 'backpayment', 123),
+(19, 'cancelled', 'khongmota', '2024-11-24 00:32:57', '2024-11-24 00:32:57', 'thanhtoan', 123),
+(20, 'pending', 'new desc', '2024-11-24 00:32:03', '2024-11-24 00:32:03', 'backpayment', 122),
+(21, 'cancelled', 'khongmota', '2024-11-24 00:32:57', '2024-11-24 00:32:57', 'thanhtoan', 111);
 
 --
 -- Indexes for dumped tables

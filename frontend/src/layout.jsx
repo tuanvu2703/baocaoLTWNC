@@ -1,12 +1,33 @@
 import React from 'react'
 import NavBar from './components/NavBar'
 import { Outlet } from 'react-router-dom'
-
+import Footer from './components/Footer'
+import { useState } from 'react'
+import { useEffect } from 'react'
 export default function Layout() {
+    const themes = ["light", "dark", "cupcake", "retro", "luxury", "coffee", "aqua", "cyberpunk"]; // Danh sách theme
+    const defaultTheme = "cupcake";
+    const [theme, setTheme] = useState(defaultTheme);
+    // Gán theme mặc định khi ứng dụng khởi chạy
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", defaultTheme);
+    }, [defaultTheme]);
+    // Hàm chuyển đổi theme
+    const changeTheme = (newTheme) => {
+        setTheme(newTheme);
+        document.documentElement.setAttribute("data-theme", newTheme);
+    };
     return (
-        <div>
-            <NavBar />
-            <Outlet />
+        <div className='grid min-h-screen' >
+            <header>
+                <NavBar themes={themes} currentTheme={theme} changeTheme={changeTheme} />
+            </header>
+            <main className='py-16'>
+                <Outlet />
+            </main>
+            <footer className='content-end'>
+                <Footer />
+            </footer>
         </div>
     )
 }

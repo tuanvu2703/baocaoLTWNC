@@ -6,29 +6,36 @@ import ProductController from '../Controller/ProductController'
 import orderController from '../Controller/order/orderController'
 const router = express.Router()
 const initWebRoute = (app) => {
-    router.get('/',authenticateEJS, authorizeAdmin, getHomePage)
-
+    router.get('/',authenticateEJS,  authorizeAdmin, getHomePage)
+//authenticateEJS, authorizeAdmin, 
 
     //CATEGORY
-    router.get('/category', CategoriesController.getCategoryPage);
+    router.get('/category', authenticateEJS, authorizeAdmin, CategoriesController.getCategoryPage);
     //create
-    router.get('/category/create', CategoriesController.createCategory);
-    router.post('/category/create', CategoriesController.createCategory);
+    router.get('/category/create', authenticateEJS, authorizeAdmin, CategoriesController.createCategory);
+    router.post('/category/create', authenticateEJS, authorizeAdmin, CategoriesController.createCategory);
     //delete
-    router.post('/category/delete/:id', CategoriesController.deleteCategory);
+    router.post('/category/delete/:id', authenticateEJS, authorizeAdmin, CategoriesController.deleteCategory);
     //update
-    router.get('/category/update/:id', CategoriesController.updateCategory);
-    router.post('/category/update/:id', CategoriesController.updateCategory);
+    router.get('/category/update/:id', authenticateEJS, authorizeAdmin, CategoriesController.updateCategory);
+    router.post('/category/update/:id', authenticateEJS, authorizeAdmin, CategoriesController.updateCategory);
     //search
-    router.get('/category/search', CategoriesController.searchCategoryByName);
-    //product
-    router.get('/product', ProductController.getProductPage);
-    router.post('/product/create', authenticate, ProductController.createProduct);
-    router.post('/product/update/:product_id', authenticate, ProductController.updateProduct);
-    router.get('/product/search/:product_name', ProductController.searchProductbyname);
-    router.delete('/product/delete/:product_id', authenticate, ProductController.deleteProduct);
+    router.get('/category/search', authenticateEJS, authorizeAdmin, CategoriesController.searchCategoryByName);
 
-    //order
+    //PRODUCT
+    router.get('/product', authenticateEJS, authorizeAdmin, ProductController.getProductPage);
+    //create
+    router.get('/product/create', authenticateEJS, authorizeAdmin, ProductController.createProduct);
+    router.post('/product/create', authenticateEJS, authorizeAdmin, ProductController.createProduct);
+    //update
+    router.get('/product/update/:product_id', authenticateEJS, authorizeAdmin, ProductController.updateProduct);
+    router.post('/product/update/:product_id', authenticateEJS, authorizeAdmin, ProductController.updateProduct);
+    //search
+    router.get('/product/search', authenticateEJS, authorizeAdmin, ProductController.searchProductbyname);
+    //delete
+    router.post('/product/delete/:product_id', authenticateEJS, authorizeAdmin, ProductController.deleteProduct);
+
+    //ORDER
     router.route('/order/:idOrder')
         .get(authenticateEJS, authorizeAdmin, orderController.detailOrder)
         .delete(authenticateEJS, authorizeAdmin, orderController.detailOrder)
@@ -40,6 +47,6 @@ const initWebRoute = (app) => {
         .post(authenticateEJS, authorizeAdmin, orderController.updateOrder)
     // router.get('/user/:userId/orders', orderController.getOrderByIdUser);    
     // router.get('/orders', orderController.getAllOrder); 
-    return app.use('/', router)
+    return app.use('/',router)
 }
 export default initWebRoute
