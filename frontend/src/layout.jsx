@@ -5,7 +5,39 @@ import Footer from './components/Footer'
 import { useState } from 'react'
 import { useEffect } from 'react'
 export default function Layout() {
-    const themes = ["light", "dark", "cupcake", "retro", "luxury", "coffee", "aqua", "cyberpunk"]; // Danh sách theme
+    const themes = ["light",
+        "dark",
+        "cupcake",
+        "bumblebee",
+        "emerald",
+        "corporate",
+        "synthwave",
+        "retro",
+        "cyberpunk",
+        "valentine",
+        "halloween",
+        "garden",
+        "forest",
+        "aqua",
+        "lofi",
+        "pastel",
+        "fantasy",
+        "wireframe",
+        "black",
+        "luxury",
+        "dracula",
+        "cmyk",
+        "autumn",
+        "business",
+        "acid",
+        "lemonade",
+        "night",
+        "coffee",
+        "winter",
+        "dim",
+        "nord",
+        "sunset",
+    ]; // Danh sách theme
     const defaultTheme = "cupcake";
     const [theme, setTheme] = useState(defaultTheme);
     // Gán theme mặc định khi ứng dụng khởi chạy
