@@ -12,7 +12,7 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
         if (searchQuery.trim()) {
             navigate(`/search?query=${searchQuery}`);
             setSearchQuery("")
-            window.location.reload();// reload lại trang không có này thì search rồi search thêm phát nữa dữ liệu ko đổi
+            // window.location.reload();// reload lại trang không có này thì search rồi search thêm phát nữa dữ liệu ko đổi
         }
     };
     return (

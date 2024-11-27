@@ -60,7 +60,6 @@ const findproductByCategory = async (req, res) => {
         const { category_id } = req.params;
         const data = await productModel.findproductByCategory(category_id);
         res.status(200).json({ data })
-
     }
     catch (error) {
         console.error('Error creating category:', error);
@@ -68,4 +67,16 @@ const findproductByCategory = async (req, res) => {
     }
 }
 
-export default { createProduct, getProductPage, updateProduct, searchProductbyname, deleteProduct, findproductByCategory }
+const findproductByID = async (req, res) => {
+    try {
+        const { product_id } = req.params;
+        const data = await productModel.findproductByID(product_id);
+        res.status(200).json({ data })
+    }
+    catch (error) {
+        console.error('Error creating category:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+export default { createProduct, getProductPage, updateProduct, searchProductbyname, deleteProduct, findproductByCategory, findproductByID }
