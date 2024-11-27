@@ -51,9 +51,7 @@ export default function Layout() {
     };
     return (
         <div className='grid min-h-screen' >
-            <header>
-                <NavBar themes={themes} currentTheme={theme} changeTheme={changeTheme} />
-            </header>
+            <NavBar themes={themes} currentTheme={theme} changeTheme={changeTheme} />
             <main className='py-16'>
                 <Outlet />
             </main>

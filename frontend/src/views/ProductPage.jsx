@@ -31,7 +31,7 @@ export default function ProductPage() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     return (
-        <div>
+        <div className='grid items-start'>
             <ListCategory data={dataCate} />
             <Outlet />
         </div>
