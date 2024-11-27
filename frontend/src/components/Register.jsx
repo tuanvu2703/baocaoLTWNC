@@ -63,7 +63,7 @@ const Register = () => {
             }
 
             const response = await axios.post("http://localhost:3001/user/register", dataToSend);
-            setSuccess(response.data.message); // Hiển thị thông báo thành công
+            setSuccess(response.data.message);
             setError("");
 
             // Gọi hàm login sau khi đăng ký thành công

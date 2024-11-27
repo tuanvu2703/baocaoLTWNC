@@ -12,6 +12,7 @@ import OrderProduct from "./views/order/orderProduct";
 import Register from "./components/Register";
 import UserProfile from "./components/profile";
 import SearchProductName from "./views/SearchProductName";
+import CurrentCart from "./components/currentCart";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -58,6 +59,11 @@ export const route = createBrowserRouter([
                 path: "/search",
                 element: <SearchProductName /> // Existing search route
             },
+
+            {
+                path:"/user/currentCart",
+                element: <CurrentCart />
+            }
 
         ],
     },
