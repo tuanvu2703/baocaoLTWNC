@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 import byOrder from './order/byOrder';
 import { getAllProduct } from '../axiosService/product/productService';
 import { Link } from 'react-router-dom';
+import { addCart } from '../axiosService/cart/cartService';
+import { FaCartPlus } from 'react-icons/fa';
+
 export default function AllProduct() {
 
   const [data, setData] = useState([]); // State để lưu dữ liệu từ API
@@ -24,10 +27,28 @@ export default function AllProduct() {
       }
     };
 
-    fetchData(); // Gọi hàm fetch dữ liệu
-  }, []); // Mảng dependencies rỗng => chỉ chạy 1 lần sau khi component được render
+
+
+    fetchData();
+  }, []); 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+
+  const handleAddToCart = async (productId) => {
+    try {
+
+      const data = {
+        productId: productId, 
+        quantity: "1"          
+      };
+      await addCart(data);
+      alert('Product added to cart');
+    } catch (error) {
+      console.error('Error adding product to cart:', error);
+      alert('Failed to add product to cart');
+    }
+  };
+
   if (data.length === 0) return <p className="text-center text-xl">No product</p>;
   return (
     <div className='grid grid-cols-4 mx-5 gap-5'>
@@ -46,7 +67,18 @@ export default function AllProduct() {
               {
                 <byOrder.byOneProduct idproduct={product.product_id} />
               }
+
             </div>
+            <div className="card-actions justify-end">
+
+              <button
+                className="btn btn-primary"
+                onClick={() => handleAddToCart(product.product_id)} 
+              >
+                <FaCartPlus className="mr-2" /> Add to Cart
+              </button>
+            </div>
+
           </div>
         </Link>
       ))

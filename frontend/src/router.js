@@ -14,6 +14,7 @@ import UserProfile from "./components/profile";
 import SearchProductName from "./views/SearchProductName";
 import DetailProduct from "./views/DetailProduct";
 import Order from "./views/order/order";
+import CurrentCart from "./components/currentCart";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -67,6 +68,12 @@ export const route = createBrowserRouter([
                 path: "/product/:id",
                 element: <DetailProduct /> // Existing search route
             },
+
+
+            {
+                path:"/user/currentCart",
+                element: <CurrentCart />
+            }
 
         ],
     },

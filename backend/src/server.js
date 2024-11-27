@@ -10,6 +10,8 @@ import userRouter from './router/userRouter';
 import apiRouter from "./router/apiRouter";
 import cookieParser from 'cookie-parser'
 import initAPIRoute from "./router/apiRouter";
+import sequelize from "./DB/sequelizeDB";
+import cartRouter from './router/cartRouter';
 // import methodOverride from 'method-override';
 const app = express();
 
@@ -67,6 +69,7 @@ initWebRoute(app)
 //router api 
 initAPIRoute(app)
 app.use('/user', userRouter)
+app.use('/cart', cartRouter)
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt

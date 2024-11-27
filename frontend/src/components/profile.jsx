@@ -29,6 +29,7 @@ const UserProfile = () => {
     }
 
     // Lấy thông tin người dùng từ response
+    console.log(currentUser);
     const { username, fullname, email, phone, address, gender, born, avatar } = currentUser;
     const formattedBornDate = new Date(born).toLocaleDateString();
 
@@ -38,7 +39,7 @@ const UserProfile = () => {
                 {/* Avatar */}
                 <div className="col-12 col-md-4 text-center">
                     <img 
-                        src={avatar} 
+                        src={`http://localhost:3001${avatar}`} 
                         alt="Avatar" 
                         className="img-fluid rounded-circle mb-4" 
                         style={{ maxWidth: '200px' }} 
