@@ -3,43 +3,64 @@ import ProductOrderDetail from "./productOrderDetail";
 import AccectByOrder from "../../components/order/accectByOrder";
 import getParamUrl from "../../components/getParamUrl";
 import orderService from "../../axiosService/order/orderService";
+import { useNavigate } from "react-router-dom";
+import NotificationOrder from "./notificationOrder";
 const OrderProduct = () => {
     const [formData, setFormData] = useState({
-        idproduct: "",
-        fullname: "",
-        gender: "male",
+        status: "pending",
         description: "",
+        payment: "credit_card",
         address: "",
         phone: "",
         email: "",
-        paymentMethod: ""
+        orderProducts: []
     });
+    const navigate = useNavigate();
     const idproduct = getParamUrl({ name: "idproduct" });
     const [product, setProduct] = useState(null);
+    const [successMessage, setSuccessMessage] = useState("");
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!idproduct) return;
                 const data = await orderService.getProductById({ idproduct: idproduct });
-                setProduct(data.data);
+                const productData = data.data;
+                const productForOrder = {
+                    idproduct: productData.product_id,
+                    category_id: productData.category_id,
+                    price: productData.price,
+                    quantity: 1,
+                    img: productData.image_url || "",
+                    status: "in_stock",
+                    product_name: productData.product_name
+                };
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    orderProducts: [...prevFormData.orderProducts, productForOrder]
+                }));
+                setProduct(productData);
             } catch (err) {
                 console.log('errrrrrr' + err);
             }
         };
         fetchData();
     }, [idproduct]);
-    useEffect(() => {
-        const fetchData = async () => {
-            setFormData({ idproduct: idproduct });
-        };
-        fetchData();
-        // console.log('limit')
-    }, [idproduct]);
 
     const [accectBy, setAccectBy] = useState(false);
-    const handAccectBy = () => {
-        setAccectBy(true)
-        console.log("Form Data Submitted: ", formData);
+    const handAccectBy = async () => {
+        setAccectBy(false);
+        console.log("Form Data : ", formData);
+
+        try {
+            const data = await orderService.postOrder({ data: formData });
+            console.log("Form Data Send Successfully: ", data);
+            setSuccessMessage("Your order successfully!");
+            setTimeout(() => {
+                navigate("/");
+            }, 2000);
+        } catch (err) {
+            console.error('Error posting order:', err);
+        }
     }
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -54,78 +75,61 @@ const OrderProduct = () => {
 
     };
     const handleCancel = () => {
-        setAccectBy(false); // Close the confirmation modal without submission
+        setAccectBy(false);
     };
     if (!product) {
         return <div className="text-center text-5xl text-red-600"></div>;
     }
     return (
-        <div className="flex flex-row p-2 justify-center text-sm">
+        <div className="flex flex-row p-2 justify-center text-sm pt-5">
             <ProductOrderDetail />
             {accectBy && (
                 <AccectByOrder
                     onConfirm={handAccectBy}
                     onCancel={handleCancel} />
             )}
-            <form onSubmit={handleSubmit} className="w-2/3 max-w-2xl p-6 bg-white shadow-lg rounded-lg">
-                <h2 className=" font-semibold text-gray-800 mb-6">Payment information</h2>
-                {/* Họ tên */}
-                <div className="mb-4">
-                    <label htmlFor="fullname" className="block text-lg font-medium text-gray-700">FullName</label>
-                    <input
-                        type="text"
-                        id="fullname"
-                        name="fullname"
-                        value={formData.fullname}
+            {successMessage && (
+                <NotificationOrder successMessage={successMessage}/>
+            )}
+            <form onSubmit={handleSubmit} className="w-2/3 max-w-2xl p-6 bg-white shadow-lg rounded-lg ">
+                <h2 className="font-semibold text-gray-800 mb-6">Order Information</h2>
+
+                {/* Order Status */}
+                {/* <div className="mb-4">
+                    <label htmlFor="status" className="block text-lg font-medium text-gray-700">Status</label>
+                    <select
+                        id="status"
+                        name="status"
+                        value={formData.status}
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        placeholder="enter fullname"
-                    />
-                </div>
-                {/* Giới tính */}
-                <div className="mb-4">
-                    <label className="block font-medium text-gray-700">Gender</label>
-                    <div className="flex items-center space-x-6 mt-2">
-                        <div className="flex items-center">
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="male"
-                                checked={formData.gender === "male"}
-                                onChange={handleChange}
-                                className="h-5 w-5 text-blue-600"
-                            />
-                            <label htmlFor="male" className="ml-2 text-gray-700">Male</label>
-                        </div>
-                        <div className="flex items-center">
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="female"
-                                checked={formData.gender === "female"}
-                                onChange={handleChange}
-                                className="h-5 w-5 text-pink-600"
-                            />
-                            <label htmlFor="female" className="ml-2 text-gray-700">Female</label>
-                        </div>
-                        <div className="flex items-center">
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="other"
-                                checked={formData.gender === "other"}
-                                onChange={handleChange}
-                                className="h-5 w-5 text-green-600"
-                            />
-                            <label htmlFor="other" className="ml-2 text-gray-700">other</label>
-                        </div>
-                    </div>
-                </div>
+                    >
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div> */}
 
-                {/* Địa chỉ */}
+                {/* Description */}
+
                 <div className="mb-4">
-                    <label htmlFor="address" className="block font-medium text-gray-700">Address</label>
+                    <label htmlFor="payment" className="block text-lg font-medium text-gray-700">Payment Method</label>
+                    <select
+                        id="payment"
+                        name="payment"
+                        value={formData.payment}
+                        onChange={handleChange}
+                        required
+                        className="w-full p-3 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        <option value="Payment_upon_receipt">Payment upon receipt</option>
+                        <option value="paypal" disabled>PayPal</option>
+                        <option value="bank_transfer" disabled>Bank Transfer</option>
+                    </select>
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="address" className="block text-lg font-medium text-gray-700">Address</label>
                     <input
                         type="text"
                         id="address"
@@ -134,13 +138,11 @@ const OrderProduct = () => {
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        placeholder="enter address"
+                        placeholder="Enter address"
                     />
                 </div>
-
-                {/* Điện thoại */}
                 <div className="mb-4">
-                    <label htmlFor="phone" className="block font-medium text-gray-700">Phone</label>
+                    <label htmlFor="phone" className="block text-lg font-medium text-gray-700">Phone </label>
                     <input
                         type="tel"
                         id="phone"
@@ -149,13 +151,11 @@ const OrderProduct = () => {
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        placeholder="enter phone"
+                        placeholder="Enter phone "
                     />
                 </div>
-
-                {/* Email */}
                 <div className="mb-4">
-                    <label htmlFor="email" className="block font-medium text-gray-700">Email</label>
+                    <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email</label>
                     <input
                         type="email"
                         id="email"
@@ -164,51 +164,31 @@ const OrderProduct = () => {
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        placeholder="enter email"
+                        placeholder="Enter email address"
                     />
                 </div>
-
-                {/* Hình thức thanh toán */}
-                <div className="mb-6">
-                    <label className="block font-medium text-gray-700">Payment method</label>
-                    <select
-                        id="payment-method"
-                        name="paymentMethod"
-                        value={formData.paymentMethod}
-                        onChange={handleChange}
-                        required
-                        className="w-full p-3 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    >
-                        <option value="">choose payment method</option>
-                        <option value="credit_card" >Payment upon receipt</option>
-                        <option value="paypal" disabled>PayPal</option>
-                        <option value="bank_transfer" disabled>Banking</option>
-                    </select>
-                </div>
-                {/* Mô tả */}
                 <div className="mb-4">
-                    <label htmlFor="description" className="block font-medium text-gray-700">Description</label>
+                    <label htmlFor="description" className="block text-lg font-medium text-gray-700">Description</label>
                     <textarea
-                        type="description"
                         id="description"
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
                         required
                         className="w-full p-3 border border-gray-300 rounded-md mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        placeholder="enter description"
+                        placeholder="Enter a description of the order"
                     />
                 </div>
-                {/* Nút Submit */}
                 <div className="mb-4">
                     <button
                         type="submit"
                         className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
-                        Pay
+                        Submit Order
                     </button>
                 </div>
             </form>
+
         </div>
 
     );

@@ -12,6 +12,8 @@ import OrderProduct from "./views/order/orderProduct";
 import Register from "./components/Register";
 import UserProfile from "./components/profile";
 import SearchProductName from "./views/SearchProductName";
+import DetailProduct from "./views/DetailProduct";
+import Order from "./views/order/order";
 import CurrentCart from "./components/currentCart";
 // export default function Router() {
 //     return (
@@ -50,7 +52,10 @@ export const route = createBrowserRouter([
                 path: "orderOne",
                 element: <OrderProduct />
             },
-
+            {
+                path: "Order",
+                element: <Order/>
+            },
             {
                 path: "user/profile", // Add UserProfile route
                 element: <UserProfile />,
@@ -59,6 +64,11 @@ export const route = createBrowserRouter([
                 path: "/search",
                 element: <SearchProductName /> // Existing search route
             },
+            {
+                path: "/product/:id",
+                element: <DetailProduct /> // Existing search route
+            },
+
 
             {
                 path:"/user/currentCart",

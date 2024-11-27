@@ -19,20 +19,24 @@ const initAPIRoute = (app) => {
 
     //PRODUCT
     apiRouter.get('/product', apiProductController.getProductPage);
+    apiRouter.get('/product/:product_id', apiProductController.findproductByID);
     apiRouter.get('/product/search/:product_name', apiProductController.searchProductbyname);
     apiRouter.get('/product/category/:category_id', apiProductController.findproductByCategory);
 
 
     // Order
     apiRouter.route('/order')
-        .get(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrder)//xong chưa test
-        .post(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrder, authenticate)//xong chưa test
+        .get(authenticate, apiOrderController.UserOrder)//xong chưa test
+        // .post(authenticate, apiOrderController.UserOrder)
+    apiRouter.route('/orderPay')
+        // .get(authenticate, apiOrderController.UserOrder)//xong chưa test
+        .post(authenticate, apiOrderController.order)
     apiRouter.route('/order/productShow/:productId')
         .get(apiOrderController.productShow)//xong chưa test
     apiRouter.route('/order/:orderId')
-        .get(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrderById, authenticate)//chưa xong
-        .put(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrderById, authenticate)//chưa xong
-        .delete(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrderById, authenticate)//chưa xong
+        .get(authenticate, apiOrderController.UserOrderById)//chưa xong
+        // .put(authenticate, apiOrderController.UserOrderById)//chưa xong
+        // .delete(authenticate, apiOrderController.UserOrderById)//chưa xong
     apiRouter.route('/order/cancel/:orderId')
         .post(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserCancelOrderById, authenticate)//chưa xong
     return app.use("/api", apiRouter)

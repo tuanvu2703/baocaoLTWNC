@@ -29,12 +29,16 @@ const findCategoryByID = async (id) => {
         const [result] = await connection.execute("SELECT * FROM categories WHERE id = ?", [id])
         return result[0]
 }
-
+const getNameCategory = async (id) => {
+        const [rows] = await connection.execute("SELECT category_name FROM categories WHERE id = ?", [id]);
+        return rows.length > 0 ? rows[0].category_name : null;
+};
 export default {
         createCategory,
         getAllCategory,
         updateCategory,
         searchCategorybyname,
         deleteCategory,
-        findCategoryByID
+        findCategoryByID,
+        getNameCategory
 }

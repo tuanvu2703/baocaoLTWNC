@@ -8,30 +8,30 @@ import crypto from 'crypto';
 // ===================================================API=====================================================================
 const register = async (req, res) => {
   try {
-      const { username, password, fullname, gender, born, email, address } = req.body;
+    const { username, password, fullname, gender, born, email, address } = req.body;
 
-      if (!username && !email) {
-          return res.status(400).json({ message: 'You must provide either a username or an email.' });
+    if (!username && !email) {
+      return res.status(400).json({ message: 'You must provide either a username or an email.' });
+    }
+    if (username) {
+      const isUsernameExists = await userModel.checkUsernameExists(username);
+      if (isUsernameExists) {
+        return res.status(400).json({ message: 'Username already exists.' });
       }
-      if (username) {
-          const isUsernameExists = await userModel.checkUsernameExists(username);
-          if (isUsernameExists) {
-              return res.status(400).json({ message: 'Username already exists.' });
-          }
+    }
+    if (email) {
+      const isEmailExists = await userModel.checkEmailExists(email);
+      if (isEmailExists) {
+        return res.status(400).json({ message: 'Email already exists.' });
       }
-      if (email) {
-          const isEmailExists = await userModel.checkEmailExists(email);
-          if (isEmailExists) {
-              return res.status(400).json({ message: 'Email already exists.' });
-          }
-      }
+    }
 
-      await userModel.register(username || null, password, fullname, gender, born, email || null, address);
-      res.status(201).json({ message: 'Register successfully' });
+    await userModel.register(username || null, password, fullname, gender, born, email || null, address);
+    res.status(201).json({ message: 'Register successfully' });
   } catch (error) {
-      console.error('Error occurred in register controller:', error);
+    console.error('Error occurred in register controller:', error);
 
-      res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -46,16 +46,16 @@ const login = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if(user.isActive !== 1){
-      return res.status(403).json({message: 'Your account is not active. Please contact support.'})
+    if (user.isActive !== 1) {
+      return res.status(403).json({ message: 'Your account is not active. Please contact support.' })
     }
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatch) {
-        return res.render('login', { error: 'Password is correct.' });
+      return res.render('login', { error: 'Password is correct.' });
     }
-    const tokens = await generateToken(user.id,res);
+    const tokens = await generateToken(user.id, res);
 
     req.session.username = user.username;
     req.session.user = user;
@@ -119,10 +119,10 @@ const getUserbyid = async (req, res) => {
 
 const requestResetPassword = async (req, res) => {
   const { email } = req.body;
-  
+
   const otpExpiration = parseInt(process.env.OTP_EXPIRATION)
 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString(); 
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
   const hashOtp = await crypto.createHash('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
 
@@ -132,58 +132,58 @@ const requestResetPassword = async (req, res) => {
     <p>This is the code to reset your password, please do not share it with anyone.</p>
     <p>If you do not require this function, please quickly change the password for your account.</p>
     <p>OTP: <strong>${otp}</strong></p>`;
-                
+
   try {
-      await userModel.updateOTP(email, hashOtp, otpExpires);
-      await sendMail(email, html);
-      res.status(200).json({ message: 'OTP has been sent to your email.' });
+    await userModel.updateOTP(email, hashOtp, otpExpires);
+    await sendMail(email, html);
+    res.status(200).json({ message: 'OTP has been sent to your email.' });
   } catch (error) {
-      console.error(`Error sending email to ${email}: ${error}`);
-      res.status(500).json({ message: 'Failed to send OTP email.' });
+    console.error(`Error sending email to ${email}: ${error}`);
+    res.status(500).json({ message: 'Failed to send OTP email.' });
   }
 };
 
-  const sendMailAPI = async (req, res) => {
-    const { email, html } = req.body;
-    await sendMail(email, html);
-    res.status(200).json({ message: 'Email sent successfully' });
-  }
+const sendMailAPI = async (req, res) => {
+  const { email, html } = req.body;
+  await sendMail(email, html);
+  res.status(200).json({ message: 'Email sent successfully' });
+}
 
-  const verifyOtpResetPassword = async (req, res) => {
-    try {
-      const { email, otp, password } = req.body;
+const verifyOtpResetPassword = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
 
-      const user = await userModel.findUserByIdentifier(email);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found.' });
-      }
-      
-      if (user.OTPEXPRIES < Date.now()) {
-
-        
-        return res.status(400).json({ message: 'OTP has expired.' });
-      }
-
-      const hashedOtp = crypto.createHash('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
-      if (hashedOtp !== user.OTP) {
-        console.log('database:',user.OTP, 'otp:', hashedOtp);
-        return res.status(400).json({ message: 'Invalid OTP.' });
-      }
-  
-      const result = await userModel.resetPassword(email, password);
-      if (result) {
-        return res.status(200).json({ message: 'Password reset successfully.' });
-      } else {
-        return res.status(500).json({ message: 'Failed to reset password.' });
-      }
-      
-    } catch (error) {
-      console.log('Error during OTP verification:', error);
-      return res.status(500).json({ message: 'An error occurred while processing your request.' });
+    const user = await userModel.findUserByIdentifier(email);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
     }
-  };
-  
-  
+
+    if (user.OTPEXPRIES < Date.now()) {
+
+
+      return res.status(400).json({ message: 'OTP has expired.' });
+    }
+
+    const hashedOtp = crypto.createHash('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
+    if (hashedOtp !== user.OTP) {
+      console.log('database:', user.OTP, 'otp:', hashedOtp);
+      return res.status(400).json({ message: 'Invalid OTP.' });
+    }
+
+    const result = await userModel.resetPassword(email, password);
+    if (result) {
+      return res.status(200).json({ message: 'Password reset successfully.' });
+    } else {
+      return res.status(500).json({ message: 'Failed to reset password.' });
+    }
+
+  } catch (error) {
+    console.log('Error during OTP verification:', error);
+    return res.status(500).json({ message: 'An error occurred while processing your request.' });
+  }
+};
+
+
 
 // =========================================EJS RENDER PAGE===================================================================
 
@@ -217,12 +217,12 @@ const loginejs = async (req, res) => {
 };
 
 
-  const updatePassword = async (req, res) => {
-    try{
+const updatePassword = async (req, res) => {
+  try {
     try {
-      const userId = req.user.id; 
+      const userId = req.user.id;
       const { oldPassword, newPassword } = req.body;
-  
+
       const user = await userModel.findById(userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -265,39 +265,39 @@ const renderUpdateUserPage = async (req, res) => {
   }
 };
 
-  const renderUserDetailsPage = async (req, res) => {
-    try {
-      const userId = req.params.id;
-      const user = await userModel.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      res.render('index', 
-        { 
-          title: "Detail User",
-           page: "detailUser",
-           user
-        });
-    } catch (error) {
-      console.log('Error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+const renderUserDetailsPage = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  };
-
-  const renderListUsersPage = async (req, res) => {
-    try {
-      const users = await userModel.getListUser();
-      // console.log('users:', users);
-      res.render('index', { 
-        title: "User",
-         page: "listUser",
-         users
+    res.render('index',
+      {
+        title: "Detail User",
+        page: "detailUser",
+        user
       });
-    } catch (error) {
-      console.log('Error:', error);
-      // res.status(500).json({ message: 'Internal server error' });
-    }
-  };
+  } catch (error) {
+    console.log('Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const renderListUsersPage = async (req, res) => {
+  try {
+    const users = await userModel.getListUser();
+    // console.log('users:', users);
+    res.render('index', {
+      title: "User",
+      page: "listUser",
+      users
+    });
+  } catch (error) {
+    console.log('Error:', error);
+    // res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 
 
@@ -326,15 +326,15 @@ export {
 
   //api
 
-    register,
-    login,
-    updatePassword,
-    uploadAvatar,
-    getUserbyid,
-    requestResetPassword,
-    sendMailAPI,
-    verifyOtpResetPassword,
-    currentUser,
+  register,
+  login,
+  updatePassword,
+  uploadAvatar,
+  getUserbyid,
+  requestResetPassword,
+  sendMailAPI,
+  verifyOtpResetPassword,
+  currentUser,
 
   //ejs
   updateUser,

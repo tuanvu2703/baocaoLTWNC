@@ -1,15 +1,9 @@
-import axios from "axios";
+// src/axios.js
 
- const handleLogout = async (navigate) => {
+export const handleLogout = async (navigate) => {
     try {
-        // Gửi yêu cầu đến API logout
-        await axios.post("http://localhost:3001/auth/logout", null, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-        });
-
         // Xóa token khỏi localStorage
-        localStorage.removeItem("accessToken");
-
+        localStorage.removeItem("token");
         // Chuyển hướng về trang đăng nhập
         navigate("/");
     } catch (error) {
@@ -17,5 +11,3 @@ import axios from "axios";
         // Có thể thêm thông báo lỗi cho người dùng nếu cần
     }
 };
-
-export { handleLogout };

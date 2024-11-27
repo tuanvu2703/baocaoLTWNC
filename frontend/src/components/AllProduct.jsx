@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import byOrder from './order/byOrder';
 import { getAllProduct } from '../axiosService/product/productService';
+import { Link } from 'react-router-dom';
 import { addCart } from '../axiosService/cart/cartService';
 import { FaCartPlus } from 'react-icons/fa';
 
@@ -48,14 +49,16 @@ export default function AllProduct() {
     }
   };
 
+  if (data.length === 0) return <p className="text-center text-xl">No product</p>;
   return (
     <div className='grid grid-cols-4 mx-5 gap-5'>
       {data.map((product) => (
-        <div key={product.id} className="card bg-base-100 w-80 shadow-xl  border-t-[3px] border-l-[3px] border-t-sky-800 border-l-red-800">
+
+        <Link key={product.product_id} to={`/product/${product.product_id}`} className="card bg-base-100 w-80 shadow-xl  border-t-[3px] border-l-[3px] border-t-sky-800 border-l-red-800">
           <figure>
             <img
               src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="Shoes" />
+              alt="" />
           </figure>
           <div className="card-body">
             <h2 className="card-title">{product.product_name}</h2>
@@ -77,8 +80,9 @@ export default function AllProduct() {
             </div>
 
           </div>
-        </div>
-      ))}
-    </div>
+        </Link>
+      ))
+      }
+    </div >
   )
 }

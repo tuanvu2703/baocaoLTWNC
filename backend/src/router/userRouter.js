@@ -1,9 +1,9 @@
 import express from 'express';
-import { 
-    login, 
-    register, 
-    updateUser, 
-    updatePassword,  
+import {
+    login,
+    register,
+    updateUser,
+    updatePassword,
     renderUpdateUserPage,
     renderListUsersPage,
     renderUserDetailsPage,
@@ -28,15 +28,15 @@ const router = express.Router();
 
 //Router API
 //authentication and authorization
-router.post('/register',validateRegister, validate, register);
-router.post('/login',login);
+router.post('/register', validateRegister, validate, register);
+router.post('/login', login);
 router.get('/currentuser', authenticate, currentUser);
 router.post('/logout', authenticate, logoutEJS);
 
 //for user
 router.put('/updateuser', authenticate, updateUser);
 router.post('/updatepassword', authenticate, updatePassword);
-router.post('/refreshToken',refreshAccessToken);
+router.post('/refreshToken', refreshAccessToken);
 router.post('/uploadavatar', authenticate, uploadAvatarImg.single('avatar'), uploadAvatar);
 router.get('/getUserbyId', authenticate, getUserbyid);
 
@@ -46,8 +46,8 @@ router.post('/requestOTP', requestResetPassword);
 router.post('/verifyOTPResetPassword', verifyOtpResetPassword);
 
 //Router EJS(render EJS)
-router.post('/loginejs',loginejs);
-router.get('/loginpage', renderLoginPage );
+router.post('/loginejs', loginejs);
+router.get('/loginpage', renderLoginPage);
 router.post('/updateuser/:id', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
 router.get('/userdetails/:id', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
 router.get('/', authenticateEJS, authorizeAdmin, renderListUsersPage);

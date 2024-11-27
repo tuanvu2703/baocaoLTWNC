@@ -74,7 +74,7 @@ const authorizeAdmin = (req, res, next) => {
 
 //use with ejs (cookie: token, session)
 const authenticateEJS = async (req, res, next) => {
-  const token = req.cookies.token; 
+  const token = req.cookies.token;
   if (!token) {
     return res.redirect('/user/loginpage'); // Sửa thành res.redirect
   }
@@ -86,17 +86,17 @@ const authenticateEJS = async (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ message: "Không tìm thấy người dùng." });
     }
-    next(); 
+    next();
   } catch (error) {
     console.error("Lỗi xác thực token:", error.message);
     return res.status(401).json({ message: "Token không hợp lệ hoặc đã hết hạn." });
   }
 };
 
-export { 
+export {
 
   authenticate,
   authorizeAdmin,
   authenticateEJS,
 
- };
+};
