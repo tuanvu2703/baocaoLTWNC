@@ -1,1 +1,74 @@
-Thể loại
+<header class="bg-primary py-4 px-6 flex items-center justify-between">
+	<h1 class="text-2xl font-bold">Category Management</h1>
+
+	<form action="/category/search" method="GET" class="flex items-center">
+		<input type="text" name="category_name" placeholder="Search categories"
+			class="px-4 py-2 rounded-md border-2 border-gray-300">
+		<button type="submit"
+			class="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-md ml-2">Search</button>
+	</form>
+
+	<a href="/category/create"
+		class="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-md bg-sky-300">Add
+		Category
+	</a>
+
+</header>
+<% if (!data || data.length===0) { %>
+	<p class="mx-6">không có dữ liệu</p>
+	<% } else { %>
+		<div class="bg-background text-primary-foreground flex flex-col">
+			<div class="flex-1 p-6">
+				<ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+					<% for(let i=0; i < data.length; i++) {%>
+						<li class="bg-card rounded-lg overflow-hidden shadow-lg max-w-[350px] border-2">
+							<div class="p-4">
+								<h2 class="text-lg font-semibold mb-2">
+									<%= data[i].category_name %>
+								</h2>
+								<h3 class="mb-2">"
+									<%= data[i].description %>
+										"
+								</h3>
+								<p class="text-sm text-muted-foreground">Total Products: <%= data[i].total_products %>
+								</p>
+								<div class="mt-4 flex justify-between justify-items-center">
+									<div>
+										<button class=" underline text-gray-900">View Products
+										</button>
+									</div>
+									<div>
+										<a href="category/update/<%= data[i].id %>"
+											class=" underline text-blue-600">Edit
+										</a>
+									</div>
+									<form id="delete-form-<%= data[i].id %>" action="/category/delete/<%= data[i].id %>"
+										method="post">
+										<button type="button" class="underline text-red-600"
+											onclick="confirmDelete('<%= data[i].id %>','<%= data[i].category_name %>')">Delete</button>
+									</form>
+								</div>
+							</div>
+						</li>
+						<% } %>
+				</ul>
+			</div>
+		</div>
+		<% } %>
+			<!-- MODAL ADD -->
+
+
+			<!-- SCRIPT MODAL DELETE -->
+			<script>
+				function confirmDelete(categoryId, categoryName) {
+					if (confirm(`Are you sure you want to delete ${categoryName} category?`)) {
+						document.getElementById('delete-form-' + categoryId).submit();
+					}
+				}
+			</script>
+			<!-- ALERT MESSEGE SESSION -->
+			<% if (message) { %>
+				<script>
+					alert("<%= message %>");
+				</script>
+				<% } %>

@@ -2,9 +2,19 @@ import multer from 'multer';
 import path from 'path';
 
 // Cấu hình lưu trữ cho multer
-const storage = multer.diskStorage({
+const storageAvarta = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../../uploads/avatar'));
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+
+const storageProduct = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, '../../uploads/product'));
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -20,9 +30,17 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({
-  storage,
+const uploadAvatarImg = multer({
+  storage: storageAvarta,
   fileFilter
 });
 
-export default upload;
+const uploadProductImg = multer({
+  storage: storageProduct,
+  fileFilter
+});
+
+export {
+  uploadAvatarImg,
+  uploadProductImg,
+}

@@ -1,4 +1,3 @@
-</html>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,17 +8,20 @@
         <%= title %>
     </title>
     <link href="/tailwindcss.css" rel="stylesheet">
+
 </head>
 
 <body class="flex flex-row w-full">
-    <header class="">
+
+    <header class="sticky top-0 h-screen">
         <%- include('components/header') %>
     </header>
-    <div>
-        <main>
+    <div class="w-full">
+        <main class=" ">
+
             <%- include(page) %>
         </main>
-        <footer>
+        <footer class="">
             <%- include ('components/footer') %>
         </footer>
     </div>

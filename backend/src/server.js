@@ -7,18 +7,21 @@ import bodyParser from "body-parser";
 import path from 'path'
 import dotenv from 'dotenv/config'
 import userRouter from './router/userRouter';
+import apiRouter from "./router/apiRouter";
 import cookieParser from 'cookie-parser'
+import initAPIRoute from "./router/apiRouter";
+// import methodOverride from 'method-override';
 const app = express();
 
 // cors 
 
 app.use(cors());
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-    credentials: true,
-  };
+// const corsOptions = {
+//     origin: 'http://localhost:3000',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+//     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+//     credentials: true,
+// };
 //session
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -26,13 +29,18 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
-
+//message khi add + update + xóa
+app.use((req, res, next) => {
+    res.locals.message = req.session.message || null;
+    delete req.session.message; // Xóa message sau khi hiển thị
+    next();
+});
 //cookie
 app.use(cookieParser());
 
-// gọi session vào các trang ejs
+//session vào ejs
 app.use((req, res, next) => {
-    res.locals.session = req.session;
+    res.locals.user = req.user;
     next();
 });
 
@@ -43,18 +51,22 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+//không có cái này không sài css trong file public được
+app.use(express.static('public'));
+
 
 //viewEngine
 viewEngine(app);
 
 //body - parser
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // router 
 initWebRoute(app)
-app.use('/user',userRouter)
-
+//router api 
+initAPIRoute(app)
+app.use('/user', userRouter)
 
 //Thiết lập Express phục vụ các tệp tĩnh (như HTML, CSS, JS, hình ảnh) từ thư mục public.
 //Các tệp trong thư mục này có thể truy cập công khai qua trình duyệt

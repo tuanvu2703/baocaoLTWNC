@@ -1,0 +1,22 @@
+<div class="bg-card p-6 rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold mb-4">Update Category</h2>
+    <form method="POST" action="/category/update/<%= data.id %>">
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Category Name</span>
+            <input type="text" id="category_name" name="category_name"
+                class="mt-1 block w-full border border-border rounded-md p-2" value="<%=data.category_name %>" required>
+
+        </label>
+        <label class="block mb-2">
+            <span class="text-muted-foreground">Description</span>
+            <input type="text" id="description" name="description"
+                class="mt-1 block w-full border border-border rounded-md p-2" value="<%=data.description %>" required>
+        </label>
+        <div class="flex justify-end">
+            <a href="/category" class="bg-red-600 text-white hover:bg-red-500 px-4 py-2 rounded-md mr-2 ">Cancel</a>
+            <button type="submit" class="bg-sky-600 text-white hover:bg-sky-500 px-4 py-2 rounded-md">
+                Update Category
+            </button>
+        </div>
+    </form>
+</div>
