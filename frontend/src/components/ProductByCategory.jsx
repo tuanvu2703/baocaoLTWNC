@@ -31,7 +31,7 @@ export default function ProductByCategory() {
     }, [id]); // Mảng dependencies rỗng => chỉ chạy 1 lần sau khi component được render // Chạy lại khi `id` thay đổi
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
-    if (data.length === 0) return <p className="text-center text-xl">Not product</p>;
+    if (data.length === 0) return <p className="text-center text-xl">No product</p>;
     return (
         <div className='grid grid-cols-4 mx-5 gap-5'>
             {data.map((product) => (

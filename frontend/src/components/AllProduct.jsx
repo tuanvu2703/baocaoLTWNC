@@ -28,6 +28,7 @@ export default function AllProduct() {
   }, []); // Mảng dependencies rỗng => chỉ chạy 1 lần sau khi component được render
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+  if (data.length === 0) return <p className="text-center text-xl">No product</p>;
   return (
     <div className='grid grid-cols-4 mx-5 gap-5'>
       {data.map((product) => (
