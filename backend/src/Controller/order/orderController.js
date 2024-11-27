@@ -15,7 +15,7 @@ const listOrder = async (req, res) => {
             console.error("Error fetching orders:", error.message);
             return res.status(500).send("Failed to load orders.");
         }
-    }else if (req.method == "POST") {
+    } else if (req.method == "POST") {
         const data = req.body;
         const result = await orderModel.addOrder(data);
         console.log('add success ' + result);
@@ -40,10 +40,15 @@ const detailOrder = async (req, res) => {
     if (req.method === "GET") {
         try {
             const order = await orderModel.getOrderById(idOrder);
+            const products = await orderModel.getAllProductByIdOrder(idOrder);
+            if (!order || order.length === 0) {
+                return res.status(404).json({ success: false, message: "Không có đơn hàng nào cho người dùng này." });
+            }
             return res.render(indexRender, {
                 title: "Order Page",
                 page: "order/detailOrder",
                 order: order,
+                products: products
             });
         } catch (error) {
             console.error("Error fetching orders:", error.message);
@@ -54,7 +59,6 @@ const detailOrder = async (req, res) => {
         try {
             const result = await orderModel.deleteOrderById(idOrder);
             if (result.affectedRows > 0) {
-                // Send a success response or redirect as necessary
                 return res.status(200).json({
                     success: true,
                     message: "Order deleted successfully!",
@@ -103,13 +107,13 @@ const updateOrder = async (req, res) => {
             data.id = idOrder;
             const result = await orderModel.updateOrder(data);
             console.log('Order update success:', result);
-            
+
             return res.render(indexRender, {
                 title: "Notification ",
                 mess: "Order updated success",
                 page: "components/notification",
                 backUrl: "/order",
-                nameButton:"OK"
+                nameButton: "OK"
             });;
         } catch (error) {
             console.error("Error updating order:", error.message);

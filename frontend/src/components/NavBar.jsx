@@ -1,21 +1,41 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';  // import useNavigate here
-import { handleLogout } from '../axiosService/user/userAxios';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function NavBar({ themes, currentTheme, changeTheme }) {
-    const navigate = useNavigate();  // Initialize navigate here
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/search?query=${searchQuery}`);
+            setSearchQuery("")
+            window.location.reload();// reload lại trang không có này thì search rồi search thêm phát nữa dữ liệu ko đổi
+        }
+    };
     return (
         <div className="navbar bg-base-100 border-b-[1px] border-purple-600 fixed z-50">
             <div className="flex-1">
                 <Link to={"/"} className="btn btn-ghost text-xl">NemoSHOP</Link>
             </div>
-            <div className="flex-none">
-                <div className="form-control">
-                    <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
-                </div>
-                <div className="dropdown dropdown-end">
 
+            <div className="flex-none">
+
+                <div className="form-control">
+                    <form onSubmit={handleSearch} className="form-control">
+                        <input
+                            type="text"
+                            placeholder="Search"
+                            className="input input-bordered w-24 md:w-auto"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </form>
+                </div>
+
+                <div className="dropdown dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                         <div className="indicator">
                             <svg
@@ -32,7 +52,6 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                             </svg>
                             <span className="badge badge-sm indicator-item">8</span>
                         </div>
-
                     </div>
 
                     <div
@@ -59,12 +78,13 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                         <li>
-                            <a className="justify-between">
+                            <Link className="justify-between">
                                 Profile
                                 <span className="badge">New</span>
-                            </a>
+                            </Link>
                         </li>
-                        <li><a>Settings</a></li>
+                        <li><a href='/order'>OrderDetail</a></li>
+                        <li><Link>Settings</Link></li>
                         <li>
                             <select
                                 className=""
@@ -79,11 +99,12 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                             </select>
                         </li>
                         <li>
-                            <a
-                                onClick={() => handleLogout(navigate)}  // Trigger logout here
+                            {/* <a
+                                // onClick={() => handleLogout(navigate)}  // Trigger logout here
                             >
                                 Logout
-                            </a>
+                            </a> */}
+                            <Link>Logout</Link>
                         </li>
                     </ul>
                 </div>
