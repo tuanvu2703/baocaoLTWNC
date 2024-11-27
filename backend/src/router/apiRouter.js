@@ -19,6 +19,7 @@ const initAPIRoute = (app) => {
 
     //PRODUCT
     apiRouter.get('/product', apiProductController.getProductPage);
+    apiRouter.get('/product/:product_id', apiProductController.findproductByID);
     apiRouter.get('/product/search/:product_name', apiProductController.searchProductbyname);
     apiRouter.get('/product/category/:category_id', apiProductController.findproductByCategory);
 

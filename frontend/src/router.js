@@ -12,6 +12,7 @@ import OrderProduct from "./views/order/orderProduct";
 import Register from "./components/Register";
 import UserProfile from "./components/profile";
 import SearchProductName from "./views/SearchProductName";
+import DetailProduct from "./views/DetailProduct";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -57,6 +58,10 @@ export const route = createBrowserRouter([
             {
                 path: "/search",
                 element: <SearchProductName /> // Existing search route
+            },
+            {
+                path: "/product/:id",
+                element: <DetailProduct /> // Existing search route
             },
 
         ],

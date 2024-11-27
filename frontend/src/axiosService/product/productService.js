@@ -19,3 +19,24 @@ export async function searchProduct(params) {
         return error
     }
 }
+
+
+export async function detailProduct(params) {
+    try {
+        var request = await axios.get(`http://localhost:3001/api/product/${params}`)
+        return request.data.data
+    }
+    catch (error) {
+        return error
+    }
+}
+
+export async function productByCategory(params) {
+    try {
+        var request = await axios.get(`http://localhost:3001/api/product/category/${params}`)
+        return request.data.data
+    }
+    catch (error) {
+        return error
+    }
+}
