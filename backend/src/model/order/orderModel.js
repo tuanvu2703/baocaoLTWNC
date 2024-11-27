@@ -1,31 +1,40 @@
 import connection from "../../DB/connectDB";
 const addOrder = async (data) => {
-    const { status, description, payment, idUserCreate } = data;
+    const { status, description, payment, idUserCreate, address, phone, email } = data;
     const dateTimeCreate = new Date().toISOString().slice(0, 19).replace('T', ' '); // YYYY-MM-DD HH:mm:ss
-    dateTimeUpdate= null;
+    const dateTimeUpdate = ""; 
     try {
         const [result] = await connection.query(
-            "INSERT INTO orders (status, description, dateTimeCreate, dateTimeUpdate, payment, idUserCreate) VALUES (?, ?, ?, ?, ?, ?)",
-            [status, description, dateTimeCreate, dateTimeUpdate, payment, idUserCreate]
+            "INSERT INTO orders (status, description, address, phone, email, dateTimeCreate, dateTimeUpdate, payment, idUserCreate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [status, description, address, phone, email, dateTimeCreate, dateTimeUpdate, payment, idUserCreate]
         );
         return result;
     } catch (error) {
         console.error('Failed to add order:', error.message);
+        throw error; 
+    }
+};
+
+const addOrderProduct = async (data) => {
+    const { idorder, idproduct, product_name, category_id, price, created_at, status, quantity, img } = data;
+    try {
+        const [result] = await connection.query(
+            "INSERT INTO orderproduct (idorder, idproduct, product_name, category_id, price, created_at, status, quantity, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [idorder, idproduct, product_name, category_id, price, created_at, status, quantity, img]
+        );
+        return result;
+    } catch (error) {
+        console.error('Failed to add order product:', error.message);
         throw error;
     }
-    // {
-    //     "status":"cho xac nhan",
-    //     "description":"khongmota",
-    //     "payment":"thanhtoan",
-    //     "idUserCreate":"123"
-    // }
 };
+
 const getAllOrder = async () => {
     try {
         const [rows] = await connection.query("SELECT * FROM orders");
         if (!rows || rows.length === 0) {
             console.log("No orders found.");
-            return []; 
+            return [];
         }
         return rows;
     } catch (error) {
@@ -71,15 +80,15 @@ const geProductById = async (id) => {
         throw error;
     }
 };
-const getOrderByIdAndIdUser = async (userId, orderId) => {
+const getOrderByIdAndIdUser = async (userId, productId) => {
     try {
         const [rows] = await connection.query(
-            "SELECT * FROM orders WHERE idUserCreate=?, id = ?",
-            [orderId, userId]
+            "SELECT * FROM orders WHERE idUserCreate=? AND id = ?",
+            [userId, productId ]
         );
         return rows[0];
     } catch (error) {
-        console.error("Failed to get order by ID:", error.message);
+        console.error("Failed to get order by ID:", error.message,">..",userId,productId ,"..<");
         throw error;
     }
 };
@@ -101,20 +110,39 @@ const deleteOrderById = async (idOrder) => {
             "DELETE FROM orders WHERE id = ?",
             [idOrder]
         );
-        return result; 
+        return result;
     } catch (error) {
         console.error("Error deleting order:", error.message);
         throw error;
     }
 };
+const getAllProductByIdOrder = async (idOrder) => {
+    try {
+        const [rows] = await connection.query(
+            "SELECT op.*, (SELECT c.category_name FROM categories c WHERE c.id = op.category_id) AS category_name FROM orderproduct op WHERE op.idorder = ?;",
+            [idOrder]
+        );
+        if (!rows || rows.length === 0) {
+            console.log(`No products found for order ID: ${idOrder}`);
+            return [];
+        }
+
+        return rows; 
+    } catch (error) {
+        console.error("Error get products for order:", error.message);
+        // throư Error("loixiiiiiiiii");
+    }
+};
 
 export default {
     addOrder,
+    addOrderProduct,
     updateOrder,
     getOrderById,
     getOrderByIdUser,
     getAllOrder,
     deleteOrderById,
     getOrderByIdAndIdUser,
-    geProductById
+    geProductById,
+    getAllProductByIdOrder
 }  

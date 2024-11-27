@@ -83,6 +83,7 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                                 <span className="badge">New</span>
                             </Link>
                         </li>
+                        <li><a href='/order'>OrderDetail</a></li>
                         <li><Link>Settings</Link></li>
                         <li>
                             <select
@@ -97,7 +98,14 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                                 ))}
                             </select>
                         </li>
-                        <li><Link>Logout</Link></li>
+                        <li>
+                            {/* <a
+                                // onClick={() => handleLogout(navigate)}  // Trigger logout here
+                            >
+                                Logout
+                            </a> */}
+                            <Link>Logout</Link>
+                        </li>
                     </ul>
                 </div>
             </div>

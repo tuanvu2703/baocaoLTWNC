@@ -14,6 +14,7 @@ import initAPIRoute from "./router/apiRouter";
 const app = express();
 
 // cors 
+
 app.use(cors());
 // const corsOptions = {
 //     origin: 'http://localhost:3000',
