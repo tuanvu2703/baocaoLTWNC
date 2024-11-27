@@ -1,4 +1,4 @@
-<div class="container mx-auto mt-6">
+<div class="container mx-auto mt-6 p-5">
     <h1 class="text-5xl font-bold mb-6 text-center">List of Orders</h1>
 
     <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
@@ -8,14 +8,14 @@
                 <th class="px-6 py-3 text-left text-gray-700">ID</th>
                 <th class="px-6 py-3 text-left text-gray-700">Status</th>
                 <th class="px-6 py-3 text-left text-gray-700">Description</th>
-                <th class="px-6 py-3 text-left text-gray-700">Date Created</th>
+                <th class="px-6 py-3 text-left text-gray-700">Date/Time Created</th>
                 <th class="px-6 py-3 text-left text-gray-700">Payment</th>
                 <th class="px-6 py-3 text-center">Operations</th>
             </tr>
         </thead>
         <tbody>
             <% if (orders && orders.length> 0) { %>
-                <% orders.forEach((order, index)=> { %> 
+                <% orders.forEach((order, index)=> { %>
                     <tr class="border-b border-gray-200">
                         <td class="px-6 py-4 text-center">
                             <%= index + 1 %>
@@ -30,7 +30,7 @@
                             <%= order.description %>
                         </td>
                         <td class="px-6 py-4">
-                            <%= order.dateCreate %>
+                            <%= order.dateTimeCreate %>
                         </td>
                         <td class="px-6 py-4">
                             <%= order.payment %>

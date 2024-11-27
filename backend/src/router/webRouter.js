@@ -6,7 +6,7 @@ import ProductController from '../Controller/ProductController'
 import orderController from '../Controller/order/orderController'
 const router = express.Router()
 const initWebRoute = (app) => {
-    router.get('/', getHomePage)
+    router.get('/',authenticateEJS,  authorizeAdmin, getHomePage)
 //authenticateEJS, authorizeAdmin, 
 
     //CATEGORY
@@ -47,6 +47,6 @@ const initWebRoute = (app) => {
         .post(authenticateEJS, authorizeAdmin, orderController.updateOrder)
     // router.get('/user/:userId/orders', orderController.getOrderByIdUser);    
     // router.get('/orders', orderController.getAllOrder); 
-    return app.use('/', router)
+    return app.use('/',router)
 }
 export default initWebRoute

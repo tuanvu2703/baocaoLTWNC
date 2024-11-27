@@ -1,6 +1,6 @@
 import express from 'express';
 import apiOrderController from '../Controller/order/apiOrderController';
-import { authenticate ,authorizeAdmin, authenticateEJS} from '../midderwere/midderwere';
+import { authenticate, authorizeAdmin, authenticateEJS } from '../midderwere/midderwere';
 import apiCategoryController from '../Controller/api/apiCategoryController';
 import apiProductController from '../Controller/api/apiProductController';
 // import upload from '../config/uploadsConfig';
@@ -23,12 +23,14 @@ const initAPIRoute = (app) => {
     apiRouter.route('/order')
         .get(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrder)//xong chưa test
         .post(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrder, authenticate)//xong chưa test
+    apiRouter.route('/order/productShow/:productId')
+        .get(apiOrderController.productShow)//xong chưa test
     apiRouter.route('/order/:orderId')
-        .get(authenticate, authorizeAdmin , authenticateEJS,apiOrderController.UserOrderById, authenticate)//chưa xong
-        .put(authenticate, authorizeAdmin , authenticateEJS,apiOrderController.UserOrderById, authenticate)//chưa xong
-        .delete(authenticate, authorizeAdmin , authenticateEJS,apiOrderController.UserOrderById, authenticate)//chưa xong
+        .get(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrderById, authenticate)//chưa xong
+        .put(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrderById, authenticate)//chưa xong
+        .delete(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrderById, authenticate)//chưa xong
     apiRouter.route('/order/cancel/:orderId')
-        .post(authenticate, authorizeAdmin , authenticateEJS,apiOrderController.UserCancelOrderById, authenticate)//chưa xong
+        .post(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserCancelOrderById, authenticate)//chưa xong
     return app.use("/api", apiRouter)
 }
 export default initAPIRoute;

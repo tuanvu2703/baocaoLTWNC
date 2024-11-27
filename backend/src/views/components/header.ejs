@@ -37,27 +37,27 @@
     </div>
 
     <!-- Kiểm tra trạng thái đăng nhập -->
-    <div class="float-end h-full flex flex-col justify-between">
+    <div class="float-end h-full flex flex-col justify-between pb-3">
         <div></div> <!-- Đẩy nút Logout xuống dưới -->
         <% if (user) { %>
             <!-- Đã đăng nhập -->
-            <div class="flex items-center justify-center mb-3">
-                <span class="text-gray-600 text-xl uppercase mr-3"><%= user.username %></span>
-                <form action="/logout" method="POST">
-                    <button class="w-4/5 h-12 bg-red-100 hover:bg-red-400 uppercase text-xl rounded-2xl">
-                        Logout
-                    </button>
-                </form>
-            </div>
-        <% } else { %>
-            <!-- Chưa đăng nhập -->
-            <div class="flex items-center justify-center mb-3">
-                <a href="/user/loginpage">
-                    <button class="w-4/5 h-12 bg-green-100 hover:bg-green-400 uppercase text-xl rounded-2xl">
-                        Login
-                    </button>
-                </a>
-            </div>
-        <% } %>
+            <form action="/logout" method="POST" class="flex flex-col items-center space-y-4">
+                <div class="text-gray-600 text-xl uppercase">
+                    <%= user.username %>
+                </div>
+                <button class="w-4/5 h-12 bg-red-100 hover:bg-red-400 uppercase text-xl rounded-2xl">
+                    Logout
+                </button>
+            </form>
+            <% } else { %>
+                <!-- Chưa đăng nhập -->
+                <div class="flex items-center justify-center mb-3">
+                    <a href="/user/loginpage">
+                        <button class="w-4/5 h-12 bg-green-100 hover:bg-green-400 uppercase text-xl rounded-2xl">
+                            Login
+                        </button>
+                    </a>
+                </div>
+                <% } %>
     </div>
 </div>

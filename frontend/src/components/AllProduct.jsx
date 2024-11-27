@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import byOrder from './order/byOrder';
 export default function AllProduct() {
   const [data, setData] = useState([]); // State để lưu dữ liệu từ API
   const [loading, setLoading] = useState(true); // State để hiển thị trạng thái loading
@@ -38,7 +39,9 @@ export default function AllProduct() {
             <h2 className="card-title">{product.product_name}</h2>
             <p>Price:{product.price}</p>
             <div className="card-actions justify-end">
-              <button className="btn btn-primary">Buy</button>
+              {
+               <byOrder.byOneProduct idproduct={product.product_id}/>
+              }
             </div>
           </div>
         </div>
