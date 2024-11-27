@@ -1,7 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { useState } from 'react';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';  // import useNavigate here
+import { handleLogout } from '../axiosService/user/userAxios';
+
 export default function NavBar({ themes, currentTheme, changeTheme }) {
+    const navigate = useNavigate();  // Initialize navigate here
+
     return (
         <div className="navbar bg-base-100 border-b-[1px] border-purple-600 fixed z-50">
             <div className="flex-1">
@@ -75,7 +78,13 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                                 ))}
                             </select>
                         </li>
-                        <li><a>Logout</a></li>
+                        <li>
+                            <a
+                                onClick={() => handleLogout(navigate)}  // Trigger logout here
+                            >
+                                Logout
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
