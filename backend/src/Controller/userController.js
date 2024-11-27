@@ -310,7 +310,16 @@ const renderLoginPage = (req, res) => {
 
 };
 
+const logoutEJS = (req, res) => {
+  req.session.destroy();
+  req.cookies.destroy();
+  res.redirect('/login');
+}
 
+const logout = (req, res) => {
+  req.session.destroy();
+  req.cookies.destroy();
+}
 
 
 export {
@@ -334,5 +343,6 @@ export {
   renderListUsersPage,
   renderLoginPage,
   loginejs,
+  logoutEJS,
 
 }

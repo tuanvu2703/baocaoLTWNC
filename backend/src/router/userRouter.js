@@ -15,6 +15,7 @@ import {
     sendMailAPI,
     verifyOtpResetPassword,
     currentUser,
+    logoutEJS,
 
 } from '../Controller/userController';
 import { refreshAccessToken } from '../midderwere/createToken';
@@ -30,6 +31,7 @@ const router = express.Router();
 router.post('/register',validateRegister, validate, register);
 router.post('/login',login);
 router.get('/currentuser', authenticate, currentUser);
+router.post('/logout', authenticate, logoutEJS);
 
 //for user
 router.put('/updateuser', authenticate, updateUser);
