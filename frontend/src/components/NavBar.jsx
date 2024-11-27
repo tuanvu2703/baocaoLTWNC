@@ -83,6 +83,7 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                                 <span className="badge">New</span>
                             </Link>
                         </li>
+                        <li><a href='/order'>OrderDetail</a></li>
                         <li><Link>Settings</Link></li>
                         <li>
                             <select

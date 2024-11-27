@@ -12,6 +12,7 @@ import OrderProduct from "./views/order/orderProduct";
 import Register from "./components/Register";
 import UserProfile from "./components/profile";
 import SearchProductName from "./views/SearchProductName";
+import Order from "./views/order/order";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -49,7 +50,10 @@ export const route = createBrowserRouter([
                 path: "orderOne",
                 element: <OrderProduct />
             },
-
+            {
+                path: "Order",
+                element: <Order/>
+            },
             {
                 path: "user/profile", // Add UserProfile route
                 element: <UserProfile />,
