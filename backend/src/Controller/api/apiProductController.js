@@ -39,7 +39,7 @@ const updateProduct = async (req, res) => {
 
 const searchProductbyname = async (req, res) => {
     try {
-        const { product_name } = req.body;
+        const { product_name } = req.params;
         const result = await productModel.searchProductbyname(product_name);
         res.status(200).json({ message: 'search seccesfully', result })
     }

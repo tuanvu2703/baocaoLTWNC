@@ -10,15 +10,19 @@ const apiRouter = express.Router();
 const initAPIRoute = (app) => {
     //Router API
     //CATEGORY
+    //get all ccategory
     apiRouter.get('/category', apiCategoryController.getCategoryPage);
+
     // apiRouter.post('/category/create', apiCategoryController.createCategory);
     // apiRouter.post('/category/update/:id', apiCategoryController.updateCategory);
     // apiRouter.delete('/category/delete/:id', apiCategoryController.deleteCategory);
+
     //PRODUCT
     apiRouter.get('/product', apiProductController.getProductPage);
     apiRouter.get('/product/search/:product_name', apiProductController.searchProductbyname);
-
     apiRouter.get('/product/category/:category_id', apiProductController.findproductByCategory);
+
+
     // Order
     apiRouter.route('/order')
         .get(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserOrder)//xong chưa test

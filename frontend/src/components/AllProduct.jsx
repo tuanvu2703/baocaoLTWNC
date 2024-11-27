@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
-import axios from 'axios';
 import byOrder from './order/byOrder';
+import { getAllProduct } from '../axiosService/product/productService';
 export default function AllProduct() {
+
   const [data, setData] = useState([]); // State để lưu dữ liệu từ API
   const [loading, setLoading] = useState(true); // State để hiển thị trạng thái loading
   const [error, setError] = useState(null); // State để xử lý lỗi
@@ -13,8 +14,8 @@ export default function AllProduct() {
     const fetchData = async () => {
       try {
         setLoading(true); // Bật trạng thái loading
-        const response = await axios.get('http://localhost:3001/api/product');
-        setData(response.data.listproduct); // Lưu dữ liệu vào state
+        const response = await getAllProduct();
+        setData(response); // Lưu dữ liệu vào state
       } catch (err) {
         setError(err.message); // Xử lý lỗi
       } finally {
@@ -40,7 +41,7 @@ export default function AllProduct() {
             <p>Price:{product.price}</p>
             <div className="card-actions justify-end">
               {
-               <byOrder.byOneProduct idproduct={product.product_id}/>
+                <byOrder.byOneProduct idproduct={product.product_id} />
               }
             </div>
           </div>

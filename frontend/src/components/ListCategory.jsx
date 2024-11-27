@@ -8,7 +8,6 @@ export default function ListCategory({ data }) {
     const currentCategoryId = searchParams.get("id");
     return (
         <div role="tablist" className="tabs tabs-bordered px-5 py-10 ">
-
             <Link role="tab" className={`tab ${!currentCategoryId ? 'tab-active' : ''}`} to='/product'>Tất cả sản phẩm </Link>
             {data.map((category) => (
                 <Link
@@ -16,7 +15,7 @@ export default function ListCategory({ data }) {
                     to={`/product/category?id=${category.id}`}
                     role="tab"
                     className={`tab ${currentCategoryId === category.id.toString() ? 'tab-active' : ''}`}>
-                    {category.category_name}-{category.total_products}
+                    Category: {category.category_name} - {category.total_products} Product
                 </Link>
             ))
             }

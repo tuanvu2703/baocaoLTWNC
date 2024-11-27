@@ -11,6 +11,7 @@ import { Login } from "./components/Login";
 import OrderProduct from "./views/order/orderProduct";
 import Register from "./components/Register";
 import UserProfile from "./components/profile";
+import SearchProductName from "./views/SearchProductName";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -46,24 +47,27 @@ export const route = createBrowserRouter([
             },
             {
                 path: "orderOne",
-                element: <OrderProduct/>
+                element: <OrderProduct />
             },
 
             {
                 path: "user/profile", // Add UserProfile route
                 element: <UserProfile />,
             },
-            
-            
+            {
+                path: "/search",
+                element: <SearchProductName /> // Existing search route
+            },
+
         ],
     },
     {
         path: "/login",
-        element: <Login/>,
+        element: <Login />,
     },
     {
         path: "/register",
-        element: <Register/>,
+        element: <Register />,
     },
     {
         path: "/*",
