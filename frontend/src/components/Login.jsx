@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
-    const [emailUsername, setEmailUsername] = useState('');
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const history = useHistory();
+    const navigate = useNavigate();
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/user/login', { emailUsername, password });
-
-            if (response.data.success) {
+            const response = await axios.post('http://localhost:3001/user/login', { identifier, password });
+            console.log(response);
+            if (response.data)  {
+                console.log(response.data);
                 // Lưu thông tin người dùng vào localStorage
-                localStorage.setItem('user', JSON.stringify(response.data.user));
-                history.push('/'); // Chuyển đến trang chủ
+                localStorage.setItem('token', response.data.accessToken);
+                // Chuyển hướng đến trang chủ
+                navigate('/');
             } else {
                 setError(response.data.message);
             }
@@ -33,8 +37,8 @@ const Login = () => {
                     <label>Email or Username:</label>
                     <input
                         type="text"
-                        value={emailUsername}
-                        onChange={(e) => setEmailUsername(e.target.value)}
+                        value={identifier}
+                        onChange={(e) => setIdentifier(e.target.value)}
                         required
                     />
                 </div>
@@ -54,4 +58,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export {Login};

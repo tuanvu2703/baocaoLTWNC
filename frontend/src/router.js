@@ -7,8 +7,10 @@ import NoPage from "./views/NoPage";
 import ProductPage from "./views/ProductPage";
 import AllProduct from "./components/AllProduct";
 import ProductByCategory from "./components/ProductByCategory";
-import { Login } from "./views/Login";
+import { Login } from "./components/Login";
 import OrderProduct from "./views/order/orderProduct";
+import Register from "./components/Register";
+import UserProfile from "./components/profile";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -45,12 +47,23 @@ export const route = createBrowserRouter([
             {
                 path: "orderOne",
                 element: <OrderProduct/>
-            }
-        ]
+            },
+
+            {
+                path: "user/profile", // Add UserProfile route
+                element: <UserProfile />,
+            },
+            
+            
+        ],
     },
     {
         path: "/login",
         element: <Login/>,
+    },
+    {
+        path: "/register",
+        element: <Register/>,
     },
     {
         path: "/*",
