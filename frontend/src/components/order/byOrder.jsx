@@ -9,11 +9,14 @@ function byOneProduct({ idproduct }) {
 }
 function byProductCart({ products }) {
     return (
-        <button className="mt-4 p-2 bg-blue-500 text-white rounded-full float-end">
+        <a href="/orderCart">
+                  <button className="mt-4 p-2 bg-blue-500 text-white rounded-full float-end">
             <form>
                 Buy All Cart
             </form>
-        </button>
+        </button>  
+        </a>
+
     );
 }
 export default {

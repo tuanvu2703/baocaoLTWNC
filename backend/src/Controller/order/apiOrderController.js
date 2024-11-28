@@ -93,6 +93,21 @@ const productShow = async (req, res) => {
         }
     }
 };
+const productCart = async (req, res) => {
+    const userId  = req.user.id;
+    if (req.method === "GET") {
+        try {
+            const products = await orderModel.getProductsCart(userId);
+            if (!products || products.length === 0) {
+                return res.status(404).json({ success: false, message: "Không có data nào" });
+            }
+            return res.json({ data: products });
+        } catch (error) {
+            console.error("Lỗi khi lấy data:", error.message);
+            return res.status(500).json({ success: false, message: "Lỗi khi lấy data." });
+        }
+    }
+};
 const order = async (req, res) => {
     const userId = req.user.id;
     if (req.method === "GET") {
@@ -176,5 +191,6 @@ export default {
     UserOrder,
     UserCancelOrderById,
     productShow,
+    productCart,
     order,
 }

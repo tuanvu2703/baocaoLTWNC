@@ -27,16 +27,17 @@ const initAPIRoute = (app) => {
     // Order
     apiRouter.route('/order')
         .get(authenticate, apiOrderController.UserOrder)//lấy tất cả order dựa trên id user
-        // .post(authenticate, apiOrderController.UserOrder)
+    // .post(authenticate, apiOrderController.UserOrder)
     apiRouter.route('/orderPay')
         // .get(authenticate, apiOrderController.UserOrder)//xong chưa test
         .post(authenticate, apiOrderController.order)// thêm order từ người mua , data: order , products
     apiRouter.route('/order/productShow/:productId')
         .get(apiOrderController.productShow)//show thông tin một sản phẩm
+    apiRouter.route('/order/productCart').get(authenticate, apiOrderController.productCart)//show thông tin nhiều sản phẩm của giỏ hàng
     apiRouter.route('/order/:orderId')
         .get(authenticate, apiOrderController.UserOrderById)//lấy order của người dùng cụ thể, và id order
-        // .put(authenticate, apiOrderController.UserOrderById)//chưa xong
-        // .delete(authenticate, apiOrderController.UserOrderById)//chưa xong
+    // .put(authenticate, apiOrderController.UserOrderById)//chưa xong
+    // .delete(authenticate, apiOrderController.UserOrderById)//chưa xong
     apiRouter.route('/order/cancel/:orderId')
         .post(authenticate, apiOrderController.UserCancelOrderById)//hủy mua một sản phẩm by user
     return app.use("/api", apiRouter)

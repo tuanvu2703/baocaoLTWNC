@@ -14,6 +14,7 @@ import UserProfile from "./components/profile";
 import SearchProductName from "./views/SearchProductName";
 import DetailProduct from "./views/DetailProduct";
 import Order from "./views/order/order";
+import OrderProductCart from "./views/order/orderProductCart";
 import CurrentCart from "./components/currentCart";
 // export default function Router() {
 //     return (
@@ -69,7 +70,11 @@ export const route = createBrowserRouter([
                 element: <DetailProduct /> // Existing search route
             },
 
-
+            
+            {
+                path: "/orderCart",
+                element: <OrderProductCart /> // Existing search route
+            },
             {
                 path:"/user/currentCart",
                 element: <CurrentCart />

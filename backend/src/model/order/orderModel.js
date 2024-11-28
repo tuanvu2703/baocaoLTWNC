@@ -133,7 +133,40 @@ const getAllProductByIdOrder = async (idOrder) => {
         // throư Error("loixiiiiiiiii");
     }
 };
+// const getAllProductCart = async (id)=>{
+//     try {
+//         const [rows] = await connection.query(
+//             " SELECT p.* FROM carts ca, products p WHERE ca.userId = 7 AND p.product_id = ca.productId;",
+//             [id]
+//         );
+//         if (!rows || rows.length === 0) {
+//             console.log(`No products found for cart IDuser: ${id}`);
+//             return [];
+//         }
 
+//         return rows; 
+//     } catch (error) {
+//         console.error("Error get products for order:", error.message);
+//         // throư Error("loixiiiiiiiii");
+//     }
+// }
+const getProductsCart = async (userId)=>{
+    try {
+        const [rows] = await connection.query(
+            "SELECT p.*,c.category_name FROM categories c, carts ca, products p WHERE ca.userId = ? AND p.product_id = ca.productId AND c.id = p.category_id;",
+            [userId]
+        );
+        if (!rows || rows.length === 0) {
+            console.log(`No products found for user ID: ${userId}`);
+            return [];
+        }
+
+        return rows; 
+    } catch (error) {
+        console.error("Error get products for user:", error.message);
+        // throư Error("loixiiiiiiiii");
+    }
+}
 export default {
     addOrder,
     addOrderProduct,
@@ -144,5 +177,6 @@ export default {
     deleteOrderById,
     getOrderByIdAndIdUser,
     geProductById,
-    getAllProductByIdOrder
+    getAllProductByIdOrder,
+    getProductsCart
 }  

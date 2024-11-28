@@ -8,6 +8,24 @@ const getProductById = async ({ idproduct }) => {
         return (error)
     }
 }
+const getProductByCart = async () => {
+    try {
+        
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No access token found in localStorage");
+            return 'nottoken';  
+        }
+        
+        const response = await axios.get("http://localhost:3001/api/order/productCart", {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        return response.data;
+    } catch (error) {
+        return (error)
+    }
+}
 const postOrder = async ({ data }) => {
     try {
         const token = localStorage.getItem("token");
@@ -47,6 +65,7 @@ const getAllOrder = async () => {
 
 export default {
     getProductById,
+    getProductByCart,
     postOrder,
     getAllOrder,
 }

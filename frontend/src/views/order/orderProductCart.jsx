@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ProductOrderDetail from "./productOrderDetail";
+import ProductsOrderDetail from "./productsOrderDetail";
 import AccectByOrder from "../../components/order/accectByOrder";
-import getParamUrl from "../../components/getParamUrl";
 import orderService from "../../axiosService/order/orderService";
 import { useNavigate } from "react-router-dom";
 import NotificationOrder from "./notificationOrder";
-const OrderProduct = () => {
+const OrderProductCart = () => {
     const [formData, setFormData] = useState({
         status: "pending",
         description: "",
@@ -16,40 +15,33 @@ const OrderProduct = () => {
         orderProducts: []
     });
     const navigate = useNavigate();
-    const idproduct = getParamUrl({ name: "idproduct" });
-    const [product, setProduct] = useState(null);
     const [successMessage, setSuccessMessage] = useState({ text: '', bgr: 'green' });
-
-    const [quantity, setQuantity] = useState(1);
     useEffect(() => {
 
         const fetchData = async () => {
             try {
-                if (!idproduct) return;
-                const data = await orderService.getProductById({ idproduct: idproduct });
+                const data = await orderService.getProductByCart();
                 const productData = data.data;
-                const productForOrder = {
-                    idproduct: productData.product_id,
-                    category_id: productData.category_id,
-                    price: productData.price,
-                    quantity: quantity,
-                    img: productData.image_url || "",
-                    status: "in_stock",
-                    product_name: productData.product_name
-                };
                 console.log(data)
-                setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    orderProducts: [...prevFormData.orderProducts, productForOrder]
+                const productsForOrder = productData.map(product => ({
+                    idproduct: product.product_id,
+                    category_id: product.category_id,
+                    price: product.price,
+                    quantity: 1,
+                    img: product.image_url || "",
+                    status: "in_stock",
+                    product_name: product.product_name,
                 }));
-
-                setProduct(productData);
+                setFormData(prevFormData => ({
+                    ...prevFormData,
+                    orderProducts: [...prevFormData.orderProducts, ...productsForOrder],
+                }));
             } catch (err) {
                 console.log('errrrrrr' + err);
             }
         };
         fetchData();
-    }, [idproduct]);
+    }, []);
     const [accectBy, setAccectBy] = useState(false);
     const handAccectBy = async () => {
         setAccectBy(false);
@@ -82,20 +74,6 @@ const OrderProduct = () => {
             console.error('Error posting order:', err);
         }
     }
-    const handleQuantityChange = (value) => {
-        const newQuantity = Math.max(1, value);
-        setQuantity(newQuantity);
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            // orderProducts: prevFormData.orderProducts.map((product) => ({
-            //     ...product,
-            //     quantity: newQuantity,
-            // })),
-            orderProducts: prevFormData.orderProducts.map((product, index) =>
-                index === 0 ? { ...product, quantity: newQuantity } : product
-            ),
-        }));
-    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -111,9 +89,6 @@ const OrderProduct = () => {
     const handleCancel = () => {
         setAccectBy(false);
     };
-    if (!product) {
-        return <div className="text-center text-5xl text-red-600"></div>;
-    }
     return (
         <>
             <div className="absolute p-3">
@@ -123,7 +98,7 @@ const OrderProduct = () => {
             </div>
             <div className="flex flex-row p-2 justify-center text-sm pt-5">
 
-                <ProductOrderDetail />
+                <ProductsOrderDetail />
                 {accectBy && (
                     <AccectByOrder
                         onConfirm={handAccectBy}
@@ -135,7 +110,7 @@ const OrderProduct = () => {
 
 
                 <form onSubmit={handleSubmit} className="w-2/3 max-w-2xl p-6 bg-white shadow-lg rounded-lg ">
-                    <div className="mb-4 flex items-center">
+                    {/* <div className="mb-4 flex items-center">
                         <label className="block text-lg font-medium text-gray-700 mr-4">Quantity:</label>
                         <input
                             type="number"
@@ -144,7 +119,7 @@ const OrderProduct = () => {
                             className="w-16 text-center border border-gray-300 focus:outline-none"
                             min="1"
                         />
-                    </div>
+                    </div> */}
                     <h2 className="font-semibold text-gray-800 mb-6">Order Information</h2>
 
                     {/* Order Status */}
@@ -247,4 +222,4 @@ const OrderProduct = () => {
     );
 };
 
-export default OrderProduct;
+export default OrderProductCart;
