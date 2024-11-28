@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2024 at 11:18 AM
+-- Generation Time: Nov 27, 2024 at 09:06 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,6 +31,9 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
   `status` varchar(50) NOT NULL,
   `description` varchar(500) NOT NULL,
+  `address` varchar(500) NOT NULL,
+  `phone` int(50) NOT NULL,
+  `email` varchar(500) NOT NULL,
   `dateTimeCreate` datetime NOT NULL,
   `dateTimeUpdate` datetime NOT NULL,
   `payment` varchar(100) NOT NULL,
@@ -41,11 +44,10 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `status`, `description`, `dateTimeCreate`, `dateTimeUpdate`, `payment`, `idUserCreate`) VALUES
-(18, 'pending', 'new desc', '2024-11-24 00:32:03', '2024-11-24 00:32:03', 'backpayment', 123),
-(19, 'cancelled', 'khongmota', '2024-11-24 00:32:57', '2024-11-24 00:32:57', 'thanhtoan', 123),
-(20, 'pending', 'new desc', '2024-11-24 00:32:03', '2024-11-24 00:32:03', 'backpayment', 122),
-(21, 'cancelled', 'khongmota', '2024-11-24 00:32:57', '2024-11-24 00:32:57', 'thanhtoan', 111);
+INSERT INTO `orders` (`id`, `status`, `description`, `address`, `phone`, `email`, `dateTimeCreate`, `dateTimeUpdate`, `payment`, `idUserCreate`) VALUES
+(55, 'cancelled', '324234', '45435435', 134234234, 'lephuc0167283@gmail.com', '2024-11-27 07:11:38', '0000-00-00 00:00:00', 'paypal', 1),
+(56, 'pending', 'dq3e32', '45435435', 134234234, 'lephuc0167283@gmail.com', '2024-11-27 07:43:53', '0000-00-00 00:00:00', 'credit_card', 1),
+(57, 'cancelled', 'd323d23d32', '45435435', 134234234, 'lephuc0167283@gmail.com', '2024-11-27 07:57:47', '0000-00-00 00:00:00', 'credit_card', 1);
 
 --
 -- Indexes for dumped tables
@@ -65,7 +67,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
