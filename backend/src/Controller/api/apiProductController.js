@@ -1,16 +1,16 @@
 import productModel from '../../model/productModel';
 
-const createProduct = async (req, res) => {
-    try {
-        const { product_name, description, price, discount, stock, image_url, category_id } = req.body;
-        await productModel.createProduct(product_name, description, price, discount, stock, image_url, category_id)
-        res.status(200).json({ message: 'create seccesfully', data: req.body })
-    }
-    catch (erorr) {
-        console.error('Error creating category:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
+// const createProduct = async (req, res) => {
+//     try {
+//         const { product_name, description, price, discount, stock, image_url, category_id } = req.body;
+//         await productModel.createProduct(product_name, description, price, discount, stock, image_url, category_id)
+//         res.status(200).json({ message: 'create seccesfully', data: req.body })
+//     }
+//     catch (erorr) {
+//         console.error('Error creating category:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// }
 
 const getProductPage = async (req, res) => {
     try {
@@ -25,17 +25,17 @@ const getProductPage = async (req, res) => {
     }
 }
 
-const updateProduct = async (req, res) => {
-    try {
-        const { product_id, product_name, description, price, discount, stock, image_url, category_id } = req.body;
-        await productModel.updateProduct(product_name, description, price, discount, stock, image_url, category_id, product_id)
-        res.status(200).json({ message: 'create seccesfully', data: req.body })
-    }
-    catch (error) {
-        console.error('Error creating category:', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
+// const updateProduct = async (req, res) => {
+//     try {
+//         const { product_id, product_name, description, price, discount, stock, image_url, category_id } = req.body;
+//         await productModel.updateProduct(product_name, description, price, discount, stock, image_url, category_id, product_id)
+//         res.status(200).json({ message: 'create seccesfully', data: req.body })
+//     }
+//     catch (error) {
+//         console.error('Error creating category:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//     }
+// }
 
 const searchProductbyname = async (req, res) => {
     try {
@@ -49,11 +49,11 @@ const searchProductbyname = async (req, res) => {
     }
 }
 
-const deleteProduct = async (req, res) => {
-    const { product_id } = req.body;
-    const result = await productModel.deleteProduct(product_id);
-    res.status(200).json({ message: 'delete seccesfully' })
-}
+// const deleteProduct = async (req, res) => {
+//     const { product_id } = req.body;
+//     const result = await productModel.deleteProduct(product_id);
+//     res.status(200).json({ message: 'delete seccesfully' })
+// }
 
 const findproductByCategory = async (req, res) => {
     try {
@@ -79,4 +79,4 @@ const findproductByID = async (req, res) => {
     }
 }
 
-export default { createProduct, getProductPage, updateProduct, searchProductbyname, deleteProduct, findproductByCategory, findproductByID }
+export default { getProductPage, searchProductbyname, findproductByCategory, findproductByID }

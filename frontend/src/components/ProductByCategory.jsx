@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useLocation } from 'react-router-dom';
 import byOrder from './order/byOrder';
 import { productByCategory } from '../axiosService/product/productService';
+import CardProduct from './CardProduct';
 export default function ProductByCategory() {
     const [data, setData] = useState([]); // State để lưu dữ liệu từ API
     const [loading, setLoading] = useState(true); // State để hiển thị trạng thái loading
@@ -35,22 +36,7 @@ export default function ProductByCategory() {
     return (
         <div className='grid grid-cols-4 mx-5 gap-5'>
             {data.map((product) => (
-                <Link key={product.product_id} to={`/product/${product.product_id}`} className="card bg-base-100 w-80 shadow-xl  border-t-[3px] border-l-[3px] border-t-sky-800 border-l-red-800">
-                    <figure>
-                        <img
-                            src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                            alt="Shoes" />
-                    </figure>
-                    <div className="card-body">
-                        <h2 className="card-title">{product.product_name}</h2>
-                        <p>Price:{product.price}</p>
-                        <div className="card-actions justify-end">
-                            {
-                                <byOrder.byOneProduct idproduct={product.product_id} />
-                            }
-                        </div>
-                    </div>
-                </Link>
+                <CardProduct product={product} />
             ))}
         </div>
     )

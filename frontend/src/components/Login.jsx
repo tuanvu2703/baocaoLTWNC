@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 
 const Login = () => {
@@ -27,7 +27,7 @@ const Login = () => {
                     window.location.href = 'http://localhost:3001/';
                     localStorage.setItem('token', accessToken);
                 } else if (role === 1) { // User
-                   
+
                     localStorage.setItem('token', accessToken);
                     localStorage.setItem('user', JSON.stringify({ username, avatar }));
 
@@ -45,8 +45,8 @@ const Login = () => {
         }
     };
 
-    
-    
+
+
 
     return (
         <div className="grid place-items-center min-h-screen">
@@ -62,13 +62,13 @@ const Login = () => {
                             <path
                                 d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
                         </svg>
-                        <input 
-                        type="text" 
-                        className="grow" 
-                        placeholder="Username" 
-                        value={identifier}
-                        onChange={(e) => setIdentifier(e.target.value)}
-                         />
+                        <input
+                            type="text"
+                            className="grow"
+                            placeholder="Username"
+                            value={identifier}
+                            onChange={(e) => setIdentifier(e.target.value)}
+                        />
                     </label>
                     <label className="input input-bordered flex items-center gap-2 ">
                         <svg
@@ -82,15 +82,16 @@ const Login = () => {
                                 clipRule="evenodd" />
                         </svg>
                         <input
-                        type="password" 
-                        className="grow" 
-                        placeholder='Password' 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                            type="password"
+                            className="grow"
+                            placeholder='Password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </label>
                     {error && <p className="">{error}</p>}
                     <button className='bg-sky-500 rounded-xl p-3 mt-5' type="submit">Login</button>
+                    <Link to={'/register'} className='text-blue-700'>Register</Link>
                 </form>
             </div>
         </div>

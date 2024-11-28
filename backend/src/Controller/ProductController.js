@@ -1,5 +1,6 @@
 import productModel from '../model/productModel'
 import categoryModel from '../model/categoryModel';
+import multer from 'multer'
 const createProduct = async (req, res) => {
     const listCategories = await categoryModel.getAllCategory();
     if (req.method === "GET") {
@@ -12,9 +13,13 @@ const createProduct = async (req, res) => {
         )
     }
     if (req.method === "POST") {
-        const { product_name, description, price, discount, stock, image_url, category_id } = req.body;
+        const image_url = req.file ? `uploads/product/${req.file.filename}` : null;
+        console.log('img: ', image_url)
+        console.log('file name', req.file.filename, "req file", req.file);
+        const { product_name, description, price, discount, stock, category_id } = req.body;
         const result = await productModel.createProduct(product_name, description, price, discount, stock, image_url, category_id)
         //alert
+        console.log(result);
         req.session.message = "Product created successfully!";
         res.redirect("/Product");
     }
@@ -23,7 +28,7 @@ const createProduct = async (req, res) => {
 const getProductPage = async (req, res) => {
     const listproduct = await productModel.getAllProduct();
     res.render("index", {
-        title: "Sản phẩm",
+        title: "Products",
         page: "products",
         data: listproduct
     })
@@ -38,11 +43,13 @@ const updateProduct = async (req, res) => {
             {
                 title: "Update Product",
                 page: "updateProduct",
-                category: listCategories,
-                data: oneIdProduct
+                data: oneIdProduct[0],
+                category: listCategories
+
             }
         )
-    }
+    };
+    
     if (req.method === "POST") {
         const id = req.params.product_id
         const { product_id, product_name, description, price, discount, stock, image_url, category_id } = req.body;

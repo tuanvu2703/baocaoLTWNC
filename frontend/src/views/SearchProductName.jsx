@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchProduct } from '../axiosService/product/productService';
 import { Link } from 'react-router-dom';
+import CardProduct from '../components/CardProduct';
 export default function SearchProductName() {
 
     const [results, setResults] = useState([]); // State để lưu dữ liệu từ API
@@ -38,22 +39,7 @@ export default function SearchProductName() {
             <h1 className='mb-5 font-semibold'>search results: "{query}"</h1>
             <div className='grid grid-cols-4 gap-5'>
                 {results.map((product) => (
-                    <Link key={product.product_id} to={`/product/${product.product_id}`} className="card bg-base-100 w-80 shadow-xl  border-t-[3px] border-l-[3px] border-t-sky-800 border-l-red-800">
-                        <figure>
-                            <img
-                                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                                alt="Shoes" />
-                        </figure>
-                        <div className="card-body">
-                            <h2 className="card-title">{product.product_name}</h2>
-                            <p>Price:{product.price}</p>
-                            <div className="card-actions justify-end">
-                                {
-                                    <byOrder.byOneProduct idproduct={product.product_id} />
-                                }
-                            </div>
-                        </div>
-                    </Link>
+                    <CardProduct product={product} />
                 ))}
             </div>
         </div>
