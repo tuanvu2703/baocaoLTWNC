@@ -6,33 +6,38 @@ export default function CurrentCart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null); 
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
         setLoading(true);
-        const response = await getCart();  // Lấy dữ liệu giỏ hàng
-        console.log(response);
-        
-        if (response.data && response.data.carts.length > 0) {
-          setCartItems(response.data.carts); 
-        } else {
-          setCartItems([]);
-        }
+        const response = await getCart(); // Gửi yêu cầu API
+        if (response.data && response.data.carts && response.data.carts.length > 0) {
+          setCartItems(response.data.carts); // Cập nhật giỏ hàng
+          setMessage(null); // Không hiển thị message nếu có sản phẩm
+        } 
       } catch (err) {
-        setError(err.message);
+        if (err.response && err.response.status === 404) {
+          // Xử lý trạng thái 404 từ backend
+          setMessage(err.response.data.message || "Your cart is empty.");
+          setCartItems([]); // Đảm bảo giỏ hàng rỗng
+        } else {
+          // Xử lý lỗi khác
+          setError(err.message);
+        }
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchCart();
   }, []);
 
   const handleDeleteItem = async (productId) => {
     try {
       await deleteCart(productId);
-      setCartItems(cartItems.filter(item => item.productId !== productId));  
+      setCartItems(cartItems.filter(item => item.productId !== productId));
     } catch (error) {
       alert('Failed to delete product');
     }
@@ -41,7 +46,8 @@ export default function CurrentCart() {
   const handleClearCart = async () => {
     try {
       await clearCart();
-      setCartItems([]);  
+      setCartItems([]);
+      setMessage("Your cart is empty."); // Cập nhật thông báo sau khi xóa toàn bộ
     } catch (error) {
       alert('Failed to clear cart');
     }
@@ -63,7 +69,17 @@ export default function CurrentCart() {
   return (
     <div className="cart-container">
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <div className="flex flex-col items-center justify-center p-10 bg-gray-50 border border-gray-300 rounded-lg">
+          <p className="text-xl font-semibold text-center text-gray-600 mb-4">
+            Your cart is currently empty. Let's add some items to it and shop your heart out!
+          </p>
+          <button
+            className="px-6 py-2 bg-blue-500 text-white font-bold rounded-lg shadow-md hover:bg-blue-600"
+            onClick={() => window.location.href = '/product'} // Redirect to shop page
+          >
+            Go to Shop
+          </button>
+        </div>
       ) : (
         <div className="cart-items">
           {cartItems.map((item) => (
