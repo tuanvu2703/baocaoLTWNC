@@ -5,7 +5,6 @@ import getParamUrl from "../../components/getParamUrl";
 import orderService from "../../axiosService/order/orderService";
 import { useNavigate } from "react-router-dom";
 import NotificationOrder from "./notificationOrder";
-import { FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa';
 const OrderProduct = () => {
     const [formData, setFormData] = useState({
         status: "pending",
@@ -136,7 +135,7 @@ const OrderProduct = () => {
 
 
                 <form onSubmit={handleSubmit} className="w-2/3 max-w-2xl p-6 bg-white shadow-lg rounded-lg ">
-                    {/* <div className="mb-4 flex items-center">
+                    <div className="mb-4 flex items-center">
                         <label className="block text-lg font-medium text-gray-700 mr-4">Quantity:</label>
                         <input
                             type="number"
@@ -145,23 +144,6 @@ const OrderProduct = () => {
                             className="w-16 text-center border border-gray-300 focus:outline-none"
                             min="1"
                         />
-                    </div> */}
-                    <div className="flex items-center">
-                        <button
-                            type="button"
-                            className="mr-2 p-2 bg-gray-200 rounded-full"
-                            onClick={() => handleQuantityChange(Number(quantity - 1))}
-                        >
-                            <FaMinus />
-                        </button>
-                        <span>{quantity}</span>
-                        <button
-                            type="button"
-                            className="ml-2 p-2 bg-gray-200 rounded-full"
-                            onClick={() => handleQuantityChange(Number(quantity + 1))}
-                        >
-                            <FaPlus />
-                        </button>
                     </div>
                     <h2 className="font-semibold text-gray-800 mb-6">Order Information</h2>
 

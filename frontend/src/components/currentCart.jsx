@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCart, deleteCart, clearCart, updateCart } from '../axiosService/cart/cartService';
 import { FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa';
-
+import byOrder from './order/byOrder';
 export default function CurrentCart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,10 +12,10 @@ export default function CurrentCart() {
       try {
         setLoading(true);
         const response = await getCart();  // Lấy dữ liệu giỏ hàng
-        console.log(response);
-        
+        // console.log(response);
+
         if (response.data && response.data.carts.length > 0) {
-          setCartItems(response.data.carts); 
+          setCartItems(response.data.carts);
         } else {
           setCartItems([]);
         }
@@ -25,14 +25,13 @@ export default function CurrentCart() {
         setLoading(false);
       }
     };
-
     fetchCart();
   }, []);
-
+  console.log(cartItems, 'a')
   const handleDeleteItem = async (productId) => {
     try {
       await deleteCart(productId);
-      setCartItems(cartItems.filter(item => item.productId !== productId));  
+      setCartItems(cartItems.filter(item => item.productId !== productId));
     } catch (error) {
       alert('Failed to delete product');
     }
@@ -41,7 +40,7 @@ export default function CurrentCart() {
   const handleClearCart = async () => {
     try {
       await clearCart();
-      setCartItems([]);  
+      setCartItems([]);
     } catch (error) {
       alert('Failed to clear cart');
     }
@@ -99,14 +98,20 @@ export default function CurrentCart() {
           ))}
         </div>
       )}
-      {cartItems.length > 0 && (
-        <button
-          onClick={handleClearCart}
-          className="mt-4 p-2 bg-blue-500 text-white rounded-full"
-        >
-          Clear Cart
-        </button>
-      )}
+      <div className='w-full'>
+        {cartItems.length > 0 && (
+          <button
+            onClick={handleClearCart}
+            className="mt-4 p-2 bg-red-500 text-white rounded-full float-start"
+          >
+            Clear Cart
+          </button>
+        )}
+        {
+          byOrder.byProductCart(cartItems)
+        }
+      </div>
+
     </div>
   );
 }
