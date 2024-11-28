@@ -5,6 +5,7 @@ import CategoriesController from '../Controller/CategoriesController'
 import ProductController from '../Controller/ProductController'
 import orderController from '../Controller/order/orderController'
 import { uploadProductImg } from '../config/uploadsConfig'
+import chatController from '../Controller/chat/chatController'
 const router = express.Router()
 const initWebRoute = (app) => {
     router.get('/', authenticateEJS, authorizeAdmin, getHomePage)
@@ -52,6 +53,17 @@ const initWebRoute = (app) => {
     router.post('/order/success/:idOrder', authenticateEJS, authorizeAdmin, orderController.shippingSuccess);// giao thành công
     // router.get('/user/:userId/orders', orderController.getOrderByIdUser);    
     // router.get('/orders', orderController.getAllOrder); 
+
+    //chat 
+    router.route('/chat/:idUser')
+        .get(authenticateEJS, authorizeAdmin, chatController.chat)
+    router.route('/listuserchat')
+        .get(authenticateEJS, authorizeAdmin, chatController.listuserchat)
+    router.route('/chat/addmess/:idUser')
+        .post(authenticateEJS, authorizeAdmin, chatController.chat)
+    router.route('/chat/hiddden/:idUser')
+        .post(authenticateEJS, authorizeAdmin, chatController.hiddenUserChat)
+
     return app.use('/', router)
 }
 export default initWebRoute

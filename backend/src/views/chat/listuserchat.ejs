@@ -1,0 +1,47 @@
+<div class="container mx-auto mt-5 px-4">
+    <h2 class="text-2xl font-semibold text-center mb-6">List of Users</h2>
+    <table class="min-w-full table-auto border-collapse bg-white border border-gray-200">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">Username</th>
+                <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">Full Name</th>
+                <!-- <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">Email</th> -->
+                <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">preview message</th>
+                <th class="py-2 px-4 border-b text-left text-sm font-medium text-gray-700">operation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% lisuser.forEach(user=> { %>
+                <tr class="hover:bg-gray-50">
+                    <td class="py-2 px-4 border-b text-sm text-gray-800">
+                        <%= user.username %>
+                    </td>
+                    <td class="py-2 px-4 border-b text-sm text-gray-800">
+                        <%= user.fullname %>
+                    </td>
+                    <!-- <td class="py-2 px-4 border-b text-sm text-gray-800">
+                        <%= user.email %>
+                    </td> -->
+                    <td class="py-2 px-4 border-b text-sm text-gray-800 truncate max-w-xs">
+                        <%= user.mess %>
+                    </td>
+                    <td class="py-2 px-4 border-b text-sm text-gray-800">
+                        <div class="p-1">
+                            <a href="/chat/<%= user.iduser %>">
+                                <button
+                                    class="bg-blue-500 text-white py-1 px-3 rounded-sm ml-2 hover:bg-blue-600 transition p-3">chat</button>
+                            </a>
+                        </div>
+                        <div class="p-1">
+                            <form method="post" action="/chat/hiddden/<%= user.iduser %>"><button
+                                    class="bg-red-500 text-white py-1 px-3 rounded-sm ml-2 hover:bg-red-600 transition">hidden</button>
+                            </form>
+
+                        </div>
+
+                    </td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+</div>

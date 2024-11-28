@@ -35,6 +35,9 @@ const getChatUser = async (req, res) => {
     if (req.method === "GET") {
         try {
             const result = await chatModel.getChatUser(userId);
+            // for (const listupdate of result) {
+            //     const updateSee = await chatModel.updateSeeMess(listupdate.id); 
+            // }
             if (!result || result.length === 0) {
                 return res.status(500).json({ success: false, message: "Chat get fail" })
             }

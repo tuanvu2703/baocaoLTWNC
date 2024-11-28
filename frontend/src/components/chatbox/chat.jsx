@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import chatService from "../../axiosService/chat/chatService";
 import { useEffect } from "react";
+import { useRef } from "react";
 const Chat = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [message, setMessage] = useState({
@@ -17,9 +18,11 @@ const Chat = () => {
     const closeChat = () => {
         setIsChatOpen(false);
     };
-
+    // chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    const chatEndRef = useRef(null);
     // useEffect(() => {
     const fetchChats = async () => {
+
         try {
             const result = await chatService.getAllChat();
             if (result.success) {
@@ -44,7 +47,7 @@ const Chat = () => {
             let timer = setTimeout(() => {
                 setTime(!time);
                 fetchChats()
-            }, 50000);
+            }, 10000);
             // setStartChat(false)
             return () => {
                 clearTimeout(timer);
@@ -53,7 +56,11 @@ const Chat = () => {
         // };
         timeReRender();
     }, [time]);
-
+    const handleEndMess = ()=>{
+        if (chatEndRef.current) {
+            chatEndRef.current.scrollIntoView();
+        }
+    };
     const handleSend = async () => {
         if (message.mess == "") {
             alert("Please type a message");
@@ -82,6 +89,7 @@ const Chat = () => {
         }
 
     };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setMessage({
@@ -114,8 +122,11 @@ const Chat = () => {
                                 // </p>
                             ))) : (""
                         )}
+                        <div ref={chatEndRef} />
                     </div>
+                    
                     <div className="flex flex-row justify-center items-center pt-2">
+                    <button onClick={handleEndMess} className="mr-2 border border-gray-400 p-1 rounded-lg px-2">V</button>
                         <div className="w-full">
                             <input
                                 type="text"
