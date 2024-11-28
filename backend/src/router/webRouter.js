@@ -4,10 +4,11 @@ import { authorizeAdmin, authenticate, authenticateEJS } from '../midderwere/mid
 import CategoriesController from '../Controller/CategoriesController'
 import ProductController from '../Controller/ProductController'
 import orderController from '../Controller/order/orderController'
+import { uploadProductImg } from '../config/uploadsConfig'
 const router = express.Router()
 const initWebRoute = (app) => {
-    router.get('/',authenticateEJS,  authorizeAdmin, getHomePage)
-//authenticateEJS, authorizeAdmin, 
+    router.get('/', authenticateEJS, authorizeAdmin, getHomePage)
+    //authenticateEJS, authorizeAdmin, 
 
     //CATEGORY
     router.get('/category', authenticateEJS, authorizeAdmin, CategoriesController.getCategoryPage);
@@ -26,7 +27,8 @@ const initWebRoute = (app) => {
     router.get('/product', authenticateEJS, authorizeAdmin, ProductController.getProductPage);
     //create
     router.get('/product/create', authenticateEJS, authorizeAdmin, ProductController.createProduct);
-    router.post('/product/create', authenticateEJS, authorizeAdmin, ProductController.createProduct);
+    router.post('/product/create', authenticateEJS, authorizeAdmin, uploadProductImg.single('image_url'), ProductController.createProduct);
+
     //update
     router.get('/product/update/:product_id', authenticateEJS, authorizeAdmin, ProductController.updateProduct);
     router.post('/product/update/:product_id', authenticateEJS, authorizeAdmin, ProductController.updateProduct);
@@ -47,6 +49,6 @@ const initWebRoute = (app) => {
         .post(authenticateEJS, authorizeAdmin, orderController.updateOrder)
     // router.get('/user/:userId/orders', orderController.getOrderByIdUser);    
     // router.get('/orders', orderController.getAllOrder); 
-    return app.use('/',router)
+    return app.use('/', router)
 }
 export default initWebRoute

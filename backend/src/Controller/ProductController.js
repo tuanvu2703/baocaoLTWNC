@@ -1,5 +1,6 @@
 import productModel from '../model/productModel'
 import categoryModel from '../model/categoryModel';
+import multer from 'multer'
 const createProduct = async (req, res) => {
     const listCategories = await categoryModel.getAllCategory();
     if (req.method === "GET") {
@@ -12,7 +13,9 @@ const createProduct = async (req, res) => {
         )
     }
     if (req.method === "POST") {
-        const { product_name, description, price, discount, stock, image_url, category_id } = req.body;
+        const image_url = req.file ? `uploads/product/${req.file.filename}` : null;
+        console.log(req.file)
+        const { product_name, description, price, discount, stock, category_id } = req.body;
         const result = await productModel.createProduct(product_name, description, price, discount, stock, image_url, category_id)
         //alert
         req.session.message = "Product created successfully!";
