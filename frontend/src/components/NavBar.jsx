@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useEffect } from 'react';
 export default function NavBar({ themes, currentTheme, changeTheme }) {
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
@@ -15,6 +15,15 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
             // window.location.reload();// reload lại trang không có này thì search rồi search thêm phát nữa dữ liệu ko đổi
         }
     };
+
+    //token
+    const [token, setToken] = useState(null);
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        setToken(storedToken);
+    }, []);
+
     return (
         <div className="navbar bg-base-100 border-b-[1px] border-purple-600 fixed z-50">
             <div className="flex-1">
@@ -66,48 +75,55 @@ export default function NavBar({ themes, currentTheme, changeTheme }) {
                         </div>
                     </div>
                 </div>
-                <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                        <div className="w-10 rounded-full">
-                            <img
-                                alt="Tailwind CSS Navbar component"
-                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                {token !== null ? (
+                    <div className="dropdown dropdown-end">
+                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                            <div className="w-10 rounded-full">
+                                <img
+                                    alt="Tailwind CSS Navbar component"
+                                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                            </div>
                         </div>
-                    </div>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li>
-                            <Link className="justify-between">
-                                Profile
-                                <span className="badge">New</span>
-                            </Link>
-                        </li>
-                        <li><a href='/order'>OrderDetail</a></li>
-                        <li><Link>Settings</Link></li>
-                        <li>
-                            <select
-                                className=""
-                                value={currentTheme}
-                                onChange={(e) => changeTheme(e.target.value)}
-                            >
-                                {themes.map((theme) => (
-                                    <option key={theme} value={theme}>
-                                        {theme.charAt(0).toUpperCase() + theme.slice(1)}
-                                    </option>
-                                ))}
-                            </select>
-                        </li>
-                        <li>
-                            {/* <a
+
+                        <ul
+                            tabIndex={0}
+                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                            <li>
+                                <Link className="justify-between">
+                                    Profile
+                                    <span className="badge">New</span>
+                                </Link>
+                            </li>
+                            <li><a href='/order'>OrderDetail</a></li>
+                            <li><Link>Settings</Link></li>
+                            <li>
+                                <select
+                                    className=""
+                                    value={currentTheme}
+                                    onChange={(e) => changeTheme(e.target.value)}
+                                >
+                                    {themes.map((theme) => (
+                                        <option key={theme} value={theme}>
+                                            {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                                        </option>
+                                    ))}
+                                </select>
+                            </li>
+                            <li>
+                                {/* <a
                                 // onClick={() => handleLogout(navigate)}  // Trigger logout here
                             >
                                 Logout
                             </a> */}
-                            <Link>Logout</Link>
-                        </li>
-                    </ul>
-                </div>
+                                <Link>Logout</Link>
+                            </li>
+                        </ul>
+                    </div>
+                ) : (
+                    <div className="m-1 z-10">
+                        <Link to={"/login"} className='bg-[#007bff] px-3 py-3 rounded-lg'>Đăng nhập</Link>
+                    </div>
+                )}
             </div>
         </div>
     )
