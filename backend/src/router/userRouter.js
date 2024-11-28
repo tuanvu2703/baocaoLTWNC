@@ -16,6 +16,8 @@ import {
     verifyOtpResetPassword,
     currentUser,
     logoutEJS,
+    activeUser,
+    InsertUser,
 
 } from '../Controller/userController';
 import { refreshAccessToken } from '../midderwere/createToken';
@@ -31,7 +33,11 @@ const router = express.Router();
 router.post('/register', validateRegister, validate, register);
 router.post('/login', login);
 router.get('/currentuser', authenticate, currentUser);
-router.post('/logout', authenticate, logoutEJS);
+router.post('/logout', authenticateEJS, logoutEJS);
+
+router.get('/inseruser', authenticateEJS, authorizeAdmin,InsertUser)
+router.post('/inseruser', authenticateEJS, authorizeAdmin, InsertUser)
+
 
 //for user
 router.put('/updateuser', authenticate, updateUser);
@@ -51,6 +57,7 @@ router.get('/loginpage', renderLoginPage);
 router.post('/updateuser/:id', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
 router.get('/userdetails/:id', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
 router.get('/', authenticateEJS, authorizeAdmin, renderListUsersPage);
+router.post('/activeUser', authenticateEJS, authorizeAdmin, activeUser)
 
 
 export default router;

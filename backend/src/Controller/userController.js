@@ -5,6 +5,8 @@ import { sendMail } from '../config/sendmail';
 import crypto from 'crypto';
 
 
+
+
 // ===================================================API=====================================================================
 const register = async (req, res) => {
   try {
@@ -187,6 +189,17 @@ const verifyOtpResetPassword = async (req, res) => {
   }
 };
 
+const activeUser = async(req,res) => {
+  try {
+    const { userId } = req.body
+    const result = await userModel.activeUser(userId)
+    console.log(userId);
+    res.redirect(`/user/userdetails/${ userId }`);
+  } catch (error) {
+    console.log('error from usercontroller: ActiveUser');
+    return res.status(500).json({ message: 'An error occurred while processing your request.' });
+  }
+}
 
 
 // =========================================EJS RENDER PAGE===================================================================
@@ -319,6 +332,43 @@ const renderListUsersPage = async (req, res) => {
 };
 
 
+const InsertUser = async (req, res) => {
+  if (req.method === "GET") {
+      res.render('index',
+          {
+              title: "inserUser",
+              page: "insertUser"
+          }
+      )
+  }
+  if (req.method === "POST") {
+
+      const html = `<h1>The accout is insert for admin</h1>
+        <p>This is your account <strong>< ${email} </strong><, please do not share it with anyone.</p>
+        <p>Password:<strong> ${password} </strong><.</p>
+        <p>OTP: <strong>${otp}</strong></p>`;
+
+      const { email, password } = req.body
+      const result = await userModel.InserUser(email, password)
+      await sendMail(email,html)
+
+      req.session.message = "Insert User created successfully!";
+      res.redirect("/user");
+  }
+}
+
+// const InsertUser = async(req,res) => {
+//   try {
+//     res.render()
+//     const {email, password} = req.body
+
+//     const user  = await userModel.InserUser(email, password)
+//     res.redirect('/user')
+//   } catch (error) {
+//     console.log('error from userController', error);
+//   }
+// }
+
 
 const renderLoginPage = (req, res) => {
   try {
@@ -330,10 +380,16 @@ const renderLoginPage = (req, res) => {
 };
 
 const logoutEJS = (req, res) => {
-  req.session.destroy();
-  req.cookies.destroy();
-  res.redirect('/login');
-}
+
+  req.session.destroy((error) => {
+    if (error) {
+      console.log('Error destroying session:', error);
+      return res.status(500).json({ message: 'Failed to log out' });
+    }
+    res.clearCookie('token');
+    res.redirect('/');
+  });
+};
 
 const logout = (req, res) => {
   req.session.destroy();
@@ -354,6 +410,8 @@ export {
   sendMailAPI,
   verifyOtpResetPassword,
   currentUser,
+  activeUser,
+  InsertUser,
 
   //ejs
   updateUser,
