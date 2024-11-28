@@ -91,8 +91,20 @@ const Login = () => {
                     </label>
                     {error && <p className="">{error}</p>}
                     <button className='bg-sky-500 rounded-xl p-3 mt-5' type="submit">Login</button>
-                    <Link to={'/register'} className='text-blue-700'>Register</Link>
+                    
                 </form>
+                <p className="text-center mt-4">
+                    You have'nt an account?{' '}
+                    <Link to="/register" className="text-blue-600 hover:underline">
+                    Register
+                    </Link>
+                </p>
+                <p className="text-center mt-4">
+                    Forgot password?{' '}
+                    <Link to="/forgotpassword" className="text-blue-600 hover:underline">
+                    Reset password
+                    </Link>
+                </p>
             </div>
         </div>
     );

@@ -140,10 +140,11 @@ const activeUser = async (id) => {
       throw new Error('User not found');
     }
     const newIsActive = user.isActive === 1 ? 0 : 1;
-    await connection.execute(
+    const result = await connection.execute(
       'UPDATE users SET isActive = ? WHERE id = ?',
       [newIsActive, id]
     );
+    return result;
   } catch (error) {
     console.log('Error:', error);
   }
@@ -188,6 +189,44 @@ const resetPassword = async (email, newPassword) => {
 
   }
 };
+const InserUser = async(email, password) => {
+  try {
+    const userExiting = await findUserByIdentifier(email)
+    if(!userExiting){
+      throw new error('Email is Exit, please try agian')
+    }
+      const result = await connection.execute(
+        'INSERT INTO users(email, password) VALUES(?, ?)', [email,password]
+      )
+      return result
+  } catch (error) {
+    console.log('error from userModel: ',error);
+  }
+}
+
+// const activeUser = async (id) => {
+//   try {
+//     // Tìm người dùng theo ID
+//     const [rows] = await connection.execute('SELECT isActive FROM users WHERE id = ?', [id]);
+//     if (rows.length === 0) {
+//       throw new Error('User not found');
+//     }
+
+//     // Đảo ngược giá trị của isActive
+//     const newIsActive = rows[0].isActive === 1 ? 0 : 1;
+
+//     // Cập nhật giá trị của isActive
+//     const result = await connection.execute(
+//       'UPDATE users SET isActive = ? WHERE id = ?',
+//       [newIsActive, id]
+//     );
+
+//     return result;
+//   } catch (error) {
+//     console.log('Error:', error);
+//     throw error;
+//   }
+// };
 
 export {
   //user and admin
@@ -208,7 +247,7 @@ export {
 
   getListUser,
   activeUser,
-
+  InserUser,
 }
 
 

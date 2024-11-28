@@ -13,9 +13,13 @@ import {
     getUserbyid,
     requestResetPassword,
     sendMailAPI,
-    verifyOtpResetPassword,
+    verifyOtp,
+    resetPassword,
+    // verifyOtpResetPassword,
     currentUser,
     logoutEJS,
+    activeUser,
+    InsertUser,
 
 } from '../Controller/userController';
 import { refreshAccessToken } from '../midderwere/createToken';
@@ -33,6 +37,10 @@ router.post('/login', login);
 router.get('/currentuser', authenticate, currentUser);
 router.post('/logout', authenticateEJS, logoutEJS);
 
+router.get('/inseruser', authenticateEJS, authorizeAdmin,InsertUser)
+router.post('/inseruser', authenticateEJS, authorizeAdmin, InsertUser)
+
+
 //for user
 router.put('/updateuser', authenticate, updateUser);
 router.post('/updatepassword', authenticate, updatePassword);
@@ -43,7 +51,9 @@ router.get('/getUserbyId', authenticate, getUserbyid);
 //do not check authenticate
 router.post('/sendmail', sendMailAPI);
 router.post('/requestOTP', requestResetPassword);
-router.post('/verifyOTPResetPassword', verifyOtpResetPassword);
+router.post('/verifyOTP', verifyOtp); 
+router.post('/resetPassword', resetPassword); 
+// router.post('/verifyOTPResetPassword', verifyOtpResetPassword);
 
 //Router EJS(render EJS)
 router.post('/loginejs', loginejs);
@@ -51,6 +61,7 @@ router.get('/loginpage', renderLoginPage);
 router.post('/updateuser/:id', authenticateEJS, authorizeAdmin, renderUpdateUserPage);
 router.get('/userdetails/:id', authenticateEJS, authorizeAdmin, renderUserDetailsPage);
 router.get('/', authenticateEJS, authorizeAdmin, renderListUsersPage);
+router.post('/activeUser', authenticateEJS, authorizeAdmin, activeUser)
 
 
 export default router;

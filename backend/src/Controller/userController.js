@@ -5,6 +5,8 @@ import { sendMail } from '../config/sendmail';
 import crypto from 'crypto';
 
 
+
+
 // ===================================================API=====================================================================
 const register = async (req, res) => {
   try {
@@ -153,9 +155,9 @@ const sendMailAPI = async (req, res) => {
   res.status(200).json({ message: 'Email sent successfully' });
 }
 
-const verifyOtpResetPassword = async (req, res) => {
+const verifyOtp = async (req, res) => {
   try {
-    const { email, otp, password } = req.body;
+    const { email, otp } = req.body;
 
     const user = await userModel.findUserByIdentifier(email);
     if (!user) {
@@ -163,16 +165,25 @@ const verifyOtpResetPassword = async (req, res) => {
     }
 
     if (user.OTPEXPRIES < Date.now()) {
-
-
       return res.status(400).json({ message: 'OTP has expired.' });
     }
 
     const hashedOtp = crypto.createHash('sha256', process.env.OTP_SECRET).update(otp).digest('hex');
     if (hashedOtp !== user.OTP) {
-      console.log('database:', user.OTP, 'otp:', hashedOtp);
       return res.status(400).json({ message: 'Invalid OTP.' });
     }
+
+    // Nếu OTP hợp lệ, trả về thành công
+    res.status(200).json({ message: 'OTP is valid.' });
+  } catch (error) {
+    console.error('Error during OTP verification:', error);
+    res.status(500).json({ message: 'An error occurred while processing your request.' });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
     const result = await userModel.resetPassword(email, password);
     if (result) {
@@ -180,13 +191,23 @@ const verifyOtpResetPassword = async (req, res) => {
     } else {
       return res.status(500).json({ message: 'Failed to reset password.' });
     }
-
   } catch (error) {
-    console.log('Error during OTP verification:', error);
+    console.error('Error resetting password:', error);
     return res.status(500).json({ message: 'An error occurred while processing your request.' });
   }
 };
 
+const activeUser = async(req,res) => {
+  try {
+    const { userId } = req.body
+    const result = await userModel.activeUser(userId)
+    console.log(userId);
+    res.redirect(`/user/userdetails/${ userId }`);
+  } catch (error) {
+    console.log('error from usercontroller: ActiveUser');
+    return res.status(500).json({ message: 'An error occurred while processing your request.' });
+  }
+}
 
 
 // =========================================EJS RENDER PAGE===================================================================
@@ -238,35 +259,32 @@ const loginejs = async (req, res) => {
 
 const updatePassword = async (req, res) => {
   try {
-    try {
-      const userId = req.user.id;
-      const { oldPassword, newPassword } = req.body;
+    const userId = req.user.id; // Lấy userId từ yêu cầu (thường là từ token)
+    const { oldPassword, newPassword } = req.body; // Lấy mật khẩu cũ và mới từ body của yêu cầu
 
-      const user = await userModel.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      const isMatch = await bcrypt.compare(oldPassword, user.password);
-      if (!isMatch) {
-        return res.status(401).json({ message: 'Old password is incorrect' });
-      }
-      await userModel.updatePassword(userId, newPassword);
-      res.status(200).json({ message: 'Password updated successfully' });
-    } catch (error) {
-      console.log('Error:', error);
-      res.status(500).json({ message: 'Internal server error' });
+    // Tìm người dùng trong cơ sở dữ liệu
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
+
+    // So sánh mật khẩu cũ với mật khẩu đã băm trong cơ sở dữ liệu
     const isMatch = await bcrypt.compare(oldPassword, user.password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Old password is incorrect' });
     }
+
+    // Cập nhật mật khẩu mới
     await userModel.updatePassword(userId, newPassword);
-    res.status(200).json({ message: 'Password updated successfully' });
+
+    // Trả về phản hồi thành công
+    return res.status(200).json({ message: 'Password updated successfully' });
   } catch (error) {
     console.log('Error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 
 
 const renderUpdateUserPage = async (req, res) => {
@@ -319,6 +337,43 @@ const renderListUsersPage = async (req, res) => {
 };
 
 
+const InsertUser = async (req, res) => {
+  if (req.method === "GET") {
+      res.render('index',
+          {
+              title: "inserUser",
+              page: "insertUser"
+          }
+      )
+  }
+  if (req.method === "POST") {
+
+      const html = `<h1>The accout is insert for admin</h1>
+        <p>This is your account <strong>< ${email} </strong><, please do not share it with anyone.</p>
+        <p>Password:<strong> ${password} </strong><.</p>
+        <p>OTP: <strong>${otp}</strong></p>`;
+
+      const { email, password } = req.body
+      const result = await userModel.InserUser(email, password)
+      await sendMail(email,html)
+
+      req.session.message = "Insert User created successfully!";
+      res.redirect("/user");
+  }
+}
+
+// const InsertUser = async(req,res) => {
+//   try {
+//     res.render()
+//     const {email, password} = req.body
+
+//     const user  = await userModel.InserUser(email, password)
+//     res.redirect('/user')
+//   } catch (error) {
+//     console.log('error from userController', error);
+//   }
+// }
+
 
 const renderLoginPage = (req, res) => {
   try {
@@ -330,11 +385,17 @@ const renderLoginPage = (req, res) => {
 };
 
 const logoutEJS = (req, res) => {
-  req.session.destroy((err) => {
+
+  req.session.destroy((error) => {
+    if (error) {
+      console.log('Error destroying session:', error);
+      return res.status(500).json({ message: 'Failed to log out' });
+    }
     res.clearCookie('token');
-    res.redirect('/user/loginpage');
+    res.redirect('/');
   });
 };
+
 const logout = (req, res) => {
   req.session.destroy();
   req.cookies.destroy();
@@ -352,8 +413,12 @@ export {
   getUserbyid,
   requestResetPassword,
   sendMailAPI,
-  verifyOtpResetPassword,
+  verifyOtp,
+  resetPassword,
+  // verifyOtpResetPassword,
   currentUser,
+  activeUser,
+  InsertUser,
 
   //ejs
   updateUser,
