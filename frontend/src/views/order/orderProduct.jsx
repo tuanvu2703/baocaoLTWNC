@@ -10,7 +10,7 @@ const OrderProduct = () => {
     const [formData, setFormData] = useState({
         status: "pending",
         description: "",
-        payment: "credit_card",
+        payment: "Payment_upon_receipt",
         address: "",
         phone: "",
         email: "",
@@ -77,7 +77,7 @@ const OrderProduct = () => {
 
                 setTimeout(() => {
                     navigate("/");
-                }, 4000);
+                }, 2000);
             }
         } catch (err) {
             console.error('Error posting order:', err);
@@ -133,8 +133,6 @@ const OrderProduct = () => {
                 {successMessage.text && (
                     <NotificationOrder successMessage={successMessage.text} bg={successMessage.bgr} />
                 )}
-
-
                 <form onSubmit={handleSubmit} className="w-2/3 max-w-2xl p-6 bg-white shadow-lg rounded-lg ">
                     {/* <div className="mb-4 flex items-center">
                         <label className="block text-lg font-medium text-gray-700 mr-4">Quantity:</label>

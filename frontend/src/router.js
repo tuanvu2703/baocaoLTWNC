@@ -16,6 +16,7 @@ import DetailProduct from "./views/DetailProduct";
 import Order from "./views/order/order";
 import OrderProductCart from "./views/order/orderProductCart";
 import CurrentCart from "./components/currentCart";
+import CancelOrder from "./views/order/cancelOrder";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -44,7 +45,7 @@ export const route = createBrowserRouter([
                 children: [
                     { index: true, element: <AllProduct /> },
                     {
-                        path: "category", // Dynamic route for categories
+                        path: "category",
                         element: <ProductByCategory />,
                     },
                 ]
@@ -54,32 +55,31 @@ export const route = createBrowserRouter([
                 element: <OrderProduct />
             },
             {
-                path: "Order",
-                element: <Order/>
+                path: "order",
+                element: <Order />,
             },
             {
-                path: "user/profile", // Add UserProfile route
+                path: "user/profile",
                 element: <UserProfile />,
             },
             {
                 path: "/search",
-                element: <SearchProductName /> // Existing search route
+                element: <SearchProductName /> 
             },
             {
                 path: "/product/:id",
-                element: <DetailProduct /> // Existing search route
+                element: <DetailProduct /> 
             },
 
-            
+
             {
                 path: "/orderCart",
-                element: <OrderProductCart /> // Existing search route
+                element: <OrderProductCart />
             },
             {
-                path:"/user/currentCart",
+                path: "/user/currentCart",
                 element: <CurrentCart />
             }
-
         ],
     },
     {

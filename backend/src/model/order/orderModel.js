@@ -56,6 +56,18 @@ const updateOrder = async (data) => {
         throw error;
     }
 };
+const updateStatusOrder = async (id, status) => {
+    try {
+        const [result] = await connection.query(
+            "UPDATE orders SET status = ? WHERE id = ?",
+            [status, id]
+        );
+        return result;
+    } catch (error) {
+        console.error("Failed to update status order:", error.message);
+        throw error;
+    }
+};
 const getOrderById = async (id) => {
     try {
         const [rows] = await connection.query(
@@ -178,5 +190,7 @@ export default {
     getOrderByIdAndIdUser,
     geProductById,
     getAllProductByIdOrder,
-    getProductsCart
+    getProductsCart,
+    updateStatusOrder,
+    
 }  

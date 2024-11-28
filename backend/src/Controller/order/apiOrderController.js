@@ -71,11 +71,25 @@ const UserOrderById = async (req, res) => {
 };
 const UserCancelOrderById = async (req, res) => {
     const userId = req.user.id;
-    const orderId = req.orderId;
+    const { orderId } = req.params;
     if (req.method === "POST") {
-        return;
+        try {
+            const order = await orderModel.getOrderByIdAndIdUser(userId, orderId);
+            if (order.status == "pending") {
+                if (!order || order.length === 0) {
+                    return res.status(404).json({ success: false, message: "not order." });
+                } else {
+                    const updateCancel = await orderModel.updateStatusOrder(orderId, 'cancelled')
+                    return res.status(200).json({ success: true, message: "order cancelled sucssess" })
+                }
+            } else {
+                return res.status(500).json({ success: false, message: "order not pending" })
+            }
+        } catch (error) {
+            return res.status(500).json({ success: false, message: "err not post",orderId })
+        }
     } else {
-        return res.status(405).json({ success: false, message: "Phương thức không hợp lệ." });
+        return res.status(405).json({ success: false, message: "req not fo." });
     }
 };
 const productShow = async (req, res) => {
@@ -94,7 +108,7 @@ const productShow = async (req, res) => {
     }
 };
 const productCart = async (req, res) => {
-    const userId  = req.user.id;
+    const userId = req.user.id;
     if (req.method === "GET") {
         try {
             const products = await orderModel.getProductsCart(userId);
@@ -158,7 +172,7 @@ const order = async (req, res) => {
                             category_id: product.category_id,
                             price: product.price,
                             created_at: new Date(),
-                            status: product.status || "pending", 
+                            status: product.status || "pending",
                             quantity: product.quantity,
                             img: product.img,
                         };

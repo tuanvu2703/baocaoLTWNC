@@ -47,6 +47,9 @@ const initWebRoute = (app) => {
     router.route('/order/editOrder/:idOrder')
         .get(authenticateEJS, authorizeAdmin, orderController.updateOrder)
         .post(authenticateEJS, authorizeAdmin, orderController.updateOrder)
+    router.post('/order/accect/:idOrder', authenticateEJS, authorizeAdmin, orderController.accectShiping);
+    router.post('/order/cancel/:idOrder', authenticateEJS, authorizeAdmin, orderController.cancelShiping);
+    router.post('/order/success/:idOrder', authenticateEJS, authorizeAdmin, orderController.shippingSuccess);
     // router.get('/user/:userId/orders', orderController.getOrderByIdUser);    
     // router.get('/orders', orderController.getAllOrder); 
     return app.use('/', router)

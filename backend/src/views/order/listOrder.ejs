@@ -36,19 +36,39 @@
                             <%= order.payment %>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            <a href="/order/<%= order.id %>">
-                                <button
-                                    class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
-                                    Accect Ship
-                                </button>
-                            </a>
-                            <a href="/order/<%= order.id %>">
-                                <button
-                                    class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-                                    Detail
-                                </button>
-                            </a>
-                            
+                            <% if (order.status==="pending" ) { %>
+                                <form method="post" action="/order/accect/<%= order.id %>">
+                                    <button
+                                        class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+                                        Accept Ship
+                                    </button>
+                                </form>
+                                <% } %>
+
+                                    <% if (order.status==="completed" ) { %>
+                                        <form method="post" action="/order/cancel/<%= order.id %>">
+                                            <button
+                                                class="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded">
+                                                Cancel Ship
+                                            </button>
+                                        </form>
+                                        <% } %>
+
+                                            <% if (order.status==="completed" ) { %>
+                                                <form method="post" action="/order/success/<%= order.id %>">
+                                                    <button
+                                                        class="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded">
+                                                        Ship Success
+                                                    </button>
+                                                </form>
+                                                <% } %>
+                                                    <a href="/order/<%= order.id %>">
+                                                        <button
+                                                            class="bg-transparent hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded">
+                                                            Detail
+                                                        </button>
+                                                    </a>
+
                         </td>
                     </tr>
                     <% }); %>
