@@ -3,6 +3,7 @@ import orderModel from "../../model/order/orderModel";
 const UserOrder = async (req, res) => {
     const userId = req.user.id;
     if (req.method === "GET") {
+        //lấy tất cả order dựa trên id user
         try {
             const orders = await orderModel.getOrderByIdUser(userId);
             if (!orders || orders.length === 0) {
