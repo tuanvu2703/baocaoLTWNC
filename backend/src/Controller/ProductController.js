@@ -14,10 +14,12 @@ const createProduct = async (req, res) => {
     }
     if (req.method === "POST") {
         const image_url = req.file ? `uploads/product/${req.file.filename}` : null;
-        console.log(req.file)
+        console.log('img: ',image_url)
+        console.log('file name',req.file.filename, "req file", req.file);
         const { product_name, description, price, discount, stock, category_id } = req.body;
         const result = await productModel.createProduct(product_name, description, price, discount, stock, image_url, category_id)
         //alert
+        console.log(result);
         req.session.message = "Product created successfully!";
         res.redirect("/Product");
     }

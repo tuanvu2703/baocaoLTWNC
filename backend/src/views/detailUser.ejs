@@ -60,9 +60,16 @@
 
       <div class="form-group">
         <strong>Date of Birth:</strong>
-        <% const d=new Date(user.born); const day=(`0${d.getDate()}`).slice(-2); const month=(`0${d.getMonth() +
-          1}`).slice(-2); const year=d.getFullYear(); const formattedDate=`${year}-${month}-${day}`; // Định dạng cho
-          input type="date" %>
+        <%
+          let formattedDate = '';
+          if (user.born) {
+            const d = new Date(user.born);
+            const day = (`0${d.getDate()}`).slice(-2);
+            const month = (`0${d.getMonth() + 1}`).slice(-2);
+            const year = d.getFullYear();
+            formattedDate = `${year}-${month}-${day}`;
+          }
+        %>
           <input type="date" id="born" name="born" value="<%= user.born ? formattedDate : '' %>" class="form-control">
           <% if (!user.born) { %>
             <small>User has not updated yet</small>
