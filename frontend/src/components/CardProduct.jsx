@@ -29,6 +29,7 @@ export default function CardProduct({ product }) {
             </figure>
             <div className="card-body">
                 <h2 className="card-title">{product.product_name}</h2>
+                <p>{product.category_name}</p>
                 <p>Price: {product.price}</p>
                 <div className="card-actions justify-end">
                     <byOrder.byOneProduct idproduct={product.product_id} />
