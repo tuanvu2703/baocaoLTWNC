@@ -31,7 +31,7 @@ const router = express.Router();
 router.post('/register', validateRegister, validate, register);
 router.post('/login', login);
 router.get('/currentuser', authenticate, currentUser);
-router.post('/logout', authenticate, logoutEJS);
+router.post('/logout', authenticateEJS, logoutEJS);
 
 //for user
 router.put('/updateuser', authenticate, updateUser);

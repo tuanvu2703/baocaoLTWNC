@@ -40,7 +40,7 @@
         <div></div> <!-- Đẩy nút Logout xuống dưới -->
         <% if (user) { %>
             <!-- Đã đăng nhập -->
-            <form action="/logout" method="POST" class="flex flex-col items-center space-y-4">
+            <form action="/user/logout" method="POST" class="flex flex-col items-center space-y-4">
                 <div class="text-gray-600 text-xl uppercase">
                     <%= user.username %>
                 </div>

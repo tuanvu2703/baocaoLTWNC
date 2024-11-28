@@ -330,11 +330,11 @@ const renderLoginPage = (req, res) => {
 };
 
 const logoutEJS = (req, res) => {
-  req.session.destroy();
-  req.cookies.destroy();
-  res.redirect('/login');
-}
-
+  req.session.destroy((err) => {
+    res.clearCookie('token');
+    res.redirect('/user/loginpage');
+  });
+};
 const logout = (req, res) => {
   req.session.destroy();
   req.cookies.destroy();
