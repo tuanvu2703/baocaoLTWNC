@@ -14,8 +14,8 @@ const createProduct = async (req, res) => {
     }
     if (req.method === "POST") {
         const image_url = req.file ? `uploads/product/${req.file.filename}` : null;
-        console.log('img: ',image_url)
-        console.log('file name',req.file.filename, "req file", req.file);
+        console.log('img: ', image_url)
+        console.log('file name', req.file.filename, "req file", req.file);
         const { product_name, description, price, discount, stock, category_id } = req.body;
         const result = await productModel.createProduct(product_name, description, price, discount, stock, image_url, category_id)
         //alert
@@ -28,7 +28,7 @@ const createProduct = async (req, res) => {
 const getProductPage = async (req, res) => {
     const listproduct = await productModel.getAllProduct();
     res.render("index", {
-        title: "Sản phẩm",
+        title: "Products",
         page: "products",
         data: listproduct
     })
@@ -39,12 +39,14 @@ const updateProduct = async (req, res) => {
         const id = req.params.product_id;
         const listCategories = await categoryModel.getAllCategory();
         const oneIdProduct = await productModel.findproductByID(id);
+        console.log(oneIdProduct)
         res.render('index',
             {
                 title: "Update Product",
                 page: "updateProduct",
-                category: listCategories,
-                data: oneIdProduct
+                data: oneIdProduct,
+                category: listCategories
+
             }
         )
     }
