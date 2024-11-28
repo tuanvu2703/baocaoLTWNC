@@ -13,7 +13,9 @@ import {
     getUserbyid,
     requestResetPassword,
     sendMailAPI,
-    verifyOtpResetPassword,
+    verifyOtp,
+    resetPassword,
+    // verifyOtpResetPassword,
     currentUser,
     logoutEJS,
     activeUser,
@@ -49,7 +51,9 @@ router.get('/getUserbyId', authenticate, getUserbyid);
 //do not check authenticate
 router.post('/sendmail', sendMailAPI);
 router.post('/requestOTP', requestResetPassword);
-router.post('/verifyOTPResetPassword', verifyOtpResetPassword);
+router.post('/verifyOTP', verifyOtp); 
+router.post('/resetPassword', resetPassword); 
+// router.post('/verifyOTPResetPassword', verifyOtpResetPassword);
 
 //Router EJS(render EJS)
 router.post('/loginejs', loginejs);

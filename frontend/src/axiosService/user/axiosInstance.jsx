@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // Tạo instance axios với cấu hình chung cho tất cả các yêu cầu
 const axiosInstance = axios.create({
+  
   baseURL: 'http://localhost:3001/',  // Thay URL API của bạn ở đây
   timeout: 10000,  // Thời gian timeout cho yêu cầu
 });
@@ -9,7 +10,7 @@ const axiosInstance = axios.create({
 // Request interceptor - tự động thêm access token vào header
 axiosInstance.interceptors.request.use(
   (config) => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('token');
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }

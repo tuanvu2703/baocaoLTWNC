@@ -16,6 +16,10 @@ import DetailProduct from "./views/DetailProduct";
 import Order from "./views/order/order";
 import OrderProductCart from "./views/order/orderProductCart";
 import CurrentCart from "./components/currentCart";
+import { ForgotPassword } from "./components/ForgotPassword";
+import { VerifyOtp } from "./components/VerifyOtp";
+import { ResetPassword } from "./components/ResetPassword";
+import { ChangePassword } from "./components/ChangePassword";
 import CancelOrder from "./views/order/cancelOrder";
 // export default function Router() {
 //     return (
@@ -77,6 +81,10 @@ export const route = createBrowserRouter([
             {
                 path: "/user/currentCart",
                 element: <CurrentCart />
+            },
+            {
+                path:"/user/changepassword",
+                element: <ChangePassword />
             }
         ],
     },
@@ -88,6 +96,22 @@ export const route = createBrowserRouter([
         path: "/register",
         element: <Register />,
     },
+
+    {
+        path: "/forgotpassword",
+        element: <ForgotPassword />,
+    },
+
+    {
+        path: "/verifyotp",
+        element: <VerifyOtp />,
+    },
+
+    {
+        path: "/resetPassword",
+        element: <ResetPassword />,
+    },
+
     {
         path: "/*",
         element: <NoPage />,
