@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
+
 const Login = () => {
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
@@ -14,20 +15,36 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3001/user/login', { identifier, password });
-            console.log(response);
+
             if (response.data) {
-                console.log(response.data);
-                // Lưu thông tin người dùng vào localStorage
-                localStorage.setItem('token', response.data.accessToken);
-                // Chuyển hướng đến trang chủ
-                navigate('/');
+                const { accessToken, role } = response.data;
+
+                // Kiểm tra role trước khi lưu token
+                if (role === 0) { // Admin
+                    // Lưu token vào cookies cho trang admin
+                    // Cookies.set('token', accessToken, { expires: 7, path: '/', domain: 'localhost' });
+                    // Chuyển hướng đến trang admin
+                    window.location.href = 'http://localhost:3001/';
+                } else if (role === 1) { // User
+
+                    localStorage.setItem('token', accessToken);
+
+                    // Ở lại trang hiện tại (chỉ cần gọi navigate('/') để chuyển hướng nếu cần)
+                    navigate('/');
+                } else {
+                    setError('Invalid role. Please contact support.');
+                }
             } else {
-                setError(response.data.message);
+                setError(response.data.message || 'Login failed.');
             }
         } catch (error) {
+            console.error(error);
             setError('An error occurred. Please try again.');
         }
     };
+
+    
+    
 
     return (
         <div className="grid place-items-center min-h-screen">

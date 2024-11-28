@@ -39,7 +39,12 @@ app.use((req, res, next) => {
 });
 //cookie
 app.use(cookieParser());
-
+app.use(
+    cors({
+      origin: "http://localhost:3000", 
+      credentials: true, 
+    })
+  );
 //session vào ejs
 app.use((req, res, next) => {
     res.locals.user = req.user;

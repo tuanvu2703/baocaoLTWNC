@@ -41,7 +41,6 @@ const login = async (req, res) => {
   try {
     const { identifier, password } = req.body;
     const user = await userModel.login(identifier, password);
-
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -49,7 +48,6 @@ const login = async (req, res) => {
     if (user.isActive !== 1) {
       return res.status(403).json({ message: 'Your account is not active. Please contact support.' })
     }
-
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatch) {
@@ -62,8 +60,12 @@ const login = async (req, res) => {
 
     console.log(user.username);
 
-    res.status(200).json({ message: 'Login successful', ...tokens });
-
+    res.status(200).json({
+      message: 'Login successful',
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+      role: user.role, 
+    });
   } catch (error) {
     console.log('Error:', error);
     res.status(401).json({ message: 'Invalid email/username or password' });
@@ -192,29 +194,44 @@ const loginejs = async (req, res) => {
     const { identifier, password } = req.body;
     const user = await userModel.login(identifier, password);
 
-    // Kiểm tra tài khoản không kích hoạt
+    // Kiểm tra nếu tài khoản không hoạt động
     if (user.isActive !== 1) {
-      return res.render('login', { error: 'Your account is not active. Please contact support.', username: identifier });
+      return res.render('login', {
+        error: 'Your account is not active. Please contact support.',
+        username: identifier,
+      });
     }
 
     // Kiểm tra mật khẩu
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      return res.render('login', { error: 'Invalid password. Please try again.', username: identifier });
+      return res.render('login', {
+        error: 'Invalid password. Please try again.',
+        username: identifier,
+      });
     }
+    console.log(user.username);
 
-    // Nếu mật khẩu đúng, tạo token và lưu thông tin người dùng vào session
-    const tokens = await generateToken(user.id, res);
+    if (user.role === 0) {
+
+    const token = await generateToken(user.id, res);
     req.session.username = user.username;
     req.session.user = user;
-
-    console.log(user.username);
-    res.redirect('/');  // Chuyển hướng sau khi đăng nhập thành công
+      return res.redirect('http://localhost:3001/');
+    } else if (user.role === 1) {
+      return res.redirect('http://localhost:3000/login');
+    } else {
+      return res.render('login', {
+        error: 'Invalid role. Please contact support.',
+        username: identifier,
+      });
+    }
   } catch (error) {
-    console.log('Error:', error);
-    res.status(500).json({ message: 'An error occurred during login' });
+    console.error('Error:', error);
+    return res.status(500).json({ message: 'An error occurred during login' });
   }
 };
+
 
 
 const updatePassword = async (req, res) => {
@@ -344,5 +361,6 @@ export {
   renderLoginPage,
   loginejs,
   logoutEJS,
+  logout,
 
 }
