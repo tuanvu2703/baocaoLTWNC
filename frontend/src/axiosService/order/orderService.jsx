@@ -61,6 +61,26 @@ const getAllOrder = async () => {
         return (error)
     }
 };
+const getDataOrderById = async (id) => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No access token found in localStorage");
+            return null;  
+        }
+        const response = await axios.get(`http://localhost:3001/api/order/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        if (response.data && response.data.success) {
+            return { success: true, order: response.data.order, products: response.data.products };
+        } else {
+            return { success: false, message: response.data.message || "Failed to fetch order" };
+        }
+    } catch (error) {
+        return { success: false, message: "error fetching the order" };
+    }
+};
+
 const cancelOrder = async ({idorder}) => {
     try {
         const token = localStorage.getItem("token");
@@ -83,4 +103,5 @@ export default {
     postOrder,
     getAllOrder,
     cancelOrder,
+    getDataOrderById,
 }
