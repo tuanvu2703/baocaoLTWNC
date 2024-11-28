@@ -25,8 +25,9 @@ const Login = () => {
                     // Cookies.set('token', accessToken, { expires: 7, path: '/', domain: 'localhost' });
                     // Chuyển hướng đến trang admin
                     window.location.href = 'http://localhost:3001/';
+                    localStorage.setItem('token', accessToken);
                 } else if (role === 1) { // User
-
+                   
                     localStorage.setItem('token', accessToken);
 
                     // Ở lại trang hiện tại (chỉ cần gọi navigate('/') để chuyển hướng nếu cần)
