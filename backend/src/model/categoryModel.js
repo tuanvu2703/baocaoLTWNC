@@ -16,7 +16,7 @@ const updateCategory = async (category_name, description, id) => {
 }
 
 const searchCategorybyname = async (category_name) => {
-        const [result] = await connection.execute(`SELECT * FROM categories WHERE LOWER(category_name) LIKE LOWER(?)`, [`%${category_name}%`])
+        const [result] = await connection.execute(`SELECT c.*, COUNT(p.product_id) AS total_products FROM categories c LEFT JOIN products p ON c.id = p.category_id WHERE LOWER(category_name) LIKE LOWER(?)`, [`%${category_name}%`])
         return result
 }
 
