@@ -21,6 +21,7 @@ import { VerifyOtp } from "./components/VerifyOtp";
 import { ResetPassword } from "./components/ResetPassword";
 import { ChangePassword } from "./components/ChangePassword";
 import CancelOrder from "./views/order/cancelOrder";
+import ProductsOrderDetail from "./views/order/productsOrderDetail";
 // export default function Router() {
 //     return (
 //         <BrowserRouter>
@@ -61,6 +62,10 @@ export const route = createBrowserRouter([
             {
                 path: "order",
                 element: <Order />,
+            },
+            {
+                path: "order/",
+                element: <ProductsOrderDetail />,
             },
             {
                 path: "user/profile",

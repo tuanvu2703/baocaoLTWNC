@@ -1,7 +1,8 @@
 import connection from "../../DB/connectDB";
 const addOrder = async (data) => {
     const { status, description, payment, idUserCreate, address, phone, email } = data;
-    const dateTimeCreate = new Date().toISOString().slice(0, 19).replace('T', ' '); // YYYY-MM-DD HH:mm:ss
+    const dateTimeCreate = new Date().toISOString().slice(0, 19).replace('T', ' '); // YYYY-MM-DD HH:mm:ss.... "2024-11-28T14:45:30.123Z"
+    //https://stackoverflow.com/questions/44689770/why-converting-new-date-toisostring-changes-the-time
     const dateTimeUpdate = ""; 
     try {
         const [result] = await connection.query(

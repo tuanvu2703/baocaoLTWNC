@@ -25,6 +25,7 @@
                 <%= order.status %>
             </p>
         </div>
+        
         <div class="mb-4">
             <p class="text-lg"><strong>Description:</strong>
                 <%= order.description %>
@@ -97,7 +98,7 @@
                             <%= product.status %>
                         </td>
                         <td class="py-3 px-4 border-b">
-                            <img src="<%= product.img %>" alt="<%= product.name %>"
+                            <img src="<%='http://localhost:3001/'+ product.img %>" alt="<%= product.name %>"
                                 class="w-16 h-16 object-cover rounded-md">
                         </td>
                     </tr>
