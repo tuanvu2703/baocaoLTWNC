@@ -17,7 +17,7 @@ const Login = () => {
             const response = await axios.post('http://localhost:3001/user/login', { identifier, password });
 
             if (response.data) {
-                const { accessToken, role } = response.data;
+                const { accessToken, role, username, avatar } = response.data;
 
                 // Kiểm tra role trước khi lưu token
                 if (role === 0) { // Admin
@@ -28,6 +28,7 @@ const Login = () => {
                 } else if (role === 1) { // User
 
                     localStorage.setItem('token', accessToken);
+                    localStorage.setItem('user', JSON.stringify({ username, avatar }));
 
                     // Ở lại trang hiện tại (chỉ cần gọi navigate('/') để chuyển hướng nếu cần)
                     navigate('/');

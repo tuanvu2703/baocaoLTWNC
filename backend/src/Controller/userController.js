@@ -65,6 +65,8 @@ const login = async (req, res) => {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
       role: user.role, 
+      username: user.username,
+      avatar: user.avatar,
     });
   } catch (error) {
     console.log('Error:', error);

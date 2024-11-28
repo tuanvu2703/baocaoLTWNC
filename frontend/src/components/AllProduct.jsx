@@ -53,36 +53,33 @@ export default function AllProduct() {
   return (
     <div className='grid grid-cols-4 mx-5 gap-5'>
       {data.map((product) => (
-
-        <Link key={product.product_id} to={`/product/${product.product_id}`} className="card bg-base-100 w-80 shadow-xl  border-t-[3px] border-l-[3px] border-t-sky-800 border-l-red-800">
+        <div key={product.product_id} className="card bg-base-100 w-80 shadow-xl border-t-[3px] border-l-[3px] border-t-sky-800 border-l-red-800">
           <figure>
             <img
               src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-              alt="" />
+              alt={product.product_name} />
           </figure>
           <div className="card-body">
             <h2 className="card-title">{product.product_name}</h2>
-            <p>Price:{product.price}</p>
+            <p>Price: {product.price}</p>
             <div className="card-actions justify-end">
-              {
-                <byOrder.byOneProduct idproduct={product.product_id} />
-              }
-
+              <byOrder.byOneProduct idproduct={product.product_id} />
             </div>
             <div className="card-actions justify-end">
-
+              <Link to={`/product/${product.product_id}`} className="btn btn-secondary mr-2">
+                View Details
+              </Link>
               <button
                 className="btn btn-primary"
-                onClick={() => handleAddToCart(product.product_id)} 
+                onClick={() => handleAddToCart(product.product_id)}
               >
                 <FaCartPlus className="mr-2" /> Add to Cart
               </button>
             </div>
-
           </div>
-        </Link>
-      ))
-      }
-    </div >
-  )
+        </div>
+      ))}
+    </div>
+  );
 }
+
