@@ -26,19 +26,19 @@ const initAPIRoute = (app) => {
 
     // Order
     apiRouter.route('/order')
-        .get(authenticate, apiOrderController.UserOrder)//xong chưa test
+        .get(authenticate, apiOrderController.UserOrder)//lấy tất cả order dựa trên id user
         // .post(authenticate, apiOrderController.UserOrder)
     apiRouter.route('/orderPay')
         // .get(authenticate, apiOrderController.UserOrder)//xong chưa test
-        .post(authenticate, apiOrderController.order)
+        .post(authenticate, apiOrderController.order)// thêm order từ người mua , data: order , products
     apiRouter.route('/order/productShow/:productId')
-        .get(apiOrderController.productShow)//xong chưa test
+        .get(apiOrderController.productShow)//show thông tin một sản phẩm
     apiRouter.route('/order/:orderId')
-        .get(authenticate, apiOrderController.UserOrderById)//chưa xong
+        .get(authenticate, apiOrderController.UserOrderById)//lấy order của người dùng cụ thể, và id order
         // .put(authenticate, apiOrderController.UserOrderById)//chưa xong
         // .delete(authenticate, apiOrderController.UserOrderById)//chưa xong
     apiRouter.route('/order/cancel/:orderId')
-        .post(authenticate, authorizeAdmin, authenticateEJS, apiOrderController.UserCancelOrderById, authenticate)//chưa xong
+        .post(authenticate, apiOrderController.UserCancelOrderById)//hủy mua một sản phẩm by user
     return app.use("/api", apiRouter)
 }
 export default initAPIRoute;
