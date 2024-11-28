@@ -42,7 +42,7 @@ const detailOrder = async (req, res) => {
             const order = await orderModel.getOrderById(idOrder);
             const products = await orderModel.getAllProductByIdOrder(idOrder);
             if (!order || order.length === 0) {
-                return res.status(404).json({ success: false, message: "Không có đơn hàng nào cho người dùng này." });
+                return res.status(404).json({ success: false, message: "not order." });
             }
             return res.render(indexRender, {
                 title: "Order Page",

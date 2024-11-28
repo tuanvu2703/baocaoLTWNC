@@ -172,7 +172,7 @@ const OrderProductCart = () => {
                     <div className="mb-4">
                         <label htmlFor="phone" className="block text-lg font-medium text-gray-700">Phone </label>
                         <input
-                            type="tel"
+                            type="number"
                             id="phone"
                             name="phone"
                             value={formData.phone}

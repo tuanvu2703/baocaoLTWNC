@@ -1,0 +1,52 @@
+<div>
+    <div id="chat-button" class="fixed bottom-5 right-5">
+        <button id="toggle-chat-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded">
+            Chat
+        </button>
+    </div>
+    <div id="chat-window"
+        class="fixed bottom-10 right-5 w-1/3 min-w-96 h-5/5 min-h-96 bg-white border shadow-lg rounded-lg p-4 hidden">
+        <div class="flex justify-between items-center">
+            <h3 class="text-xl font-semibold">Chat</h3>
+            <button id="close-chat-btn" class="text-red-500 font-bold">X</button>
+        </div>
+        <div class="h-72 overflow-auto border-b pb-4" id="chat-messages">
+            <p class="border mr-16 mb-6 bg-slate-400 p-2">Chat messages...</p>
+            <p class="border ml-16 bg-green-400 p-2">Chat messages...</p>
+        </div>
+        <div class="flex flex-row justify-center items-center pt-2">
+            <input type="text" id="chat-input" placeholder="Type your message"
+                class="w-full px-4 py-2 border rounded-lg" />
+            <button id="send-chat-btn" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded ml-2">
+                Gửi
+            </button>
+        </div>
+    </div>
+    <script>
+        const toggleChatButton = document.getElementById('toggle-chat-btn');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChatButton = document.getElementById('close-chat-btn');
+        const sendChatButton = document.getElementById('send-chat-btn');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        toggleChatButton.addEventListener('click', () => {
+            chatWindow.classList.toggle('hidden');
+        });
+        closeChatButton.addEventListener('click', () => {
+            chatWindow.classList.add('hidden');
+        });
+        sendChatButton.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message !== "") {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('border', 'mr-16', 'mb-6', 'bg-slate-400', 'p-2');
+                messageDiv.textContent = message;
+                chatMessages.appendChild(messageDiv);
+                chatInput.value = ""; // Clear input
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll down
+            } else {
+                alert("Please type a message");
+            }
+        });
+    </script>
+</div>

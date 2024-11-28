@@ -70,8 +70,6 @@ export const route = createBrowserRouter([
                 path: "/product/:id",
                 element: <DetailProduct /> 
             },
-
-
             {
                 path: "/orderCart",
                 element: <OrderProductCart />

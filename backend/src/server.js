@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser'
 import initAPIRoute from "./router/apiRouter";
 import sequelize from "./DB/sequelizeDB";
 import cartRouter from './router/cartRouter';
+
 // import methodOverride from 'method-override';
 const app = express();
 
