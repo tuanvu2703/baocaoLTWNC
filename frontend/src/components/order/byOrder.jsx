@@ -7,13 +7,13 @@ function byOneProduct({ idproduct }) {
         </div>
     );
 }
-function byProductCart({ idproducts }) {
+function byProductCart({ products }) {
     return (
-        <div>
+        <button className="mt-4 p-2 bg-blue-500 text-white rounded-full float-end">
             <form>
-                
+                Buy All Cart
             </form>
-        </div>
+        </button>
     );
 }
 export default {

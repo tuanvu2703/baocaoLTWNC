@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import orderService from "../../axiosService/order/orderService";
 import getParamUrl from "../../components/getParamUrl";
 
-const ProductOrderDetail = () => {
+const ProductOrderDetail = () => {//{ quantity, actionQuantity }
     const [product, setProduct] = useState(null);
     const idproduct = getParamUrl({ name: "idproduct" });
 
@@ -18,14 +18,17 @@ const ProductOrderDetail = () => {
         };
         fetchData();
     }, [idproduct]);
-
+    // const handleQuantityChange = (value) => {
+    //     const newQuantity = Math.max(1, value);
+    //     actionQuantity(newQuantity);
+    // };
     if (!product) {
         return <div>Loading Pproduct ...</div>;
     }
 
     return (
         <div className="w-1/3  bg-white shadow-lg rounded-lg p-4">
-             <h2 className=" font-semibold text-gray-800 mb-6">product detail</h2>
+            <h2 className=" font-semibold text-gray-800 mb-6">product detail</h2>
             <div className="mb-4">
                 <strong>Category ID: </strong>
                 <span>{product.category_id}</span>
@@ -61,6 +64,16 @@ const ProductOrderDetail = () => {
                 <strong>Stock: </strong>
                 <span>{product.stock}</span>
             </div>
+            {/* <div className="mb-4 flex items-center">
+                <label className="block text-lg font-medium text-gray-700 mr-4">Quantity:</label>
+                <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => handleQuantityChange(Number(e.target.value))}
+                    className="w-16 text-center border border-gray-300 focus:outline-none"
+                    min="1"
+                />
+            </div> */}
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCart, deleteCart, clearCart, updateCart } from '../axiosService/cart/cartService';
 import { FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa';
-
+import byOrder from './order/byOrder';
 export default function CurrentCart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,10 +30,10 @@ export default function CurrentCart() {
         setLoading(false);
       }
     };
-  
+
     fetchCart();
   }, []);
-
+  console.log(cartItems, 'a')
   const handleDeleteItem = async (productId) => {
     try {
       await deleteCart(productId);
@@ -115,14 +115,20 @@ export default function CurrentCart() {
           ))}
         </div>
       )}
-      {cartItems.length > 0 && (
-        <button
-          onClick={handleClearCart}
-          className="mt-4 p-2 bg-blue-500 text-white rounded-full"
-        >
-          Clear Cart
-        </button>
-      )}
+      <div className='w-full'>
+        {cartItems.length > 0 && (
+          <button
+            onClick={handleClearCart}
+            className="mt-4 p-2 bg-red-500 text-white rounded-full float-start"
+          >
+            Clear Cart
+          </button>
+        )}
+        {
+          byOrder.byProductCart(cartItems)
+        }
+      </div>
+
     </div>
   );
 }

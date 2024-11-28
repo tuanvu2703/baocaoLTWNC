@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { detailProduct } from '../axiosService/product/productService';
 import { useParams } from 'react-router-dom';
 import BackButton from '../components/BackButton';
+import byOrder from '../components/order/byOrder'
 export default function DetailProduct() {
     const { id } = useParams();
     const [data, setData] = useState([]); // State để lưu dữ liệu từ API
@@ -25,6 +26,8 @@ export default function DetailProduct() {
 
         fetchData(); // Gọi hàm fetch dữ liệu
     }, []); // Mảng dependencies rỗng => chỉ chạy 1 lần sau khi component được render
+
+    
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     return (
@@ -44,7 +47,11 @@ export default function DetailProduct() {
                                 <p className="text-sm text-yellow-800">Stock: {product.stock}</p>
                             </div>
                             <div className="flex justify-between items-center mt-2">
+                                {
+                                    <byOrder.byOneProduct idproduct={product.product_id} />
+                                }
                                 <p className="text-sm text-red-500">Discount: {product.discount}%</p>
+
                                 <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md">Add to Cart</button>
                             </div>
                         </div>
