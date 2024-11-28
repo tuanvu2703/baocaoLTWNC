@@ -26,7 +26,7 @@ const deleteProduct = async (product_id) => {
 }
 const findproductByID = async (id) => {
     const [result] = await connection.execute("SELECT p.product_id, p.product_name,p.price,p.description,p.discount,p.stock,p.image_url,p.status,c.category_name FROM products p, categories c WHERE p.category_id = c.id AND product_id = ?", [id])
-    return result[0]
+    return result
 }
 const findproductByCategory = async (category_id) => {
     const [result] = await connection.execute("SELECT * FROM products WHERE category_id = ?", [category_id])

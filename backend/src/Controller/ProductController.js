@@ -39,17 +39,17 @@ const updateProduct = async (req, res) => {
         const id = req.params.product_id;
         const listCategories = await categoryModel.getAllCategory();
         const oneIdProduct = await productModel.findproductByID(id);
-        console.log(oneIdProduct)
         res.render('index',
             {
                 title: "Update Product",
                 page: "updateProduct",
-                data: oneIdProduct,
+                data: oneIdProduct[0],
                 category: listCategories
 
             }
         )
-    }
+    };
+    
     if (req.method === "POST") {
         const id = req.params.product_id
         const { product_id, product_name, description, price, discount, stock, image_url, category_id } = req.body;

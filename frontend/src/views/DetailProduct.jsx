@@ -17,17 +17,17 @@ export default function DetailProduct() {
                 setLoading(true); // Bật trạng thái loading
                 const response = await detailProduct(id);
                 setData(response); // Lưu dữ liệu vào state
+                console.log(response)
             } catch (err) {
                 setError(err.message); // Xử lý lỗi
             } finally {
                 setLoading(false); // Tắt trạng thái loading
             }
         };
-
         fetchData(); // Gọi hàm fetch dữ liệu
-    }, []); // Mảng dependencies rỗng => chỉ chạy 1 lần sau khi component được render
+    }, [id]); // Mảng dependencies rỗng => chỉ chạy 1 lần sau khi component được render
 
-    
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     return (
@@ -35,9 +35,9 @@ export default function DetailProduct() {
             <BackButton />
             <div className="bg-background  text-primary-foreground p-4 rounded-3xl shadow-xl max-w-2xl mx-auto mt-8 border-t-[5px] border-t-sky-700 border-l-[5px] border-l-purple-700">
                 {data.map((product) => (
-                    <div>
-                        <img src="https://openui.fly.dev/openui/300x200.svg?text=Product+Image" alt=""
-                            className="w-full h-80 object-cover rounded-t-lg" />
+                    <div key={product.product_id}>
+                        <img src={`http://localhost:3001/${product.image_url}`} alt=""
+                            className="w-full h-96 object-cover rounded-t-lg" />
                         <div className="p-4">
                             <h2 className="text-lg font-semibold">{product.product_name}</h2>
                             <p className="text-sm text-sky-800">{product.category_name}</p>

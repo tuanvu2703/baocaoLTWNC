@@ -24,7 +24,7 @@ export async function searchProduct(params) {
 export async function detailProduct(params) {
     try {
         var request = await axios.get(`http://localhost:3001/api/product/${params}`)
-        return request.data.data
+        return request.data.data;
     }
     catch (error) {
         return error
