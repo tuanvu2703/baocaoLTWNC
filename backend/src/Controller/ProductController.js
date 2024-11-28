@@ -73,7 +73,7 @@ const searchProductbyname = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     const id = req.params.product_id;
-    await productModel.deleteProduct(id)
+    await productModel.deleteProduct(id)    
         .then(() => { req.session.message = `Product deleted successfully!` })
         .catch(() => { req.session.message = `This Product cannot be deleted` }
         )

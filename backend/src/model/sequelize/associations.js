@@ -8,5 +8,4 @@ Cart.belongsTo(Product, { foreignKey: "productId" });
 
 User.hasMany(Cart, { foreignKey: "userId" });
 Cart.belongsTo(User, { foreignKey: "userId" });
-
 export { Cart, Product, User };

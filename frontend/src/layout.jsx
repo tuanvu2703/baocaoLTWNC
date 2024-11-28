@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import Footer from './components/Footer'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import Chat from './components/chatbox/chat'
 export default function Layout() {
     const themes = ["light",
         "dark",
@@ -55,6 +56,7 @@ export default function Layout() {
             <main className='py-16'>
                 <Outlet />
             </main>
+            <Chat />
             <footer className='content-end'>
                 <Footer />
             </footer>

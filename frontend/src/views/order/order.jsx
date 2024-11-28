@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import orderService from '../../axiosService/order/orderService';
-
+import CancelOrder from './cancelOrder';
 const Order = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -50,21 +50,24 @@ const Order = () => {
                                 <tr key={order.id} className="border-b border-gray-200">
                                     <td className="px-6 py-4 text-center">{index + 1}</td>
                                     <td className="px-6 py-4">{order.id}</td>
-                                    <td className="px-6 py-4">{order.status}</td>
+                                    <td className={`px-6 py-4 text-${order.status=="pending"?'blue':(order.status=="cancelled"?'red':'green')}-600`}>{order.status}</td>
                                     <td className="px-6 py-4">{order.description}</td>
                                     <td className="px-6 py-4">{order.dateTimeCreate}</td>
                                     <td className="px-6 py-4">{order.payment}</td>
-                                    <td className="px-6 py-4 text-center">
+                                    <td className="px-6 py-4 text-center ">
                                         <a href={`/order/${order.id}`}>
                                             <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-blue-600 py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                                                 Detail
                                             </button>
                                         </a>
-                                        <a href={`/order/cancel/${order.id}`}>
-                                            <button className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-red-600 py-2 px-4 border border-red-500 hover:border-transparent rounded ml-2">
-                                                Cancel
-                                            </button>
-                                        </a>
+                                        {
+                                            order.status == "pending" ? (
+                                                <div>
+                                                    <CancelOrder idOrder={order.id} />
+                                                </div>
+                                            ) : ("")
+                                        }
+
                                     </td>
                                 </tr>
                             ))

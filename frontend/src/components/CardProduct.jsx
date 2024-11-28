@@ -5,6 +5,7 @@ import { FaCartPlus } from 'react-icons/fa';
 import { addCart } from '../axiosService/cart/cartService';
 
 export default function CardProduct({ product }) {
+    const imageUrl = product.image_url ? `http://localhost:3001/${product.image_url}` : 'https://cdn.dribbble.com/users/3512533/screenshots/14168376/web_1280___8_4x.jpg';
     const handleAddToCart = async (productId) => {
         try {
 
@@ -24,7 +25,7 @@ export default function CardProduct({ product }) {
             <figure>
                 <img
                     className='w-full h-[250px]'
-                    src={`http://localhost:3001/${product.image_url}`}
+                    src={imageUrl}
                     alt={product.product_name} />
             </figure>
             <div className="card-body">

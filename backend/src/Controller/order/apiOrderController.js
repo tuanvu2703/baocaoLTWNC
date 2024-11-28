@@ -7,12 +7,12 @@ const UserOrder = async (req, res) => {
         try {
             const orders = await orderModel.getOrderByIdUser(userId);
             if (!orders || orders.length === 0) {
-                return res.status(404).json({ success: false, message: "Không có đơn hàng nào cho người dùng này." });
+                return res.status(404).json({ success: false, message: "not orders." });
             }
             return res.status(200).json({ success: true, orders: orders });
         } catch (error) {
-            console.error("Lỗi khi lấy đơn hàng của người dùng:", error.message);
-            return res.status(500).json({ success: false, message: "Lỗi khi lấy đơn hàng." });
+            console.error("err get order :", error.message);
+            return res.status(500).json({ success: false, message: "err get order ." });
         }
     } else if (req.method === "POST") {
         // try {
@@ -31,7 +31,7 @@ const UserOrder = async (req, res) => {
         //     return res.status(500).json({ success: false, message: "Lỗi khi lấy đơn hàng." });
         // }
     } else {
-        return res.status(405).json({ success: false, message: "Phương thức không hợp lệ." });
+        return res.status(405).json({ success: false, message: "method not f." });
     }
 };
 const UserOrderById = async (req, res) => {
@@ -42,12 +42,12 @@ const UserOrderById = async (req, res) => {
             const orders = await orderModel.getOrderByIdAndIdUser(userId, orderId);
             const products = await orderModel.getAllProductByIdOrder(orderId);
             if (!orders || orders.length === 0) {
-                return res.status(404).json({ success: false, message: "Không có đơn hàng nào cho người dùng này." });
+                return res.status(404).json({ success: false, message: "not order to uer." });
             }
             return res.status(200).json({ success: true, order: orders, products: products });
         } catch (error) {
-            console.error("Lỗi khi lấy đơn hàng của người dùng:", error.message);
-            return res.status(500).json({ success: false, message: "Lỗi khi lấy đơn hàng." });
+            console.error("err get order:", error.message);
+            return res.status(500).json({ success: false, message: "err get order." });
         }
     } else if (req.method === "POST") {
         //commingsoom
@@ -56,26 +56,40 @@ const UserOrderById = async (req, res) => {
             const order = await orderModel.getOrderByIdAndIdUser(userId, orderId);
             const data = await orderModel.updateOrder(order)
             if (!data || data.length === 0) {
-                return res.status(404).json({ success: false, message: "Không có đơn hàng nào cho người dùng này." });
+                return res.status(404).json({ success: false, message: "not order to user." });
             }
             return res.status(200).json({ success: true, data: data });
         } catch (error) {
-            console.error("Lỗi khi lấy đơn hàng của người dùng:", error.message);
-            return res.status(500).json({ success: false, message: "Lỗi khi lấy đơn hàng." });
+            console.error("err get order:", error.message);
+            return res.status(500).json({ success: false, message: "err get order." });
         }
     } else if (req.method === "DELETE") {
         //commingsoom
     } else {
-        return res.status(405).json({ success: false, message: "Phương thức không hợp lệ." });
+        return res.status(405).json({ success: false, message: "req not fo." });
     }
 };
 const UserCancelOrderById = async (req, res) => {
     const userId = req.user.id;
-    const orderId = req.orderId;
+    const { orderId } = req.params;
     if (req.method === "POST") {
-        return;
+        try {
+            const order = await orderModel.getOrderByIdAndIdUser(userId, orderId);
+            if (order.status == "pending") {
+                if (!order || order.length === 0) {
+                    return res.status(404).json({ success: false, message: "not order." });
+                } else {
+                    const updateCancel = await orderModel.updateStatusOrder(orderId, 'cancelled')
+                    return res.status(200).json({ success: true, message: "order cancelled sucssess" })
+                }
+            } else {
+                return res.status(500).json({ success: false, message: "order not pending" })
+            }
+        } catch (error) {
+            return res.status(500).json({ success: false, message: "err not post",orderId })
+        }
     } else {
-        return res.status(405).json({ success: false, message: "Phương thức không hợp lệ." });
+        return res.status(405).json({ success: false, message: "req not fo." });
     }
 };
 const productShow = async (req, res) => {
@@ -84,27 +98,27 @@ const productShow = async (req, res) => {
         try {
             const product = await orderModel.geProductById(productId);
             if (!product || product.length === 0) {
-                return res.status(404).json({ success: false, message: "Không có data nào" });
+                return res.status(404).json({ success: false, message: "not data" });
             }
             return res.json({ data: product });
         } catch (error) {
-            console.error("Lỗi khi lấy data:", error.message);
-            return res.status(500).json({ success: false, message: "Lỗi khi lấy data." });
+            console.error("err get data:", error.message);
+            return res.status(500).json({ success: false, message: "err get data." });
         }
     }
 };
 const productCart = async (req, res) => {
-    const userId  = req.user.id;
+    const userId = req.user.id;
     if (req.method === "GET") {
         try {
             const products = await orderModel.getProductsCart(userId);
             if (!products || products.length === 0) {
-                return res.status(404).json({ success: false, message: "Không có data nào" });
+                return res.status(404).json({ success: false, message: "not da ta" });
             }
             return res.json({ data: products });
         } catch (error) {
-            console.error("Lỗi khi lấy data:", error.message);
-            return res.status(500).json({ success: false, message: "Lỗi khi lấy data." });
+            console.error("err get data:", error.message);
+            return res.status(500).json({ success: false, message: "err get data." });
         }
     }
 };
@@ -158,7 +172,7 @@ const order = async (req, res) => {
                             category_id: product.category_id,
                             price: product.price,
                             created_at: new Date(),
-                            status: product.status || "pending", 
+                            status: product.status || "pending",
                             quantity: product.quantity,
                             img: product.img,
                         };

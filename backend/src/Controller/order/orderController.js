@@ -42,7 +42,7 @@ const detailOrder = async (req, res) => {
             const order = await orderModel.getOrderById(idOrder);
             const products = await orderModel.getAllProductByIdOrder(idOrder);
             if (!order || order.length === 0) {
-                return res.status(404).json({ success: false, message: "Không có đơn hàng nào cho người dùng này." });
+                return res.status(404).json({ success: false, message: "not order." });
             }
             return res.render(indexRender, {
                 title: "Order Page",
@@ -125,8 +125,98 @@ const updateOrder = async (req, res) => {
         ;
     }
 }
+const accectShiping = async (req, res) => {
+    const { idOrder } = req.params;
+    if (!idOrder) {
+        return res.status(400).send("Order ID is required.");
+    }
+    if (req.method === "POST") {
+        try {
+            if (!idOrder) {
+                return res.status(400).send("All fields are required.");
+            }
+            const result = await orderModel.updateStatusOrder(idOrder, "completed");
+            console.log('Order update success:', result);
+            return res.render(indexRender, {
+                title: "Notification ",
+                mess: "you accect Order successs",
+                page: "components/notification",
+                backUrl: "/order",
+                nameButton: "OK"
+            });;
+        } catch (error) {
+            console.error("Error updating order:", error.message);
+            return res.status(500).send("Failed to update order.");
+        }
+    }
+    else {
+        return res.console.log('not req');
+        ;
+    }
+}
+const cancelShiping = async (req, res) => {
+    const { idOrder } = req.params;
+    if (!idOrder) {
+        return res.status(400).send("Order ID is required.");
+    }
+    if (req.method === "POST") {
+        try {
+            if (!idOrder) {
+                return res.status(400).send("All fields are required.");
+            }
+            const result = await orderModel.updateStatusOrder(idOrder, "cancelled");
+            console.log('Order update success:', result);
+            return res.render(indexRender, {
+                title: "Notification ",
+                mess: "you cancelled Order successs",
+                page: "components/notification",
+                backUrl: "/order",
+                nameButton: "OK"
+            });;
+        } catch (error) {
+            console.error("Error updating order:", error.message);
+            return res.status(500).send("Failed to update order.");
+        }
+    }
+    else {
+        return res.console.log('not req');
+        ;
+    }
+}
+const shippingSuccess = async (req, res) => {
+    const { idOrder } = req.params;
+    if (!idOrder) {
+        return res.status(400).send("Order ID is required.");
+    }
+    if (req.method === "POST") {
+        try {
+            if (!idOrder) {
+                return res.status(400).send("All fields are required.");
+            }
+            const result = await orderModel.updateStatusOrder(idOrder, "success");
+            console.log('Order update success:', result);
+            return res.render(indexRender, {
+                title: "Notification ",
+                mess: "you success Order successs",
+                page: "components/notification",
+                backUrl: "/order",
+                nameButton: "OK"
+            });;
+        } catch (error) {
+            console.error("Error updating order:", error.message);
+            return res.status(500).send("Failed to update order.");
+        }
+    }
+    else {
+        return res.console.log('not req');
+        ;
+    }
+}
 export default {
     listOrder,
     detailOrder,
     updateOrder,
+    accectShiping,
+    cancelShiping,
+    shippingSuccess,
 }

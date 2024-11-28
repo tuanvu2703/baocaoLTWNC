@@ -1,5 +1,4 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
 const getProductById = async ({ idproduct }) => {
     try {
         const response = await axios.get(`http://localhost:3001/api/order/productShow/${idproduct}`);
@@ -62,10 +61,26 @@ const getAllOrder = async () => {
         return (error)
     }
 };
-
+const cancelOrder = async ({idorder}) => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("No access token found in localStorage");
+            return null;  
+        }
+        const response = await axios.post(`http://localhost:3001/api/order/cancel/${idorder}`,{}, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("failed postOrderCancel:", error);
+        return { error: true, message: error.message || "Something went wrong" };
+    }
+};
 export default {
     getProductById,
     getProductByCart,
     postOrder,
     getAllOrder,
+    cancelOrder,
 }
