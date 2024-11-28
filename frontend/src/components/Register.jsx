@@ -45,6 +45,12 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.password !== formData.confirmPassword) {
+        setError("Password and Confirm Password do not match.");
+        setSuccess(""); // Xóa thông báo thành công nếu có
+        return; // Dừng hàm lại nếu không khớp
+      }
+      
     try {
       const dataToSend = {
         password: formData.password,
@@ -125,6 +131,16 @@ const Register = () => {
             placeholder="Address"
             className="input input-bordered w-full"
           />
+
+           <input
+            type="text"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Your Phone"
+            className="input input-bordered w-full"
+          />
+          
           <input
             type="password"
             name="password"
@@ -134,13 +150,14 @@ const Register = () => {
             className="input input-bordered w-full"
           />
           <input
-            type="text"
-            name="phone"
-            value={formData.phone}
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
             onChange={handleChange}
-            placeholder="Your Phone"
+            placeholder="Confirm Password"
             className="input input-bordered w-full"
           />
+         
 
           {error && <p className="text-danger mt-2">{error}</p>}
           {success && <p className="text-success mt-2">{success}</p>}
